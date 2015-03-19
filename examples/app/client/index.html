@@ -1,0 +1,16 @@
+<body>
+{{>hello2}}
+</body>
+
+<template name="hello2">
+    <input type="text" {{bind 'first'}}>
+    {{text 'first'}}
+    <br>
+    {{text 'fullName' '-'}}
+    <br>
+    <input type="checkbox" {{check 'lista' 'miguel'}}>
+    <br>
+    <input type="checkbox" {{check 'lista' 'miguel'}}>
+    <br>
+    <button {{disabled 'can'}}>click</button>
+</template>
