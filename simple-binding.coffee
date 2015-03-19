@@ -56,10 +56,28 @@ radioHelper = (el, self, radio) ->
     else
       $(el).prop('checked', false)
 
+clickHelper = (el, self, click)->
+  $(el).click ->
+    self.model[click]()
+
+fadeHelper = (el, self, fade)->
+  ->
+    value = self.model[fade]
+    if value
+      $(el).fadeIn()
+    else
+      $(el).fadeOut()
+
 Template.basic.hooks
   rendered: ->
     self = this
     for el in this.findAll("[sb]")
+      fade = $(el).attr('fade')
+      if fade
+        Tracker.autorun fadeHelper(el, self, fade)
+      click = $(el).attr('click')
+      if click
+        clickHelper(el, self, click)
       hover = $(el).attr('hover')
       if hover
         hoverHelper(el, self, hover)

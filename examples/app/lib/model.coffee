@@ -21,8 +21,11 @@ class @A extends soop.Base
       type: String
     flag:
       type: Boolean
+    toggle:
+      type: Boolean
   fullName: (sep) -> @first + sep + @last
   notcan: -> not @first or not @last
   show: -> @flag and '==> ' + @first
   cansee: -> @first != ''
+  picado: -> @toggle = not @toggle
 
