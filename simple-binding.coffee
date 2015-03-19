@@ -32,13 +32,23 @@ disabledHelper = (el, self, disabled) ->
     else
       $(el).prop( "disabled", false )
 
+visibleHelper = (el, self, visible)->
+  ->
+    if self.model[visible]()
+      $(el).removeClass( "invisible")
+    else
+      $(el).addClass("invisible")
+
+hoverHelper = (el, self, hover)->
+  $(el).hover((->self.model[hover]=true), (->self.model[hover]=false))
+
 Template.basic.hooks
   rendered: ->
     self = this
     for el in this.findAll("[sb]")
       hover = $(el).attr('hover')
       if hover
-        $(el).hover((->self.model[hover]=true), (->self.model[hover]=false))
+        hoverHelper(el, self, hover)
       disabled = $(el).attr('disabled_')
       if disabled
         Tracker.autorun disabledHelper(el, self, disabled)
@@ -50,6 +60,9 @@ Template.basic.hooks
       if check
         $(el).bind 'click', clickCheckHelper(self, el)
         Tracker.autorun checkHelper(el, self, check)
+      visible = $(el).attr('visible')
+      if visible
+        Tracker.autorun visibleHelper(el, self, visible)
 
 
 

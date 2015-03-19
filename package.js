@@ -13,6 +13,7 @@ Package.onUse(function(api) {
     api.use('underscore');
     api.use('aldeed:template-extension@3.4.3');
     api.addFiles('simple-binding.html', 'client');
+    api.addFiles('simple-binding.css', 'client');
     api.addFiles('simple-binding.coffee', 'client');
 });
 

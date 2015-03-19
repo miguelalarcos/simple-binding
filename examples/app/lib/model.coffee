@@ -22,4 +22,5 @@ class @A extends soop.Base
   fullName: (sep) -> @first + sep + @last
   notcan: -> not @first or not @last
   show: -> @flag and '==> ' + @first
+  cansee: -> @first != ''
 
