@@ -6,7 +6,7 @@ class @B extends soop.InLine
       type: String
   hello: -> 'hello ' + @alias
 
-class @A extends soop.Base
+class @A2 extends soop.Base
   @collection: aCollection
   @schema:
     first:

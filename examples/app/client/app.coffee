@@ -1,14 +1,34 @@
 Template.hello2.inheritsHooksFrom("basic")
 Template.hello2.inheritsHelpersFrom("basic")
 
+class A extends BaseReactive
+  @schema:
+    first:
+      type: String
+    last:
+      type: String
+    lista:
+      type: [String]
+    sex:
+      type: String
+    flag:
+      type: Boolean
+    toggle:
+      type: Boolean
+  fullName: (sep) -> @first + sep + @last
+  notcan: -> not @first or not @last
+  show: -> @flag and '==> ' + @first
+  cansee: -> @first != ''
+  picado: -> @toggle = not @toggle
+
+
 Template.hello2.hooks
   created: ->
     this.model = new A
       first: 'miguel'
       last: 'angel'
-      alias: new B
-        alias: 'miguelmola'
       lista: []
+      sex: 'female'
 
 Template.hello2.events
   'click button': (e,t)->

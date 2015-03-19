@@ -15,6 +15,7 @@ Package.onUse(function(api) {
     api.addFiles('simple-binding.html', 'client');
     api.addFiles('simple-binding.css', 'client');
     api.addFiles('simple-binding.coffee', 'client');
+    api.export('BaseReactive', 'client');
 });
 
 Package.onTest(function(api) {

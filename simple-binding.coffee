@@ -1,4 +1,21 @@
-keyUpHelper = (self, el) -> # =>
+getter_setter = (obj, attr) ->
+  dep = new Tracker.Dependency()
+  get: ->
+    dep.depend()
+    obj[attr]
+  set: (value) ->
+    if value != obj[attr]
+      dep.changed()
+      obj[attr] = value
+
+class BaseReactive
+  constructor: (dct)->
+    for attr, value of @constructor.schema
+      Object.defineProperty @, attr, getter_setter(@, '_' + attr)
+    for k, v of dct
+      @['_' + k] = v
+
+keyUpHelper = (self, el) ->
   (event) ->
     name = $(el).attr('bind')
     self.model[name] = $(el).val()
