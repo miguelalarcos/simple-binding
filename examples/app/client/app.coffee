@@ -13,4 +13,5 @@ Template.hello2.hooks
 Template.hello2.events
   'click button': (e,t)->
     t.model.lista = ['miguel']
+    t.model.first = 'miguel'
 

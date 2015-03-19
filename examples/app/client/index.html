@@ -3,14 +3,17 @@
 </body>
 
 <template name="hello2">
-    <input type="text" {{bind 'first'}}>
+    <!--<input type="text" sb {{bind 'first'}}>-->
+    <input type="text" sb bind="first">
     {{text 'first'}}
     <br>
     {{text 'fullName' '-'}}
     <br>
-    <input type="checkbox" {{check 'lista' 'miguel'}}>
+    <input type="checkbox" sb value="miguel" check="lista">
     <br>
-    <input type="checkbox" {{check 'lista' 'miguel'}}>
+    <!--<input type="checkbox" sb {{check 'lista' 'miguel'}}>-->
     <br>
-    <button {{disabled 'can'}}>click</button>
+    <!--<button {{disabled 'notcan'}} hover='flag'>click</button>-->
+    <button sb disabled_="notcan" hover='flag'>click</button>
+    {{text 'show'}}
 </template>

@@ -17,6 +17,9 @@ class @A extends soop.Base
       type: B
     lista:
       type: [String]
+    flag:
+      type: Boolean
   fullName: (sep) -> @first + sep + @last
-  can: -> not @first or not @last
+  notcan: -> not @first or not @last
+  show: -> @flag and '==> ' + @first
 
