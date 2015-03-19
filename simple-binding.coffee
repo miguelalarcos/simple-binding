@@ -1,12 +1,10 @@
 keyUpHelper = (self, el) -> # =>
   (event) ->
-    #name = $(el).attr('name') or $(el).attr('bind')
     name = $(el).attr('bind')
     self.model[name] = $(el).val()
 
 clickCheckHelper = (self, el)->
   (event) ->
-    #name = $(el).attr('name') or $(el).attr('check')
     name = $(el).attr('check')
     if $(el).is(':checked')
       ret = (x for x in self.model[name]) #usar [..]
@@ -38,11 +36,6 @@ Template.basic.hooks
   rendered: ->
     self = this
     for el in this.findAll("[sb]")
-      #type = $(el).attr('type')
-      #if type == 'text'
-      #  $(el).bind 'keyup', keyUpHelper(self, el)
-      #else if type == 'checkbox'
-      #  $(el).bind 'click', clickCheckHelper(self, el)
       hover = $(el).attr('hover')
       if hover
         $(el).hover((->self.model[hover]=true), (->self.model[hover]=false))
@@ -68,16 +61,6 @@ argsToList = (args)->
   ret
 
 Template.basic.helpers
-  #disabled: (prop)->
-  #  model = UI._templateInstance().model
-  #  disabled = model[prop]()
-  #  if disabled
-  #    {disabled: true}
-  #  else
-  #    {sb: true}
-  #bind: (prop) ->
-  #  model = UI._templateInstance().model
-  #  {value: model[prop], name: prop}
   text: (prop)->
     model = UI._templateInstance().model
     if _.isFunction(model[prop])
@@ -85,10 +68,3 @@ Template.basic.helpers
       model[prop].apply(model, args)
     else
       model[prop]
-  #check: (prop, value) ->
-  #  model = UI._templateInstance().model
-  #  valueIn = value in model[prop]
-  #  if valueIn
-  #    {name: prop, value:value, checked: 'checked'}
-  #  else
-  #    {name: prop, value:value, checked: undefined}
