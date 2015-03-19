@@ -17,6 +17,8 @@ class @A extends soop.Base
       type: B
     lista:
       type: [String]
+    sex:
+      type: String
     flag:
       type: Boolean
   fullName: (sep) -> @first + sep + @last

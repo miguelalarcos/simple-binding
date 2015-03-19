@@ -42,6 +42,20 @@ visibleHelper = (el, self, visible)->
 hoverHelper = (el, self, hover)->
   $(el).hover((->self.model[hover]=true), (->self.model[hover]=false))
 
+clickRadioHelper = (self, el)->
+  (event) ->
+    name = $(el).attr('radio')
+    value = $(el).attr('value')
+    self.model[name] = value
+
+radioHelper = (el, self, radio) ->
+  ->
+    value = $(el).attr('value')
+    if value == self.model[radio]
+      $(el).prop('checked', true)
+    else
+      $(el).prop('checked', false)
+
 Template.basic.hooks
   rendered: ->
     self = this
@@ -63,8 +77,10 @@ Template.basic.hooks
       visible = $(el).attr('visible')
       if visible
         Tracker.autorun visibleHelper(el, self, visible)
-
-
+      radio = $(el).attr('radio')
+      if radio
+        $(el).bind 'click', clickRadioHelper(self, el)
+        Tracker.autorun radioHelper(el, self, radio)
 
 argsToList = (args)->
   ret = []
