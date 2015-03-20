@@ -2,20 +2,20 @@
 </body>
 
 <template name="testBindings">
-    <input id='0' type="text" sb bind="first">
-    <select id='1' sb select_="cinema" multiple="multiple">
+    <input id='0' type="text" sb sb-bind="first">
+    <select id='1' sb sb-select="cinema" multiple="multiple">
         <option>miguel</option>
         <option>veronica</option>
         <option>bernardo</option>
     </select>
-    <input id='2' type="checkbox" sb value="miguel" check="cinema">
-    <input id='3' type="checkbox" sb bool="flag">
-    <select id='4' sb select_="first">
+    <input id='2' type="checkbox" sb value="miguel" sb-check="cinema">
+    <input id='3' type="checkbox" sb sb-bool="flag">
+    <select id='4' sb sb-select="first">
         <option>miguel</option>
         <option>veronica</option>
         <option>bernardo</option>
     </select>
-    <input sb id='5' type="radio" name="sex" value="male" radio="sex">Male
-    <input sb id='6' type="radio" name="sex" value="female" radio="sex">Female
-    <div id="7" sb text="nested.show"></div>
+    <input sb id='5' type="radio" name="sex" value="male" sb-radio="sex">Male
+    <input sb id='6' type="radio" name="sex" value="female" sb-radio="sex">Female
+    <div id="7" sb sb-text="nested.show"></div>
 </template>

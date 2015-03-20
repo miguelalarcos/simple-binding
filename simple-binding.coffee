@@ -56,13 +56,13 @@ class BaseReactive
 
 keyUpHelper = (self, el) ->
   (event) ->
-    name = $(el).attr('bind')
+    name = $(el).attr('sb-bind')
     [subdoc, name] = self.model.subDoc(name)
     subdoc[name] = $(el).val()
 
 clickCheckHelper = (self, el)->
   (event) ->
-    name = $(el).attr('check')
+    name = $(el).attr('sb-check')
     [subdoc, name] = self.model.subDoc(name)
     if $(el).is(':checked')
       ret = (x for x in self.model[name]) #usar [..]
@@ -88,7 +88,7 @@ checkHelper = (el, self, check) ->
 
 clickBoolHelper = (self, el) ->
   (event) ->
-    name = $(el).attr('bool')
+    name = $(el).attr('sb-bool')
     [subdoc, name] = self.model.subDoc(name)
     if $(el).is(':checked')
       subdoc[name] = true
@@ -132,7 +132,7 @@ hoverHelper = (el, self, hover)->
 
 clickRadioHelper = (self, el)->
   (event) ->
-    name = $(el).attr('radio')
+    name = $(el).attr('sb-radio')
     value = $(el).attr('value')
     [subdoc, name] = self.model.subDoc(name)
     subdoc[name] = value
@@ -140,7 +140,7 @@ clickRadioHelper = (self, el)->
 
 changeSelectHelper = (self, el)->
   (event) ->
-    name = $(el).attr('select_')
+    name = $(el).attr('sb-select')
     value = $(el).val()
     [subdoc, name] = self.model.subDoc(name)
     subdoc[name] = value
@@ -188,44 +188,44 @@ Template.sb_basic.hooks
   rendered: ->
     self = this
     for el in this.findAll("[sb]")
-      text = $(el).attr('text')
+      text = $(el).attr('sb-text')
       if text
         Tracker.autorun textHelper(el, self, text)
-      fade = $(el).attr('fade')
+      fade = $(el).attr('sb-fade')
       if fade
         Tracker.autorun fadeHelper(el, self, fade)
-      click = $(el).attr('click')
+      click = $(el).attr('sb-click')
       if click
         clickHelper(el, self, click)
-      hover = $(el).attr('hover')
+      hover = $(el).attr('sb-hover')
       if hover
         hoverHelper(el, self, hover)
-      disabled = $(el).attr('disabled_')
+      disabled = $(el).attr('sb-disabled')
       if disabled
         Tracker.autorun disabledHelper(el, self, disabled)
-      bind = $(el).attr('bind')
+      bind = $(el).attr('sb-bind')
       if bind
         $(el).bind 'keyup', keyUpHelper(self, el)
         Tracker.autorun bindHelper(el, self, bind)
-      check = $(el).attr('check')
+      check = $(el).attr('sb-check')
       if check
         $(el).bind 'click', clickCheckHelper(self, el)
         Tracker.autorun checkHelper(el, self, check)
-      bool = $(el).attr('bool')
+      bool = $(el).attr('sb-bool')
       if bool
         $(el).bind 'click', clickBoolHelper(self, el)
         Tracker.autorun boolHelper(el, self, bool)
-      visible = $(el).attr('visible')
+      visible = $(el).attr('sb-visible')
       if visible
         Tracker.autorun visibleHelper(el, self, visible)
-      radio = $(el).attr('radio')
+      radio = $(el).attr('sb-radio')
       if radio
         $(el).bind 'click', clickRadioHelper(self, el)
         Tracker.autorun radioHelper(el, self, radio)
-      select_ = $(el).attr("select_")
+      select_ = $(el).attr("sb-select")
       if select_
         $(el).bind 'change', changeSelectHelper(self, el)
         Tracker.autorun selectHelper(el, self, select_)
-      classes = $(el).attr("classes")
+      classes = $(el).attr("sb-class")
       if classes
         Tracker.autorun classesHelper(el, self, classes)
