@@ -103,16 +103,27 @@ fadeHelper = (el, self, fade)->
   ->
     [subdoc, name] = self.model.subDoc(fade)
     #value = self.model[fade]
-    value = subdoc[name]
+    value = subdoc[name]()
     if value
       $(el).fadeIn()
     else
       $(el).fadeOut()
 
+textHelper = (el, self, text)->
+  ->
+    [subdoc, name] = self.model.subDoc(text)
+    if _.isFunction(subdoc[name])
+      $(el).text subdoc[name]()
+    else
+      $(el).text subdoc[name]
+
 Template.basic.hooks
   rendered: ->
     self = this
     for el in this.findAll("[sb]")
+      text = $(el).attr('text')
+      if text
+        Tracker.autorun textHelper(el, self, text)
       fade = $(el).attr('fade')
       if fade
         Tracker.autorun fadeHelper(el, self, fade)
@@ -140,19 +151,3 @@ Template.basic.hooks
       if radio
         $(el).bind 'click', clickRadioHelper(self, el)
         Tracker.autorun radioHelper(el, self, radio)
-
-argsToList = (args)->
-  ret = []
-  for k, i in args
-    if 0 < i < args.length-1
-      ret.push k
-  ret
-
-Template.basic.helpers
-  text: (prop)->
-    model = UI._templateInstance().model
-    if _.isFunction(model[prop])
-      args = argsToList(arguments)
-      model[prop].apply(model, args)
-    else
-      model[prop]

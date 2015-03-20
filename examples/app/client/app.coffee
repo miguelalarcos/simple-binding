@@ -1,5 +1,4 @@
 Template.hello2.inheritsHooksFrom("basic")
-Template.hello2.inheritsHelpersFrom("basic")
 
 class B extends BaseReactive
   @schema:
@@ -8,6 +7,7 @@ class B extends BaseReactive
     toggle:
       type: Boolean
   notCan: -> @alias == 'miguel'
+  toggleFunc: -> @toggle
 
 class A extends BaseReactive
   @schema:
@@ -23,9 +23,9 @@ class A extends BaseReactive
       type: B
     flag:
       type: Boolean
-  fullName: (sep) -> @first + sep + @last + ',' + @alias.alias
+  fullName: -> @first + ' ' + @last + ', ' + @alias.alias
   notCan: -> not @first or not @last
-  show: -> @flag and '==> ' + @first
+  show: -> (@flag and '==> ' + @first) or ''
   canSee: -> @first != ''
   picado: ->
     @alias.toggle = not @alias.toggle

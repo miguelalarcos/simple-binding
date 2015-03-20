@@ -62,6 +62,7 @@ You can have a template like this:
 <template name="hello2">
     <input type="text" sb bind="first">
     <input type="text" sb bind="first">
+    <textarea sb bind="first"></textarea>
     {{text 'first'}}
     <br>
     {{text 'fullName' '-'}}

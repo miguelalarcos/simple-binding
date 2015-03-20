@@ -5,15 +5,17 @@
 <template name="hello2">
     <input type="text" sb bind="first">
     <input type="text" sb bind="first">
-    {{text 'first'}}
+    <textarea sb bind="first"></textarea>
+    ---
+    <span sb text="first"></span>
     <br>
-    {{text 'fullName' '-'}}
+    <div sb text="fullName"></div>
     <br>
-    <input type="checkbox" sb value="miguel" check="lista">
-    <input type="checkbox" sb value="miguel" check="lista">
+    Miguel at the cinema?<input type="checkbox" sb value="miguel" check="lista">
+    Miguel at the cinema?<input type="checkbox" sb value="miguel" check="lista">
     <br>
     <button sb disabled_="notCan" hover='flag' click="picado">click</button>
-    {{text 'show'}}
+    <span sb text="show"></span>
     <div sb visible="canSee">hello world</div>
     <input sb type="radio" name="sex" value="male" radio="sex">Male
     <br>
@@ -22,7 +24,7 @@
     <input sb type="radio" name="sex2" value="male" radio="sex">Male
     <br>
     <input sb type="radio" name="sex2" value="female" radio="sex">Female
-    <div sb fade="alias.toggle">game over!</div>
+    <div sb fade="alias.toggleFunc">game over!</div>
     <br>
-    <input type="text" sb disabled_="alias.notCan" bind="alias.alias">
+    type 'miguel' to disable:<input type="text" sb disabled_="alias.notCan" bind="alias.alias">
 </template>
