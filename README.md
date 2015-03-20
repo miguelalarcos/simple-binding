@@ -50,8 +50,8 @@ Template.hello2.hooks
   created: ->
     this.model = new A
       first: 'miguel'
-      last: 'angel'
-      lista: []
+      last: 'alarcos'
+      lista: ['miguel']
       sex: 'female'
       alias: [new B
         alias: 'mola'
@@ -97,10 +97,21 @@ You can have a template like this:
         <option>veronica</option>
         <option>bernardo</option>
     </select>
+    <br>
+    <select sb select_="first">
+        <option>veronica</option>
+        <option>bernardo</option>
+        <option>miguel</option>
+    </select>
+    <select sb select_="first">
+        <option>veronica</option>
+        <option>bernardo</option>
+        <option>miguel</option>
+    </select>
 </template>
 ```
 
-The explanation is:
+Where:
 
 * *sb*, to mark the element as a *simple bind* element.
 * *bind* binds the input element with the model field specified.
@@ -113,6 +124,4 @@ The explanation is:
 
 Instead of extend from *BaseReactive* you can extend from [*soop.Base*](https://github.com/miguelalarcos/soop), to have the persistence to Mongo.
 
-Roadmap:
-* more elements like select
 

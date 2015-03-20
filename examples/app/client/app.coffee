@@ -37,8 +37,8 @@ Template.hello2.hooks
   created: ->
     this.model = new A
       first: 'miguel'
-      last: 'angel'
-      lista: []
+      last: 'alarcos'
+      lista: ['miguel']
       sex: 'female'
       alias: [new B
         alias: 'mola'
