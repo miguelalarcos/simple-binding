@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/miguelalarcos/simple-binding.svg)](https://travis-ci.org/miguelalarcos/simple-binding)
+
 simple-binding
 ==============
 Simple two way bindings for Meteor.
@@ -119,7 +121,8 @@ Where:
 * *sb*, to mark the element as a *simple bind* element.
 * *bind* binds the input element with the model field specified.
 * *text* is a helper you use to display the field specified (or function that returns a string).
-* *check* binds the checkbox to the field specified.
+* *check* binds the checkbox to a list (checked if its value is in the list).
+  *bool* binds the checkbox to a boolean field.
 * *disabled_* binds with a function that returns a boolean.
 * *click* binds the click action to the given function.
 * *radio* binds the radio element with the field specified.

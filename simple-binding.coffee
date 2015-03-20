@@ -57,6 +57,24 @@ checkHelper = (el, self, check) ->
     else
       $(el).prop('checked', false)
 
+clickBoolHelper = (self, el) ->
+  (event) ->
+    name = $(el).attr('bool')
+    [subdoc, name] = self.model.subDoc(name)
+    if $(el).is(':checked')
+      subdoc[name] = true
+    else
+      subdoc[name] = false
+
+boolHelper = (el, self, bool) ->
+  ->
+    [subdoc, name] = self.model.subDoc(bool)
+    if subdoc[name]
+      $(el).prop('checked', true)
+    else
+      $(el).prop('checked', false)
+
+
 disabledHelper = (el, self, disabled) ->
   ->
     [subdoc, name] = self.model.subDoc(disabled)
@@ -159,6 +177,10 @@ Template.sb_basic.hooks
       if check
         $(el).bind 'click', clickCheckHelper(self, el)
         Tracker.autorun checkHelper(el, self, check)
+      bool = $(el).attr('bool')
+      if bool
+        $(el).bind 'click', clickBoolHelper(self, el)
+        Tracker.autorun boolHelper(el, self, bool)
       visible = $(el).attr('visible')
       if visible
         Tracker.autorun visibleHelper(el, self, visible)
