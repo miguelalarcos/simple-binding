@@ -4,6 +4,8 @@ Simple two way bindings for Meteor.
 
 Explanation
 -----------
+You can see a demo [here](www.simple-binding.meteor.com).
+
 Given this model:
 
 ```coffee
