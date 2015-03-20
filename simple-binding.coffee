@@ -30,13 +30,16 @@ keyUpHelper = (self, el) ->
 clickCheckHelper = (self, el)->
   (event) ->
     name = $(el).attr('check')
+    [subdoc, name] = self.model.subDoc(name)
     if $(el).is(':checked')
       ret = (x for x in self.model[name]) #usar [..]
       ret.push $(el).attr('value')
-      self.model[name] = ret
+      #self.model[name] = ret
+      subdoc[name] = ret
     else
       ret = (x for x in self.model[name] when x != $(el).attr('value'))
-      self.model[name] = ret
+      #self.model[name] = ret
+      subdoc[name] = ret
 
 bindHelper = (el, self, bind) ->
   ->
@@ -45,8 +48,9 @@ bindHelper = (el, self, bind) ->
 
 checkHelper = (el, self, check) ->
   ->
+    [subdoc, name] = self.model.subDoc(check)
     value = $(el).attr('value')
-    if value in self.model[check]
+    if value in subdoc[name] #self.model[check]
       $(el).prop('checked', true)
     else
       $(el).prop('checked', false)
@@ -54,43 +58,52 @@ checkHelper = (el, self, check) ->
 disabledHelper = (el, self, disabled) ->
   ->
     [subdoc, name] = self.model.subDoc(disabled)
-    #if self.model[disabled]()
     if subdoc[name]()
-      $(el).prop( "disabled", true )
+      $(el).prop("disabled", true)
     else
-      $(el).prop( "disabled", false )
+      $(el).prop("disabled", false)
 
 visibleHelper = (el, self, visible)->
   ->
-    if self.model[visible]()
-      $(el).removeClass( "invisible")
+    [subdoc, name] = self.model.subDoc(visible)
+    if subdoc[name]() #self.model[visible]()
+      $(el).removeClass("invisible")
     else
       $(el).addClass("invisible")
 
 hoverHelper = (el, self, hover)->
-  $(el).hover((->self.model[hover]=true), (->self.model[hover]=false))
+  [subdoc, name] = self.model.subDoc(hover)
+  #$(el).hover((->self.model[hover]=true), (->self.model[hover]=false))
+  $(el).hover((->subdoc[name]=true), (->subdoc[name]=false))
 
 clickRadioHelper = (self, el)->
   (event) ->
     name = $(el).attr('radio')
     value = $(el).attr('value')
-    self.model[name] = value
+    [subdoc, name] = self.model.subDoc(name)
+    subdoc[name] = value
+    #self.model[name] = value
 
 radioHelper = (el, self, radio) ->
   ->
+    [subdoc, name] = self.model.subDoc(radio)
     value = $(el).attr('value')
-    if value == self.model[radio]
+    if value == subdoc[name]#self.model[radio]
       $(el).prop('checked', true)
     else
       $(el).prop('checked', false)
 
 clickHelper = (el, self, click)->
+  [subdoc, name] = self.model.subDoc(click)
   $(el).click ->
-    self.model[click]()
+    #self.model[click]()
+    subdoc[name]()
 
 fadeHelper = (el, self, fade)->
   ->
-    value = self.model[fade]
+    [subdoc, name] = self.model.subDoc(fade)
+    #value = self.model[fade]
+    value = subdoc[name]
     if value
       $(el).fadeIn()
     else

@@ -5,7 +5,9 @@ class B extends BaseReactive
   @schema:
     alias:
       type: String
-  notcan: -> @alias == 'miguel'
+    toggle:
+      type: Boolean
+  notCan: -> @alias == 'miguel'
 
 class A extends BaseReactive
   @schema:
@@ -21,13 +23,15 @@ class A extends BaseReactive
       type: B
     flag:
       type: Boolean
-    toggle:
-      type: Boolean
   fullName: (sep) -> @first + sep + @last + ',' + @alias.alias
-  notcan: -> not @first or not @last
+  notCan: -> not @first or not @last
   show: -> @flag and '==> ' + @first
-  cansee: -> @first != ''
-  picado: -> @toggle = not @toggle
+  canSee: -> @first != ''
+  picado: ->
+    @alias.toggle = not @alias.toggle
+    @lista = ['miguel']
+    @first = 'miguel'
+    @sex = 'male'
 
 Template.hello2.hooks
   created: ->
@@ -39,9 +43,4 @@ Template.hello2.hooks
       alias: new B
         alias: 'mola'
 
-Template.hello2.events
-  'click button': (e,t)->
-    t.model.lista = ['miguel']
-    t.model.first = 'miguel'
-    t.model.sex = 'male'
 

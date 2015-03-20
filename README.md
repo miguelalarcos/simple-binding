@@ -7,6 +7,14 @@ Explanation
 Given this model:
 
 ```coffee
+class B extends BaseReactive
+  @schema:
+    alias:
+      type: String
+    toggle:
+      type: Boolean
+  notCan: -> @alias == 'miguel'
+
 class A extends BaseReactive
   @schema:
     first:
@@ -17,15 +25,19 @@ class A extends BaseReactive
       type: [String]
     sex:
       type: String
+    alias:
+      type: B
     flag:
       type: Boolean
-    toggle:
-      type: Boolean
-  fullName: (sep) -> @first + sep + @last
-  notcan: -> not @first or not @last
+  fullName: (sep) -> @first + sep + @last + ',' + @alias.alias
+  notCan: -> not @first or not @last
   show: -> @flag and '==> ' + @first
-  cansee: -> @first != ''
-  picado: -> @toggle = not @toggle
+  canSee: -> @first != ''
+  picado: ->
+    @alias.toggle = not @alias.toggle
+    @lista = ['miguel']
+    @first = 'miguel'
+    @sex = 'male'
 ```
 
 and this initialization (using ```aldeed:template-extension```):
@@ -38,6 +50,8 @@ Template.hello2.hooks
       last: 'angel'
       lista: []
       sex: 'female'
+      alias: new B
+        alias: 'mola'
 ```
 
 You can have a template like this:
@@ -53,9 +67,9 @@ You can have a template like this:
     <input type="checkbox" sb value="miguel" check="lista">
     <input type="checkbox" sb value="miguel" check="lista">
     <br>
-    <button sb disabled_="notcan" hover='flag' click="picado">click</button>
+    <button sb disabled_="notCan" hover='flag' click="picado">click</button>
     {{text 'show'}}
-    <div sb visible="cansee">hello world</div>
+    <div sb visible="canSee">hello world</div>
     <input sb type="radio" name="sex" value="male" radio="sex">Male
     <br>
     <input sb type="radio" name="sex" value="female" radio="sex">Female
@@ -63,11 +77,14 @@ You can have a template like this:
     <input sb type="radio" name="sex2" value="male" radio="sex">Male
     <br>
     <input sb type="radio" name="sex2" value="female" radio="sex">Female
-    <div sb fade="toggle">game over!</div>
+    <div sb fade="alias.toggle">game over!</div>
+    <br>
+    <input type="text" sb disabled_="alias.notCan" bind="alias.alias">
 </template>
 ```
 
 The explanation is:
+
 * *sb*, to mark the element as a *simple bind* element.
 * *bind* binds the input element with the model field specified.
 * *text* is a helper you use to display the field specified (or function that returns a string).
@@ -81,4 +98,4 @@ Instead of extend from *BaseReactive* you can extend from [*soop.Base*](https://
 
 Roadmap:
 * more elements like select
-* soop: get the value given a full path => simple-binding then can binds with nested objects.
+
