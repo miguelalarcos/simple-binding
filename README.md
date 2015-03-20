@@ -86,6 +86,17 @@ You can have a template like this:
     <div sb fade="alias.0.toggleFunc">game over!</div>
     <br>
     type 'miguel' to disable:<input type="text" sb disabled_="alias.0.notCan" bind="alias.0.alias">
+    <br>
+    <select sb select_="lista" multiple="multiple">
+        <option>miguel</option>
+        <option>veronica</option>
+        <option>bernardo</option>
+    </select>
+    <select sb select_="lista" multiple="multiple">
+        <option>miguel</option>
+        <option>veronica</option>
+        <option>bernardo</option>
+    </select>
 </template>
 ```
 

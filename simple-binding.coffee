@@ -86,6 +86,19 @@ clickRadioHelper = (self, el)->
     subdoc[name] = value
     #self.model[name] = value
 
+changeSelectHelper = (self, el)->
+  (event) ->
+    name = $(el).attr('select_')
+    value = $(el).val()
+    [subdoc, name] = self.model.subDoc(name)
+    subdoc[name] = value
+
+selectHelper = (el, self, select_) ->
+  ->
+    [subdoc, name] = self.model.subDoc(select_)
+    value = subdoc[name]
+    $(el).val(value)
+
 radioHelper = (el, self, radio) ->
   ->
     [subdoc, name] = self.model.subDoc(radio)
@@ -153,3 +166,7 @@ Template.basic.hooks
       if radio
         $(el).bind 'click', clickRadioHelper(self, el)
         Tracker.autorun radioHelper(el, self, radio)
+      select_ = $(el).attr("select_")
+      if select_
+        $(el).bind 'change', changeSelectHelper(self, el)
+        Tracker.autorun selectHelper(el, self, select_)
