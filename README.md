@@ -62,6 +62,7 @@ You can have a template like this:
 
 ```html
 <template name="hello2">
+    first name:
     <input type="text" sb bind="first">
     <input type="text" sb bind="first">
     <textarea sb bind="first"></textarea>
@@ -75,7 +76,7 @@ You can have a template like this:
     <br>
     <button sb disabled_="notCan" hover='flag' click="picado">click</button>
     <span sb text="show"></span>
-    <div sb visible="canSee">hello world</div>
+    <div sb visible="canSee">this text will disappear if first is empty</div>
     <input sb type="radio" name="sex" value="male" radio="sex">Male
     <br>
     <input sb type="radio" name="sex" value="female" radio="sex">Female
@@ -85,8 +86,9 @@ You can have a template like this:
     <input sb type="radio" name="sex2" value="female" radio="sex">Female
     <div sb fade="alias.0.toggleFunc">game over!</div>
     <br>
-    type 'miguel' to disable:<input type="text" sb disabled_="alias.0.notCan" bind="alias.0.alias">
+    alias: type 'miguel' to disable:<input type="text" sb disabled_="alias.0.notCan" bind="alias.0.alias">
     <br>
+    Who is at the cinema?
     <select sb select_="lista" multiple="multiple">
         <option>miguel</option>
         <option>veronica</option>
@@ -98,6 +100,7 @@ You can have a template like this:
         <option>bernardo</option>
     </select>
     <br>
+    Select first name:
     <select sb select_="first">
         <option>veronica</option>
         <option>bernardo</option>
@@ -121,6 +124,7 @@ Where:
 * *click* binds the click action to the given function.
 * *radio* binds the radio element with the field specified.
 * *fade* binds with a boolean.
+* *select_* to binds a select element with a list or an attribute depending if is multiple or not.
 
 Instead of extend from *BaseReactive* you can extend from [*soop.Base*](https://github.com/miguelalarcos/soop), to have the persistence to Mongo.
 
