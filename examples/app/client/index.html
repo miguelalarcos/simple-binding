@@ -10,12 +10,15 @@
     ---
     <span sb text="first"></span>
     <br>
-    <div sb text="fullName"></div>
+    <div sb text="fullName" classes="classesFunc"></div>
     <br>
     Miguel at the cinema?<input type="checkbox" sb value="miguel" check="lista">
     Miguel at the cinema?<input type="checkbox" sb value="miguel" check="lista">
     <br>
-    <button sb disabled_="notCan" hover='flag' click="picado">click</button>
+    Boolean: <input type="checkbox" sb bool="flag">
+    Boolean: <input type="checkbox" sb bool="flag">
+    <br>
+    <button sb disabled_="notCan" hover='flag' click="clicked">hover me</button>
     <span sb text="show"></span>
     <div sb visible="canSee">this text will disappear if first is empty</div>
     <input sb type="radio" name="sex" value="male" radio="sex">Male
@@ -52,4 +55,7 @@
         <option>bernardo</option>
         <option>miguel</option>
     </select>
+    <br>
+    <button sb click="pop">pop</button>
+    <div sb text="sum"></div>
 </template>

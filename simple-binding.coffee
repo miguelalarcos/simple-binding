@@ -1,9 +1,39 @@
+reacArray = (v, dep) ->
+  push = v.push
+  v.push = (x) ->
+    dep.changed()
+    push.apply v, [x]
+
+  pop = v.pop
+  v.pop = ->
+    dep.changed()
+    pop.apply v
+
+  shift = v.shift
+  v.shift = ->
+    dep.changed()
+    shift.apply v
+
+  unshift = v.unshift
+  v.unshift = (x)->
+    dep.changed()
+    unshift.apply v, [x]
+
+  slice = v.slice
+  v.slice = (start, end)->
+    dep.changed()
+    slice.apply v, [start, end]
+
+  return v
+
 getter_setter = (obj, attr) ->
   dep = new Tracker.Dependency()
   get: ->
     dep.depend()
     obj[attr]
   set: (value) ->
+    if _.isArray(value)
+      value = reacArray(value, dep)
     if value != obj[attr]
       dep.changed()
       obj[attr] = value
@@ -13,7 +43,8 @@ class BaseReactive
     for attr, value of @constructor.schema
       Object.defineProperty @, attr, getter_setter(@, '_' + attr)
     for k, v of dct
-      @['_' + k] = v
+      @[k] = v
+
   subDoc: (path)->
     subdoc = @
     path = path.split('.')
@@ -36,11 +67,9 @@ clickCheckHelper = (self, el)->
     if $(el).is(':checked')
       ret = (x for x in self.model[name]) #usar [..]
       ret.push $(el).attr('value')
-      #self.model[name] = ret
       subdoc[name] = ret
     else
       ret = (x for x in self.model[name] when x != $(el).attr('value'))
-      #self.model[name] = ret
       subdoc[name] = ret
 
 bindHelper = (el, self, bind) ->
@@ -86,14 +115,19 @@ disabledHelper = (el, self, disabled) ->
 visibleHelper = (el, self, visible)->
   ->
     [subdoc, name] = self.model.subDoc(visible)
-    if subdoc[name]() #self.model[visible]()
+    if subdoc[name]()
       $(el).removeClass("invisible")
     else
       $(el).addClass("invisible")
 
+classesHelper = (el, self, classes) ->
+  ->
+    [subdoc, name] = self.model.subDoc(classes)
+    $(el).removeClass()
+    $(el).addClass(subdoc[name]())
+
 hoverHelper = (el, self, hover)->
   [subdoc, name] = self.model.subDoc(hover)
-  #$(el).hover((->self.model[hover]=true), (->self.model[hover]=false))
   $(el).hover((->subdoc[name]=true), (->subdoc[name]=false))
 
 clickRadioHelper = (self, el)->
@@ -192,3 +226,6 @@ Template.sb_basic.hooks
       if select_
         $(el).bind 'change', changeSelectHelper(self, el)
         Tracker.autorun selectHelper(el, self, select_)
+      classes = $(el).attr("classes")
+      if classes
+        Tracker.autorun classesHelper(el, self, classes)

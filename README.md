@@ -34,26 +34,40 @@ class A extends BaseReactive
       type: [B]
     flag:
       type: Boolean
-  fullName: -> @first + ' ' + @last + ', ' + @alias[0].alias
+    numbers:
+      type: [Number]
+  classesFunc: -> if @flag then 'myClass' else ''
+  fullName: -> @first + ' ' + @last + ', alias: ' + @alias[0].alias
   notCan: -> not @first or not @last
   show: -> (@flag and '==> ' + @first) or ''
   canSee: -> @first != ''
-  picado: ->
+  sum: ->
+    ret = 0
+    for x in @numbers
+      ret += x
+    ret
+  pop: ->
+    @numbers.pop()
+  clicked: ->
     @alias[0].toggle = not @alias[0].toggle
     @lista = ['miguel']
     @first = 'miguel'
     @sex = 'male'
+    @numbers.push Math.floor((Math.random() * 10) + 1)
 ```
 
 and this initialization (using ```aldeed:template-extension```):
 
 ```coffee
+Template.hello2.inheritsHooksFrom("sb_basic")
+
 Template.hello2.hooks
   created: ->
     this.model = new A
       first: 'miguel'
       last: 'alarcos'
       lista: ['miguel']
+      numbers: []
       sex: 'male'
       alias: [new B
         alias: 'mola'
@@ -71,12 +85,15 @@ You can have a template like this:
     ---
     <span sb text="first"></span>
     <br>
-    <div sb text="fullName"></div>
+    <div sb text="fullName" classes="classesFunc"></div>
     <br>
     Miguel at the cinema?<input type="checkbox" sb value="miguel" check="lista">
     Miguel at the cinema?<input type="checkbox" sb value="miguel" check="lista">
     <br>
-    <button sb disabled_="notCan" hover='flag' click="picado">click</button>
+    Boolean: <input type="checkbox" sb bool="flag">
+    Boolean: <input type="checkbox" sb bool="flag">
+    <br>
+    <button sb disabled_="notCan" hover='flag' click="clicked">hover me</button>
     <span sb text="show"></span>
     <div sb visible="canSee">this text will disappear if first is empty</div>
     <input sb type="radio" name="sex" value="male" radio="sex">Male
@@ -113,6 +130,9 @@ You can have a template like this:
         <option>bernardo</option>
         <option>miguel</option>
     </select>
+    <br>
+    <button sb click="pop">pop</button>
+    <div sb text="sum"></div>
 </template>
 ```
 
