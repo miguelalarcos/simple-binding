@@ -132,7 +132,7 @@ textHelper = (el, self, text)->
     else
       $(el).text subdoc[name]
 
-Template.basic.hooks
+Template.sb_basic.hooks
   rendered: ->
     self = this
     for el in this.findAll("[sb]")

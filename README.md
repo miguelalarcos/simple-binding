@@ -52,7 +52,7 @@ Template.hello2.hooks
       first: 'miguel'
       last: 'alarcos'
       lista: ['miguel']
-      sex: 'female'
+      sex: 'male'
       alias: [new B
         alias: 'mola'
       ]

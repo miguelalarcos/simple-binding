@@ -1,4 +1,4 @@
-Template.hello2.inheritsHooksFrom("basic")
+Template.hello2.inheritsHooksFrom("sb_basic")
 
 class B extends BaseReactive
   @schema:
@@ -23,7 +23,7 @@ class A extends BaseReactive
       type: [B]
     flag:
       type: Boolean
-  fullName: -> @first + ' ' + @last + ', ' + @alias[0].alias
+  fullName: -> @first + ' ' + @last + ', alias: ' + @alias[0].alias
   notCan: -> not @first or not @last
   show: -> (@flag and '==> ' + @first) or ''
   canSee: -> @first != ''
@@ -39,7 +39,7 @@ Template.hello2.hooks
       first: 'miguel'
       last: 'alarcos'
       lista: ['miguel']
-      sex: 'female'
+      sex: 'male'
       alias: [new B
         alias: 'mola'
       ]
