@@ -4,7 +4,7 @@ Simple two way bindings for Meteor.
 
 Explanation
 -----------
-You can see a demo [here](www.simple-binding.meteor.com).
+You can see a demo [here](http://simple-binding.meteor.com).
 
 Given this model:
 
