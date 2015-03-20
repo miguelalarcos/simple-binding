@@ -1,5 +1,11 @@
 Template.testBindings.inheritsHooksFrom("sb_basic")
 
+class B extends BaseReactive
+  @schema:
+    flag:
+      type: Boolean
+  show: -> (@flag and 'hola') or ''
+
 class A extends BaseReactive
   @schema:
     first:
@@ -8,11 +14,18 @@ class A extends BaseReactive
       type: [String]
     flag:
       type: Boolean
+    sex:
+      type: String
+    nested:
+      type: B
 
 model = new A
   first: 'miguel'
   cinema: ['miguel']
   flag: true
+  sex: 'male'
+  nested: new B
+    flag: true
 
 Template.testBindings.hooks
   created: ->
@@ -20,10 +33,10 @@ Template.testBindings.hooks
 
 describe 'binding suite', ->
   el = null
-  beforeEach ->
+  beforeAll ->
     el = Blaze.renderWithData(Template.testBindings, {},$('body')[0])
     Meteor.flush()
-  afterEach ->
+  afterAll ->
     Blaze.remove(el)
 
   it 'test bind', (test)->
@@ -35,7 +48,7 @@ describe 'binding suite', ->
     Meteor.flush()
     test.equal model.first, $("body").find("#0").val()
 
-  it 'test select', (test)->
+  it 'test select multiple', (test)->
     test.equal model.cinema, $("body").find("#1").val()
     $("body").find("#1").val('bernardo')
     $("body").find("#1").trigger('change')
@@ -60,3 +73,30 @@ describe 'binding suite', ->
     model.flag = true
     Meteor.flush()
     test.isTrue $("body").find("#3").is(':checked')
+
+  it 'test select single', (test)->
+    test.equal model.first, $("body").find("#4").val()
+    $("body").find("#4").val('bernardo')
+    $("body").find("#4").trigger('change')
+    test.equal model.first, 'bernardo'
+    model.first = 'veronica'
+    Meteor.flush()
+    test.equal model.first, $("body").find("#4").val()
+
+  it 'test radio', (test) ->
+    test.isTrue $("body").find("#5").is(':checked')
+    test.isFalse $("body").find("#6").is(':checked')
+    $("body").find("#6").trigger('click')
+    test.equal model.sex, 'female'
+    model.sex = 'male'
+    Meteor.flush()
+    test.isTrue $("body").find("#5").is(':checked')
+
+  it 'test text nested', (test) ->
+    model.nested.flag = false
+    Meteor.flush()
+    test.equal $("body").find("#7").text(), ''
+    model.nested.flag = true
+    Meteor.flush()
+    test.equal $("body").find("#7").text(), 'hola'
+
