@@ -5,6 +5,7 @@ class B extends BaseReactive
   @schema:
     alias:
       type: String
+  notcan: -> @alias == 'miguel'
 
 class A extends BaseReactive
   @schema:

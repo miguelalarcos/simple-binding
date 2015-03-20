@@ -53,7 +53,9 @@ checkHelper = (el, self, check) ->
 
 disabledHelper = (el, self, disabled) ->
   ->
-    if self.model[disabled]()
+    [subdoc, name] = self.model.subDoc(disabled)
+    #if self.model[disabled]()
+    if subdoc[name]()
       $(el).prop( "disabled", true )
     else
       $(el).prop( "disabled", false )
