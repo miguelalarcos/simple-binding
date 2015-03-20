@@ -14,11 +14,18 @@ class BaseReactive
       Object.defineProperty @, attr, getter_setter(@, '_' + attr)
     for k, v of dct
       @['_' + k] = v
+  subDoc: (path)->
+    subdoc = @
+    path = path.split('.')
+    for p in path[...-1]
+      subdoc = subdoc[p]
+    return [subdoc, path[-1..][0]]
 
 keyUpHelper = (self, el) ->
   (event) ->
     name = $(el).attr('bind')
-    self.model[name] = $(el).val()
+    [subdoc, name] = self.model.subDoc(name)
+    subdoc[name] = $(el).val()
 
 clickCheckHelper = (self, el)->
   (event) ->
@@ -32,7 +39,9 @@ clickCheckHelper = (self, el)->
       self.model[name] = ret
 
 bindHelper = (el, self, bind) ->
-  -> $(el).val(self.model[bind])
+  ->
+    [subdoc, name] = self.model.subDoc(bind)
+    $(el).val subdoc[name]
 
 checkHelper = (el, self, check) ->
   ->
