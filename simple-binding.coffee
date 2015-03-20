@@ -18,6 +18,8 @@ class BaseReactive
     subdoc = @
     path = path.split('.')
     for p in path[...-1]
+      if not _.isNaN(parseInt(p))
+        p = parseInt(p)
       subdoc = subdoc[p]
     return [subdoc, path[-1..][0]]
 

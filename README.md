@@ -16,6 +16,7 @@ class B extends BaseReactive
     toggle:
       type: Boolean
   notCan: -> @alias == 'miguel'
+  toggleFunc: -> @toggle
 
 class A extends BaseReactive
   @schema:
@@ -28,15 +29,15 @@ class A extends BaseReactive
     sex:
       type: String
     alias:
-      type: B
+      type: [B]
     flag:
       type: Boolean
-  fullName: (sep) -> @first + sep + @last + ',' + @alias.alias
+  fullName: -> @first + ' ' + @last + ', ' + @alias[0].alias
   notCan: -> not @first or not @last
-  show: -> @flag and '==> ' + @first
+  show: -> (@flag and '==> ' + @first) or ''
   canSee: -> @first != ''
   picado: ->
-    @alias.toggle = not @alias.toggle
+    @alias[0].toggle = not @alias[0].toggle
     @lista = ['miguel']
     @first = 'miguel'
     @sex = 'male'
@@ -52,8 +53,9 @@ Template.hello2.hooks
       last: 'angel'
       lista: []
       sex: 'female'
-      alias: new B
+      alias: [new B
         alias: 'mola'
+      ]
 ```
 
 You can have a template like this:
@@ -63,15 +65,16 @@ You can have a template like this:
     <input type="text" sb bind="first">
     <input type="text" sb bind="first">
     <textarea sb bind="first"></textarea>
-    {{text 'first'}}
+    ---
+    <span sb text="first"></span>
     <br>
-    {{text 'fullName' '-'}}
+    <div sb text="fullName"></div>
     <br>
-    <input type="checkbox" sb value="miguel" check="lista">
-    <input type="checkbox" sb value="miguel" check="lista">
+    Miguel at the cinema?<input type="checkbox" sb value="miguel" check="lista">
+    Miguel at the cinema?<input type="checkbox" sb value="miguel" check="lista">
     <br>
     <button sb disabled_="notCan" hover='flag' click="picado">click</button>
-    {{text 'show'}}
+    <span sb text="show"></span>
     <div sb visible="canSee">hello world</div>
     <input sb type="radio" name="sex" value="male" radio="sex">Male
     <br>
@@ -80,9 +83,9 @@ You can have a template like this:
     <input sb type="radio" name="sex2" value="male" radio="sex">Male
     <br>
     <input sb type="radio" name="sex2" value="female" radio="sex">Female
-    <div sb fade="alias.toggle">game over!</div>
+    <div sb fade="alias.0.toggleFunc">game over!</div>
     <br>
-    <input type="text" sb disabled_="alias.notCan" bind="alias.alias">
+    type 'miguel' to disable:<input type="text" sb disabled_="alias.0.notCan" bind="alias.0.alias">
 </template>
 ```
 

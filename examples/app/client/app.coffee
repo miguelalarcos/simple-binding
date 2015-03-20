@@ -20,15 +20,15 @@ class A extends BaseReactive
     sex:
       type: String
     alias:
-      type: B
+      type: [B]
     flag:
       type: Boolean
-  fullName: -> @first + ' ' + @last + ', ' + @alias.alias
+  fullName: -> @first + ' ' + @last + ', ' + @alias[0].alias
   notCan: -> not @first or not @last
   show: -> (@flag and '==> ' + @first) or ''
   canSee: -> @first != ''
   picado: ->
-    @alias.toggle = not @alias.toggle
+    @alias[0].toggle = not @alias[0].toggle
     @lista = ['miguel']
     @first = 'miguel'
     @sex = 'male'
@@ -40,7 +40,8 @@ Template.hello2.hooks
       last: 'angel'
       lista: []
       sex: 'female'
-      alias: new B
+      alias: [new B
         alias: 'mola'
+      ]
 
 
