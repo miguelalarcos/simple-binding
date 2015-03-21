@@ -34,6 +34,9 @@ class A extends BaseReactive
       type: Boolean
     numbers:
       type: [Number]
+    firstFocus:
+      type: Boolean
+  txtFirstFocus: -> (@firstFocus and 'focus in') or ''
   classesFunc: -> if @flag then 'myClass' else ''
   fullName: -> @first + ' ' + @last + ', alias: ' + @alias[0].alias
   notCan: -> not @first or not @last

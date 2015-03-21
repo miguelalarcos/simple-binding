@@ -44,6 +44,9 @@ class A extends BaseReactive
       type: Boolean
     numbers:
       type: [Number]
+    firstFocus:
+      type: Boolean
+  txtFirstFocus: -> (@firstFocus and 'focus in') or ''
   classesFunc: -> if @flag then 'myClass' else ''
   fullName: -> @first + ' ' + @last + ', alias: ' + @alias[0].alias
   notCan: -> not @first or not @last
@@ -89,7 +92,8 @@ You can have a template like this:
 ```html
 <template name="hello2">
     first name:
-    <input type="text" sb sb-bind="first">
+    <input type="text" sb sb-bind="first" sb-focus="firstFocus">
+    <span sb sb-text="txtFirstFocus"></span>
     <input type="text" sb sb-bind="first">
     <textarea sb sb-bind="first"></textarea>
     ---
@@ -175,6 +179,7 @@ Where:
 * *sb-fade* binds with a boolean.
 * *sb-select* to binds a select element with a list or an attribute depending if is multiple or not.
 * *sb-class* to binds the classes of the element to a function.
+* *focus* binds to a boolean.
 
 In the case of an attribute that is an array, you can use *push*, *pop*, *shift*, *unshift*, *splice* and a method *set* that is ```set=(pos, value)->```. Those set the dependency of the attribute to changed().
 

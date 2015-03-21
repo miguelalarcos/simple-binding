@@ -135,6 +135,11 @@ hoverHelper = (el, self, hover)->
   [subdoc, name] = self.model.subDoc(hover)
   $(el).hover((->subdoc[name]=true), (->subdoc[name]=false))
 
+focusHelper = (el, self, focus)->
+  [subdoc, name] = self.model.subDoc(focus)
+  $(el).focus(->subdoc[name]=true)
+  $(el).focusout(->subdoc[name]=false)
+
 clickRadioHelper = (self, el)->
   (event) ->
     name = $(el).attr('sb-radio')
@@ -258,6 +263,10 @@ Template.sb_basic.hooks
       classes = $(el).attr("sb-class")
       if classes
         self.computations.push Tracker.autorun classesHelper(el, self, classes)
+      focus = $(el).attr('sb-focus')
+      if focus
+        focusHelper(el, self, focus)
+
   destroyed: ->
     for c in this.computations
       c.stop()
