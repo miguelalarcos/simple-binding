@@ -61,12 +61,17 @@
     <br>
     {{#with model}}
         {{#each list 'alias'}}
-            <div>{{this.alias}}</div>
+            <span sb sb-text="{{path 'aliasFunc'}}"></span>
             <input type="text" sb sb-bind="{{path 'alias'}}">
             {{#each list 'emails'}}
-                <div>{{this.email}}</div>
+                <span sb sb-text="{{path 'email'}}"></span>
                 <input type="text" sb sb-bind="{{path 'email'}}">
             {{/each}}
         {{/each}}
+    {{/with}}
+    <br>
+    {{#with subModel 'alias.0.emails.0'}}
+        <span sb sb-text="{{path 'email'}}"></span>
+        <input type="text" sb sb-bind="{{path 'email'}}">
     {{/with}}
 </template>

@@ -14,6 +14,7 @@ class B extends BaseReactive
       type: Boolean
     emails:
       type: [C]
+  aliasFunc: -> 'the alias is ' + @alias
   notCan: -> @alias == 'miguel'
   toggleFunc: -> @toggle
 
@@ -62,5 +63,5 @@ Template.hello2.hooks
       sex: 'male'
       alias: [new B
         alias: 'mola'
-        emails: [new C(email:'m@m.es')]
+        emails: [new C(email:'m@m.es'), new C(email: 'm2@m.es')]
       ]

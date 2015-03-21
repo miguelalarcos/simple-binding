@@ -42,8 +42,6 @@ getter_setter = (obj, attr) ->
     if value != obj[attr]
       dep.changed()
       obj[attr] = value
-    if value instanceof BaseReactive
-      value._path = obj._path + '.' + attr
 
 class BaseReactive
   constructor: (dct)->
@@ -196,6 +194,11 @@ Template.sb_basic.helpers
     model = UI._templateInstance().model
     model._path = ''
     model
+  subModel: (path) ->
+    model = UI._templateInstance().model
+    [doc, name] = model.subDoc(path)
+    doc[name]._path = path
+    doc[name]
   path: (attr)->
     this._path + '.' + attr
   list: (name)->
