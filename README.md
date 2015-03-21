@@ -11,12 +11,19 @@ You can see a demo [here](http://simple-binding.meteor.com).
 Given this model:
 
 ```coffee
+class C extends BaseReactive
+  @schema:
+    email:
+      type: String
+
 class B extends BaseReactive
   @schema:
     alias:
       type: String
     toggle:
       type: Boolean
+    emails:
+      type: [C]
   notCan: -> @alias == 'miguel'
   toggleFunc: -> @toggle
 
@@ -60,6 +67,7 @@ and this initialization (using ```aldeed:template-extension```):
 
 ```coffee
 Template.hello2.inheritsHooksFrom("sb_basic")
+Template.hello2.inheritsHelpersFrom("sb_basic")
 
 Template.hello2.hooks
   created: ->
@@ -71,6 +79,7 @@ Template.hello2.hooks
       sex: 'male'
       alias: [new B
         alias: 'mola'
+        emails: [new C(email:'m@m.es')]
       ]
 ```
 
@@ -133,6 +142,17 @@ You can have a template like this:
     <br>
     <button sb sb-click="pop">pop</button>
     <div sb sb-text="sum"></div>
+    <br>
+    {{#with model}}
+        {{#each list 'alias'}}
+            <div>{{this.alias}}</div>
+            <input type="text" sb sb-bind="{{path 'alias'}}">
+            {{#each list 'emails'}}
+                <div>{{this.email}}</div>
+                <input type="text" sb sb-bind="{{path 'email'}}">
+            {{/each}}
+        {{/each}}
+    {{/with}}
 </template>
 ```
 
@@ -152,6 +172,19 @@ Where:
 
 In the case of an attribute that is an array, you can use *push*, *pop*, *shift*, *unshift*, *splice* and a method *set* that is ```set=(pos, value)->```. Those set the dependency of the attribute to changed().
 
+In the template you can see:
+
+```html
+{{#with model}}
+    {{#each list 'alias'}}
+        <div>{{this.alias}}</div>
+        <input type="text" sb sb-bind="{{path 'alias'}}">
+...
+```
+
+where you have to set the context of the model and iterate 'alias' thanks to *list*, that sets an attribute *_path* in each element. Later you use *path* to get the current path plus the attribute you want to bind to.
+
 Note: Instead of extend from *BaseReactive* you can extend from [*soop.Base*](https://github.com/miguelalarcos/soop), to have the persistence to Mongo.
 
-
+TODO:
+* fully integrate with ```soop```.

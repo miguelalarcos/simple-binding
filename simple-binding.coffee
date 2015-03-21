@@ -28,6 +28,7 @@ reacArray = (v, dep) ->
     dep.changed()
     v[pos] = value
 
+  v.wrapped = true
   return v
 
 getter_setter = (obj, attr) ->
@@ -36,11 +37,13 @@ getter_setter = (obj, attr) ->
     dep.depend()
     obj[attr]
   set: (value) ->
-    if _.isArray(value)
+    if _.isArray(value) and not value.wrapped
       value = reacArray(value, dep)
     if value != obj[attr]
       dep.changed()
       obj[attr] = value
+    if value instanceof BaseReactive
+      value._path = obj._path + '.' + attr
 
 class BaseReactive
   constructor: (dct)->
@@ -187,6 +190,20 @@ textHelper = (el, self, text)->
       $(el).text subdoc[name]()
     else
       $(el).text subdoc[name]
+
+Template.sb_basic.helpers
+  model: ->
+    model = UI._templateInstance().model
+    model._path = ''
+    model
+  path: (attr)->
+    this._path + '.' + attr
+  list: (name)->
+    path = this._path + '.' + name
+    if /^\./.test(path) then path = path[1..]
+    for elem, i in this[name]
+      elem._path = path + '.' + i
+    this[name]
 
 Template.sb_basic.hooks
   created: ->

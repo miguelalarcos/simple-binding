@@ -58,4 +58,15 @@
     <br>
     <button sb sb-click="pop">pop</button>
     <div sb sb-text="sum"></div>
+    <br>
+    {{#with model}}
+        {{#each list 'alias'}}
+            <div>{{this.alias}}</div>
+            <input type="text" sb sb-bind="{{path 'alias'}}">
+            {{#each list 'emails'}}
+                <div>{{this.email}}</div>
+                <input type="text" sb sb-bind="{{path 'email'}}">
+            {{/each}}
+        {{/each}}
+    {{/with}}
 </template>

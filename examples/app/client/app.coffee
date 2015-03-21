@@ -1,4 +1,10 @@
 Template.hello2.inheritsHooksFrom("sb_basic")
+Template.hello2.inheritsHelpersFrom("sb_basic")
+
+class C extends BaseReactive
+  @schema:
+    email:
+      type: String
 
 class B extends BaseReactive
   @schema:
@@ -6,6 +12,8 @@ class B extends BaseReactive
       type: String
     toggle:
       type: Boolean
+    emails:
+      type: [C]
   notCan: -> @alias == 'miguel'
   toggleFunc: -> @toggle
 
@@ -54,6 +62,5 @@ Template.hello2.hooks
       sex: 'male'
       alias: [new B
         alias: 'mola'
+        emails: [new C(email:'m@m.es')]
       ]
-
-
