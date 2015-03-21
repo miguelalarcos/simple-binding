@@ -150,6 +150,8 @@ Where:
 * *sb-select* to binds a select element with a list or an attribute depending if is multiple or not.
 * *sb-class* to binds the classes of the element to a function.
 
-Instead of extend from *BaseReactive* you can extend from [*soop.Base*](https://github.com/miguelalarcos/soop), to have the persistence to Mongo.
+In the case of an attribute that is an array, you can use *push*, *pop*, *shift*, *unshift*, *splice* and a method *set* that is ```set=(pos, value)->```. Those set the dependency of the attribute to changed().
+
+Note: Instead of extend from *BaseReactive* you can extend from [*soop.Base*](https://github.com/miguelalarcos/soop), to have the persistence to Mongo.
 
 

@@ -100,3 +100,62 @@ describe 'binding suite', ->
     Meteor.flush()
     test.equal $("body").find("#7").text(), 'hola'
 
+describe 'suite to test reacArray', ->
+  it 'test set', (test)->
+    value = null
+    c = Tracker.autorun ->
+      value = model.cinema[0]
+    model.cinema.set(0, 'bernardo')
+    Meteor.flush()
+    test.equal value, 'bernardo'
+    c.stop()
+
+  it 'test push', (test)->
+    model.cinema = []
+    value = null
+    c = Tracker.autorun ->
+      value = model.cinema[0]
+    model.cinema.push 'veronica'
+    Meteor.flush()
+    test.equal value, 'veronica'
+    c.stop()
+
+  it 'test splice as remove', (test)->
+    model.cinema = ['miguel', 'veronica']
+    value = null
+    c = Tracker.autorun ->
+      value = model.cinema[0]
+    model.cinema.splice 0,1
+    Meteor.flush()
+    test.equal value, 'veronica'
+    c.stop()
+
+  it 'test pop', (test)->
+    model.cinema = ['miguel', 'veronica']
+    value = null
+    c = Tracker.autorun ->
+      value = model.cinema[0]
+    model.cinema.pop
+    Meteor.flush()
+    test.equal value, 'miguel'
+    c.stop()
+
+  it 'test shift', (test)->
+    model.cinema = ['miguel', 'veronica']
+    value = null
+    c = Tracker.autorun ->
+      value = model.cinema[0]
+    model.cinema.shift()
+    Meteor.flush()
+    test.equal value, 'veronica'
+    c.stop()
+
+  it 'test unshift', (test)->
+    model.cinema = []
+    value = null
+    c = Tracker.autorun ->
+      value = model.cinema[0]
+    model.cinema.unshift 'miguel'
+    Meteor.flush()
+    test.equal value, 'miguel'
+    c.stop()

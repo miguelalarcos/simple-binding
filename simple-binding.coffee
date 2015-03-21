@@ -19,10 +19,14 @@ reacArray = (v, dep) ->
     dep.changed()
     unshift.apply v, [x]
 
-  slice = v.slice
-  v.slice = (start, end)->
+  splice = v.splice
+  v.splice = (pos, n, args...)->
     dep.changed()
-    slice.apply v, [start, end]
+    splice.apply v, [pos, n].concat(args)
+
+  v.set = (pos, value) ->
+    dep.changed()
+    v[pos] = value
 
   return v
 
@@ -185,15 +189,20 @@ textHelper = (el, self, text)->
       $(el).text subdoc[name]
 
 Template.sb_basic.hooks
+  created: ->
+    this.computations = []
   rendered: ->
     self = this
+    for c in self.computations
+      c.stop()
+    self.computations = []
     for el in this.findAll("[sb]")
       text = $(el).attr('sb-text')
       if text
-        Tracker.autorun textHelper(el, self, text)
+        self.computations.push Tracker.autorun textHelper(el, self, text)
       fade = $(el).attr('sb-fade')
       if fade
-        Tracker.autorun fadeHelper(el, self, fade)
+        self.computations.push Tracker.autorun fadeHelper(el, self, fade)
       click = $(el).attr('sb-click')
       if click
         clickHelper(el, self, click)
@@ -202,30 +211,33 @@ Template.sb_basic.hooks
         hoverHelper(el, self, hover)
       disabled = $(el).attr('sb-disabled')
       if disabled
-        Tracker.autorun disabledHelper(el, self, disabled)
+        self.computations.push Tracker.autorun disabledHelper(el, self, disabled)
       bind = $(el).attr('sb-bind')
       if bind
         $(el).bind 'keyup', keyUpHelper(self, el)
-        Tracker.autorun bindHelper(el, self, bind)
+        self.computations.push Tracker.autorun bindHelper(el, self, bind)
       check = $(el).attr('sb-check')
       if check
         $(el).bind 'click', clickCheckHelper(self, el)
-        Tracker.autorun checkHelper(el, self, check)
+        self.computations.push Tracker.autorun checkHelper(el, self, check)
       bool = $(el).attr('sb-bool')
       if bool
         $(el).bind 'click', clickBoolHelper(self, el)
-        Tracker.autorun boolHelper(el, self, bool)
+        self.computations.push Tracker.autorun boolHelper(el, self, bool)
       visible = $(el).attr('sb-visible')
       if visible
-        Tracker.autorun visibleHelper(el, self, visible)
+        self.computations.push Tracker.autorun visibleHelper(el, self, visible)
       radio = $(el).attr('sb-radio')
       if radio
         $(el).bind 'click', clickRadioHelper(self, el)
-        Tracker.autorun radioHelper(el, self, radio)
+        self.computations.push Tracker.autorun radioHelper(el, self, radio)
       select_ = $(el).attr("sb-select")
       if select_
         $(el).bind 'change', changeSelectHelper(self, el)
-        Tracker.autorun selectHelper(el, self, select_)
+        self.computations.push Tracker.autorun selectHelper(el, self, select_)
       classes = $(el).attr("sb-class")
       if classes
-        Tracker.autorun classesHelper(el, self, classes)
+        self.computations.push Tracker.autorun classesHelper(el, self, classes)
+  destroyed: ->
+    for c in this.computations
+      c.stop()
