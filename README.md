@@ -24,6 +24,7 @@ class B extends BaseReactive
       type: Boolean
     emails:
       type: [C]
+  aliasFunc: -> 'the alias is ' + @alias
   notCan: -> @alias == 'miguel'
   toggleFunc: -> @toggle
 
@@ -79,7 +80,7 @@ Template.hello2.hooks
       sex: 'male'
       alias: [new B
         alias: 'mola'
-        emails: [new C(email:'m@m.es')]
+        emails: [new C(email:'m@m.es'), new C(email: 'm2@m.es')]
       ]
 ```
 
@@ -145,13 +146,18 @@ You can have a template like this:
     <br>
     {{#with model}}
         {{#each list 'alias'}}
-            <div>{{this.alias}}</div>
+            <span sb sb-text="{{path 'aliasFunc'}}"></span>
             <input type="text" sb sb-bind="{{path 'alias'}}">
             {{#each list 'emails'}}
-                <div>{{this.email}}</div>
+                <span sb sb-text="{{path 'email'}}"></span>
                 <input type="text" sb sb-bind="{{path 'email'}}">
             {{/each}}
         {{/each}}
+    {{/with}}
+    <br>
+    {{#with subModel 'alias.0.emails.0'}}
+        <span sb sb-text="{{path 'email'}}"></span>
+        <input type="text" sb sb-bind="{{path 'email'}}">
     {{/with}}
 </template>
 ```
@@ -183,6 +189,17 @@ In the template you can see:
 ```
 
 where you have to set the context of the model and iterate 'alias' thanks to *list*, that sets an attribute *_path* in each element. Later you use *path* to get the current path plus the attribute you want to bind to.
+
+or
+
+```html
+    {{#with subModel 'alias.0.emails.0'}}
+        <span sb sb-text="{{path 'email'}}"></span>
+        <input type="text" sb sb-bind="{{path 'email'}}">
+    {{/with}}
+```
+
+where subModel sets the context to that doc.
 
 Note: Instead of extend from *BaseReactive* you can extend from [*soop.Base*](https://github.com/miguelalarcos/soop), to have the persistence to Mongo.
 
