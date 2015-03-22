@@ -121,9 +121,9 @@ visibleHelper = (el, self, visible)->
   ->
     [subdoc, name] = self.model.subDoc(visible)
     if subdoc[name]()
-      $(el).removeClass("invisible")
+      $(el).removeClass("sb-invisible")
     else
-      $(el).addClass("invisible")
+      $(el).addClass("sb-invisible")
 
 classesHelper = (el, self, classes) ->
   ->

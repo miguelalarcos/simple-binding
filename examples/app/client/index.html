@@ -3,6 +3,8 @@
 </body>
 
 <template name="hello2">
+    <h3>Full example:</h3>
+    <br>
     first name:
     <input type="text" sb sb-bind="first" sb-focus="firstFocus">
     <span sb sb-text="txtFirstFocus"></span>
@@ -31,7 +33,8 @@
     <input sb type="radio" name="sex2" value="female" sb-radio="sex">Female
     <div sb sb-fade="alias.0.toggleFunc">game over!</div>
     <br>
-    alias: type 'miguel' to disable:<input type="text" sb sb-disabled="alias.0.notCan" sb-bind="alias.0.alias">
+    alias: type 'miguel' to disable:
+    <input type="text" sb sb-disabled="alias.0.notCan" sb-bind="alias.0.alias">
     <br>
     Who is at the cinema?
     <select sb sb-select="lista" multiple="multiple">
@@ -75,4 +78,217 @@
         <span sb sb-text="{{path 'email'}}"></span>
         <input type="text" sb sb-bind="{{path 'email'}}">
     {{/with}}
+    <br>
+    <br>
+    <h3>Step by step:</h3>
+    <ul class="ui list">
+        <li>
+            sb-bind: binds an input with an attribute of the model:
+            <pre>
+                <code class="coffee">
+class A extends BaseReactive
+  @schema:
+    first:
+      type: String
+                </code>
+            </pre>
+            <pre>
+                <code class="html">
+{{bindDemo}}
+                </code>
+            </pre>
+            <input type="text" sb sb-bind="first">
+            <span sb sb-text="first"></span>
+        </li>
+        <li>
+            sb-text: a span or div shows the value of the given attribute.
+        </li>
+        <li>
+            sb-check: binds the checkbox to a list (checked if its value is in the list):
+            <pre>
+                <code class="coffee">
+class A extends BaseReactive
+  @schema:
+    lista:
+      type: [String]
+                </code>
+            </pre>
+            <pre>
+                <code class="html">
+{{checkDemo}}
+                </code>
+            </pre>
+            Miguel at the cinema? <input type="checkbox" sb value="miguel" sb-check="lista">
+            <span sb sb-text="listaToString"></span>
+        </li>
+        <li>
+            sb-bool: binds the checkbox to a boolean of the model.
+            <pre>
+                <code class="coffee">
+class A extends BaseReactive
+  @schema:
+    flag:
+      type: Boolean
+                </code>
+            </pre>
+            <pre>
+                <code class="html">
+{{boolDemo}}
+                </code>
+            </pre>
+            Boolean: <input type="checkbox" sb sb-bool="flag">
+            <span sb sb-text="flag"></span>
+        </li>
+        <li>
+            sb-radio: binds the radio element with the field specified.
+            <pre>
+                <code class="coffee">
+class A extends BaseReactive
+  @schema:
+    sex:
+      type: String
+                </code>
+            </pre>
+            <pre>
+                <code class="html">
+{{radioDemo}}
+                </code>
+            </pre>
+            <input sb type="radio" name="sex3" value="male" sb-radio="sex">Male
+            <br>
+            <input sb type="radio" name="sex3" value="female" sb-radio="sex">Female
+            <br>
+            <span sb sb-text="sex"></span>
+        </li>
+        <li>
+            sb-select: binds a select element with a list or an attribute depending if is multiple or not.
+            <pre>
+                <code class="html">
+{{selectDemo}}
+                </code>
+            </pre>
+            Who is at the cinema?
+            <select sb sb-select="lista" multiple="multiple">
+                <option>miguel</option>
+                <option>veronica</option>
+                <option>bernardo</option>
+            </select>
+            <span sb sb-text="listaToString"></span>
+            <br>
+            Select first name:
+            <select sb sb-select="first">
+                <option>veronica</option>
+                <option>bernardo</option>
+                <option>miguel</option>
+            </select>
+            <span sb sb-text="first"></span>
+        </li>
+        <li>
+            sb-disabled: disable an element depending on the result of the function.
+            <pre>
+                <code class="html">
+{{disabledDemo}}
+                </code>
+            </pre>
+            <button sb sb-disabled="notCan">click</button>
+            <input type="text" sb sb-bind="first">
+            Disable if function notCan returns true.
+            <pre>
+                <code class="coffee">
+class A extends BaseReactive
+  ...
+  notCan: -> not @first or not @last
+                </code>
+            </pre>
+        </li>
+        <li>
+            sb-focus: binds to a boolean.
+            <input type="text" sb sb-focus="firstFocus">
+            <span sb sb-text="txtFirstFocus"></span>
+            <pre>
+                <code class="html">
+{{focusDemo}}
+                </code>
+            </pre>
+            <pre>
+                <code class="coffee">
+class A extends BaseReactive
+  ...
+  firstFocus:
+    type: Boolean
+  txtFirstFocus: -> (@firstFocus and 'focus in') or ''
+                </code>
+            </pre>
+        </li>
+        <li>
+            sb-click: call a function.
+            <pre>
+                <code class="html">
+{{clickDemo}}
+                </code>
+            </pre>
+            <pre>
+                <code class="coffee">
+class A extends BaseReactive
+  ...
+  clicked: ->
+    ...
+                </code>
+            </pre>
+        </li>
+        <li>
+            sb-fade: binds to the boolean result of a function.
+            <pre>
+                <code class="html">
+{{fadeDemo}}
+                </code>
+            </pre>
+            <pre>
+                <code class="coffee">
+class B extends BaseReactive
+  @schema:
+    ...
+    toggle:
+      type: Boolean
+    toggleFunc: -> @toggle
+
+class A extends BaseReactive
+  @schema:
+    ...
+    alias:
+      type: [B]
+                </code>
+            </pre>
+        </li>
+        <li>
+            sb-class: to bind the classes of the element to the result of a function.
+            <pre>
+                <code class="html">
+{{classDemo}}
+                </code>
+            </pre>
+            <pre>
+                <code class="coffee">
+classesFunc: -> if @flag then 'myClass' else ''
+                </code>
+            </pre>
+        </li>
+        <li>
+            sb-hover: bidns to a boolean.
+            <pre>
+                <code class="html">
+{{hoverDemo}}
+                </code>
+            </pre>
+            <pre>
+                <code class="coffee">
+class A extends BaseReactive
+  @schema:
+    ...
+    flag:
+      type: Boolean
+                </code>
+            </pre>
+        </li>
+    </ul>
 </template>
