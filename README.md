@@ -73,4 +73,4 @@ Note: Instead of extend from *BaseReactive* you can extend from [*soop.Base*](ht
 
 TODO:
 * fully integrate with ```soop```.
-* path is a reserve word you can not use in your models. I will remove this restriction in a future release.
+

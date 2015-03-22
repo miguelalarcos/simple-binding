@@ -197,20 +197,20 @@ textHelper = (el, self, text)->
 Template.sb_basic.helpers
   model: ->
     model = UI._templateInstance().model
-    model._path = ''
+    model.__path = ''
     model
   subModel: (path) ->
     model = UI._templateInstance().model
     [doc, name] = model.subDoc(path)
-    doc[name]._path = path
+    doc[name].__path = path
     doc[name]
   path: (attr)->
-    this._path + '.' + attr
+    this.__path + '.' + attr
   list: (name)->
-    path = this._path + '.' + name
+    path = this.__path + '.' + name
     if /^\./.test(path) then path = path[1..]
     for elem, i in this[name]
-      elem._path = path + '.' + i
+      elem.__path = path + '.' + i
     this[name]
 
 Template.sb_basic.hooks
