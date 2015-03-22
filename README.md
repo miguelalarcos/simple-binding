@@ -25,7 +25,16 @@ API
 * *sb-focus* binds to a boolean.
 * *sb-hover* binds to a boolean.
 
-In the case of an attribute that is an array, you can use *push*, *pop*, *shift*, *unshift*, *splice* and a method *set* that is ```set=(pos, value)->```. Those set the dependency of the attribute to changed().
+In the case of an attribute that is an array, it will be converted to *ReactiveArray*, and you can use *push*, *pop*, *shift*, *unshift*, *splice* and a method *set* that is ```set=(pos, value)->```. You can use yourself the *ReactiveArray*, this way:
+
+```coffee
+names = reactiveArray(['miguel', 'veronica', 'bernardo'])
+
+Template.hello2.helpers
+  options: ->
+    names.depend()
+    names
+```
 
 In the template of the example you can see, when iterating:
 
@@ -72,5 +81,5 @@ Template.hello2.hooks
 Note: Instead of extend from *BaseReactive* you can extend from [*soop.Base*](https://github.com/miguelalarcos/soop), to have the persistence to Mongo.
 
 TODO:
-* fully integrate with ```soop```.
-
+* fully integrate with ```soop```. Not tested.
+* more tests.

@@ -38,26 +38,31 @@
     <br>
     Who is at the cinema?
     <select sb sb-select="lista" multiple="multiple">
-        <option>miguel</option>
-        <option>veronica</option>
-        <option>bernardo</option>
+        {{#each options}}
+            <option>{{this}}</option>
+        {{/each}}
     </select>
     <select sb sb-select="lista" multiple="multiple">
-        <option>miguel</option>
-        <option>veronica</option>
-        <option>bernardo</option>
+        {{#each options}}
+            <option>{{this}}</option>
+        {{/each}}
     </select>
     <br>
     Select first name:
     <select sb sb-select="first">
-        <option>veronica</option>
-        <option>bernardo</option>
-        <option>miguel</option>
+        {{#each options}}
+            <option>{{this}}</option>
+        {{/each}}
     </select>
     <select sb sb-select="first">
-        <option>veronica</option>
-        <option>bernardo</option>
-        <option>miguel</option>
+        {{#each options}}
+            <option>{{this}}</option>
+        {{/each}}
+    </select>
+    <select sb sb-select="first">
+        {{#each options}}
+            <option>{{this}}</option>
+        {{/each}}
     </select>
     <br>
     <button sb sb-click="pop">pop</button>
@@ -80,6 +85,17 @@
     {{/with}}
     <br>
     <br>
+    <!--<h3>Semantic ui</h3>
+    <div class="ui simple dropdown" sb sb-dropdown="first">
+        <div class="text"></div><i class="dropdown icon"></i>
+        <div class="menu">
+            <div class="item" data-value="veronica">veronica</div>
+            <div class="item" data-value="bernardo">bernardo</div>
+            <div class="item" data-value="miguel">miguel</div>
+        </div>
+    </div>
+    <br>
+    <br>-->
     <h3>Step by step:</h3>
     <ul class="ui list">
         <li>
@@ -169,17 +185,17 @@ class A extends BaseReactive
             </pre>
             Who is at the cinema?
             <select sb sb-select="lista" multiple="multiple">
-                <option>miguel</option>
-                <option>veronica</option>
-                <option>bernardo</option>
+                {{#each options}}
+                    <option>{{this}}</option>
+                {{/each}}
             </select>
             <span sb sb-text="listaToString"></span>
             <br>
             Select first name:
             <select sb sb-select="first">
-                <option>veronica</option>
-                <option>bernardo</option>
-                <option>miguel</option>
+                {{#each options}}
+                    <option>{{this}}</option>
+                {{/each}}
             </select>
             <span sb sb-text="first"></span>
         </li>
@@ -274,7 +290,7 @@ classesFunc: -> if @flag then 'myClass' else ''
             </pre>
         </li>
         <li>
-            sb-hover: bidns to a boolean.
+            sb-hover: binds to a boolean.
             <pre>
                 <code class="html">
 {{hoverDemo}}

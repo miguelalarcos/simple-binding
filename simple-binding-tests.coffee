@@ -100,7 +100,7 @@ describe 'binding suite', ->
     Meteor.flush()
     test.equal $("body").find("#7").text(), 'hola'
 
-describe 'suite to test reacArray', ->
+describe 'suite to test reactiveArray', ->
   it 'test set', (test)->
     value = null
     c = Tracker.autorun ->

@@ -1,4 +1,7 @@
-reacArray = (v, dep) ->
+reactiveArray = (v, dep) ->
+  if dep is undefined
+    dep = new Tracker.Dependency()
+
   push = v.push
   v.push = (x) ->
     dep.changed()
@@ -28,6 +31,9 @@ reacArray = (v, dep) ->
     dep.changed()
     v[pos] = value
 
+  v.depend = ->
+    dep.depend()
+
   v.wrapped = true
   return v
 
@@ -38,7 +44,7 @@ getter_setter = (obj, attr) ->
     obj[attr]
   set: (value) ->
     if _.isArray(value) and not value.wrapped
-      value = reacArray(value, dep)
+      value = reactiveArray(value, dep)
     if value != obj[attr]
       dep.changed()
       obj[attr] = value
@@ -218,9 +224,9 @@ Template.sb_basic.hooks
     this.computations = []
   rendered: ->
     self = this
-    for c in self.computations
-      c.stop()
-    self.computations = []
+    #for c in self.computations
+    #  c.stop()
+    #self.computations = []
     for el in this.findAll("[sb]")
       text = $(el).attr('sb-text')
       if text
@@ -270,3 +276,25 @@ Template.sb_basic.hooks
   destroyed: ->
     for c in this.computations
       c.stop()
+###
+dropdownChangeHelper = (self, el)->
+  (value, text) ->
+    name = $(el).attr('sb-dropdown')
+    [subdoc, name] = self.model.subDoc(name)
+    subdoc[name] = value
+
+dropdowntHelper = (el, self, select_) ->
+  ->
+    [subdoc, name] = self.model.subDoc(select_)
+    value = subdoc[name]
+    $(el).dropdown('set text', value)
+
+Template.sb_basic.hooks
+  rendered: ->
+    self = this
+    for el in this.findAll("[sb].ui.dropdown")
+      select_ = $(el).attr("sb-dropdown")
+      $(el).dropdown
+        onChange: dropdownChangeHelper(self, el)
+      self.computations.push Tracker.autorun dropdowntHelper(el, self, select_)
+###

@@ -3,6 +3,13 @@ Template.hello2.inheritsHelpersFrom("sb_basic")
 
 hljs.initHighlightingOnLoad()
 
+options = reactiveArray(['miguel', 'veronica', 'bernardo'])
+
+Template.hello2.helpers
+  options: ->
+    options.depend()
+    options
+
 class C extends BaseReactive
   @schema:
     email:
@@ -58,6 +65,8 @@ class A extends BaseReactive
     @first = 'miguel'
     @sex = 'male'
     @numbers.push Math.floor((Math.random() * 10) + 1)
+    if 'diego' not in options
+      options.push('diego')
 
 Template.hello2.hooks
   created: ->
@@ -73,61 +82,51 @@ Template.hello2.hooks
         emails: [new C(email:'m@m.es'), new C(email: 'm2@m.es')]
       ]
 
-Template.hello2.bindDemo = ->
-  """<input type="text" sb sb-bind="first" sb-focus="firstFocus">
+Template.hello2.helpers
+  bindDemo: -> """<input type="text" sb sb-bind="first" sb-focus="firstFocus">
      <span sb sb-text="first"></span>
   """
 
-Template.hello2.checkDemo = ->
-  """Miguel at the cinema?<input type="checkbox" sb value="miguel" sb-check="lista">
+  checkDemo: -> """Miguel at the cinema?<input type="checkbox" sb value="miguel" sb-check="lista">
   """
 
-Template.hello2.boolDemo = ->
-  """Boolean: <input type="checkbox" sb sb-bool="flag">
+  boolDemo: -> """Boolean: <input type="checkbox" sb sb-bool="flag">
   """
 
-Template.hello2.radioDemo = ->
-  """<input sb type="radio" name="sex" value="male" sb-radio="sex">Male
+  radioDemo: -> """<input sb type="radio" name="sex" value="male" sb-radio="sex">Male
     <br>
     <input sb type="radio" name="sex" value="female" sb-radio="sex">Female
   """
 
-Template.hello2.selectDemo = ->
-  """<select sb sb-select="lista" multiple="multiple">
-        <option>miguel</option>
-        <option>veronica</option>
-        <option>bernardo</option>
+  selectDemo: -> """<select sb sb-select="lista" multiple="multiple">
+        {{#each options}}
+            <option>{{this}}</option>
+        {{/each}}
     </select>
     <br>
     Select first name:
     <select sb sb-select="first">
-        <option>veronica</option>
-        <option>bernardo</option>
-        <option>miguel</option>
+        {{#each options}}
+            <option>{{this}}</option>
+        {{/each}}
     </select>
   """
 
-Template.hello2.disabledDemo = ->
-  """<button sb sb-disabled="notCan">click</button>
+  disabledDemo: -> """<button sb sb-disabled="notCan">click</button>
   """
 
-Template.hello2.focusDemo = ->
-  """<input type="text" sb sb-focus="firstFocus">
+  focusDemo: -> """<input type="text" sb sb-focus="firstFocus">
   <span sb sb-text="txtFirstFocus"></span>
   """
 
-Template.hello2.clickDemo = ->
-  """<button sb sb-click="clicked">click</button>
+  clickDemo: -> """<button sb sb-click="clicked">click</button>
   """
 
-Template.hello2.fadeDemo = ->
-  """<div sb sb-fade="alias.0.toggleFunc">game over!</div>
+  fadeDemo: -> """<div sb sb-fade="alias.0.toggleFunc">game over!</div>
   """
 
-Template.hello2.classDemo = ->
-  """<div sb sb-text="fullName" sb-class="classesFunc"></div>
+  classDemo: -> """<div sb sb-text="fullName" sb-class="classesFunc"></div>
   """
 
-Template.hello2.hoverDemo = ->
-  """<button sb sb-hover='flag'>hover me</button>
+  hoverDemo: -> """<button sb sb-hover='flag'>hover me</button>
   """
