@@ -32,16 +32,19 @@ Template.hello2.helpers
     options
 
 class D extends BaseReactive
+  @name: 'D'
   @schema:
     value:
       type: Number
 
 class C extends BaseReactive
+  @name: 'C'
   @schema:
     email:
       type: String
 
 class B extends BaseReactive
+  @name: 'B'
   @schema:
     alias:
       type: String
@@ -54,6 +57,7 @@ class B extends BaseReactive
   toggleFunc: -> @toggle
 
 class A extends BaseReactive
+  @name: 'A'
   @schema:
     first:
       type: String

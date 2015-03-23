@@ -4,7 +4,7 @@
 
 <template name="hello">
     {{#with data}}
-        {{>hello2 model=this}}
+        {{>hello2 model=this klass='A'}}
     {{/with}}
 </template>
 
@@ -26,7 +26,7 @@
         <span sb sb-text="aliasFunc"></span>
         <input type="text" sb sb-bind="alias">
         {{#each emails}}
-            {{>C model=this}}
+            {{>C model=this klass='C'}}
         {{/each}}
     {{/with}}
 </template>
@@ -98,13 +98,13 @@
     <div sb sb-text="sum"></div>
     <br>
     {{#each this.model.alias}}
-        {{>B model=this}}
+        {{>B model=this klass='B'}}
     {{/each}}
     <br>
     <span sb sb-text="alias.0.emails.0.email"></span>
     <input type="text" sb sb-bind="alias.0.emails.0.email">
     <br>
-    {{> D model=this.model.value}}
+    {{> D model=this.model.value klass='D'}}
     <br>
     <!--<h3>Semantic ui</h3>
     <div class="ui simple dropdown" sb sb-dropdown="first">

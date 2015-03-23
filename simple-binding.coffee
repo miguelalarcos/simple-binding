@@ -211,28 +211,27 @@ rebind = (t) ->
   self.model = self.data.model
 
   for el in t.findAll("[sb]")
-    elementBinds(el, self)
+    if el.__klass == self.data.klass
+      elementBinds(el, self)
 
 Template.sb_basic.helpers
   model: ->
-    t = UI._templateInstance()
-    if t.__binded and t.model != t.data.model
+    t = Template.instance()
+    #if t.__binded and t.model != t.data.model
+    if t.model isnt undefined and t.model != t.data.model
       rebind(t)
-    t.__binded = true
+    #t.__binded = true
     this.model
-
 
 Template.sb_basic.hooks
   rendered: ->
     self = this
-    if self.data
-      self.model = self.data.model
+    self.model = self.data.model
 
     for el in this.findAll("[sb]")
-      if el.done
-        continue
-      el.done = true
-      elementBinds(el, self)
+      if not el.__klass  or el.__klass == self.data.klass
+        el.__klass = self.data.klass
+        elementBinds(el, self)
 
   destroyed: ->
     this.model.destroy()

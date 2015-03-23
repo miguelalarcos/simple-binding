@@ -44,21 +44,23 @@ This is an example on how to call a template:
         <span sb sb-text="aliasFunc"></span>
         <input type="text" sb sb-bind="alias">
         {{#each emails}}
-            {{>C model=this}}
+            {{>C model=this klass="C"}}
         {{/each}}
+        {{>D model=this.subModel klass="D"}}
     {{/with}}
 </template>
 ```
 
 There are two important things:
 * {{#with model}} It sets the model in the context and rebinds the template with a new model if the model change.
-* {{>C model=this}} You have to pass the model to the template.
+* {{>C model=this klass="C"}}. You have to pass the model to the template and the class that it's going to have instances of.
+* {{>D model=this.subModel klass="D"}} The same but this is not an array.
 
 The package uses ```aldeed:template-extension```, so you have to do, to initialize:
 
 ```coffee
-Template.hello2.inheritsHooksFrom("sb_basic")
-Template.hello2.inheritsHelpersFrom("sb_basic")
+Template.B.inheritsHooksFrom("sb_basic")
+Template.B.inheritsHelpersFrom("sb_basic")
 ...
 ```
 
