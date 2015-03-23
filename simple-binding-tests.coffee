@@ -27,14 +27,10 @@ model = new A
   nested: new B
     flag: true
 
-Template.testBindings.hooks
-  created: ->
-    this.model = model
-
 describe 'binding suite', ->
   el = null
   beforeAll ->
-    el = Blaze.renderWithData(Template.testBindings, {},$('body')[0])
+    el = Blaze.renderWithData(Template.testBindings, {model: model},$('body')[0])
     Meteor.flush()
   afterAll ->
     Blaze.remove(el)

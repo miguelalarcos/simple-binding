@@ -1,21 +1,50 @@
 Template.hello2.inheritsHooksFrom("sb_basic")
 Template.hello2.inheritsHelpersFrom("sb_basic")
+Template.C.inheritsHooksFrom("sb_basic")
+Template.C.inheritsHelpersFrom("sb_basic")
+Template.B.inheritsHooksFrom("sb_basic")
+Template.B.inheritsHelpersFrom("sb_basic")
+Template.D.inheritsHooksFrom("sb_basic")
+Template.D.inheritsHelpersFrom("sb_basic")
 
 hljs.initHighlightingOnLoad()
 
 options = reactiveArray(['miguel', 'veronica', 'bernardo'])
+
+Template.hello.helpers
+  data: ->
+    new A
+      first: 'miguel'
+      last: 'alarcos'
+      lista: ['miguel']
+      numbers: []
+      flag: false
+      sex: 'male'
+      value: new D(value: 8)
+      alias: [new B
+                alias: 'mola'
+                emails: [new C(email:'m@m.es'), new C(email:'m2@m.es')]
+      ]
 
 Template.hello2.helpers
   options: ->
     options.depend()
     options
 
+class D extends BaseReactive
+  @name: 'D'
+  @schema:
+    value:
+      type: Number
+
 class C extends BaseReactive
+  @name: 'C'
   @schema:
     email:
       type: String
 
 class B extends BaseReactive
+  @name: 'B'
   @schema:
     alias:
       type: String
@@ -28,6 +57,7 @@ class B extends BaseReactive
   toggleFunc: -> @toggle
 
 class A extends BaseReactive
+  @name: 'A'
   @schema:
     first:
       type: String
@@ -37,6 +67,8 @@ class A extends BaseReactive
       type: [String]
     sex:
       type: String
+    value:
+      type: D
     alias:
       type: [B]
     flag:
@@ -59,6 +91,7 @@ class A extends BaseReactive
     ret
   pop: ->
     @numbers.pop()
+    @value = new D(value:18)
   clicked: ->
     @alias[0].toggle = not @alias[0].toggle
     @lista = ['miguel']
@@ -67,20 +100,7 @@ class A extends BaseReactive
     @numbers.push Math.floor((Math.random() * 10) + 1)
     if 'diego' not in options
       options.push('diego')
-
-Template.hello2.hooks
-  created: ->
-    this.model = new A
-      first: 'miguel'
-      last: 'alarcos'
-      lista: ['miguel']
-      numbers: []
-      flag: false
-      sex: 'male'
-      alias: [new B
-        alias: 'mola'
-        emails: [new C(email:'m@m.es'), new C(email: 'm2@m.es')]
-      ]
+    @alias[0].emails.set(0, new C(email:'myEmail@email.es'))
 
 Template.hello2.helpers
   bindDemo: -> """<input type="text" sb sb-bind="first" sb-focus="firstFocus">

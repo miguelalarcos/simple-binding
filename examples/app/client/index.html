@@ -1,6 +1,35 @@
 <body>
-    {{>hello2}}
+    {{>hello}}
 </body>
+
+<template name="hello">
+    {{#with data}}
+        {{>hello2 model=this klass='A'}}
+    {{/with}}
+</template>
+
+<template name="D">
+    {{#with model}}
+        <span sb sb-text="value"></span>
+    {{/with}}
+</template>
+
+<template name="C">
+    {{#with model}}
+        <span sb sb-text="email"></span>
+        <input type="text" sb sb-bind="email">
+    {{/with}}
+</template>
+
+<template name="B">
+    {{#with model}}
+        <span sb sb-text="aliasFunc"></span>
+        <input type="text" sb sb-bind="alias">
+        {{#each emails}}
+            {{>C model=this klass='C'}}
+        {{/each}}
+    {{/with}}
+</template>
 
 <template name="hello2">
     <h3>Full example:</h3>
@@ -68,22 +97,14 @@
     <button sb sb-click="pop">pop</button>
     <div sb sb-text="sum"></div>
     <br>
-    {{#with model}}
-        {{#each list 'alias'}}
-            <span sb sb-text="{{path 'aliasFunc'}}"></span>
-            <input type="text" sb sb-bind="{{path 'alias'}}">
-            {{#each list 'emails'}}
-                <span sb sb-text="{{path 'email'}}"></span>
-                <input type="text" sb sb-bind="{{path 'email'}}">
-            {{/each}}
-        {{/each}}
-    {{/with}}
+    {{#each this.model.alias}}
+        {{>B model=this klass='B'}}
+    {{/each}}
     <br>
-    {{#with subModel 'alias.0.emails.0'}}
-        <span sb sb-text="{{path 'email'}}"></span>
-        <input type="text" sb sb-bind="{{path 'email'}}">
-    {{/with}}
+    <span sb sb-text="alias.0.emails.0.email"></span>
+    <input type="text" sb sb-bind="alias.0.emails.0.email">
     <br>
+    {{> D model=this.model.value klass='D'}}
     <br>
     <!--<h3>Semantic ui</h3>
     <div class="ui simple dropdown" sb sb-dropdown="first">
@@ -248,7 +269,7 @@ class A extends BaseReactive
 class A extends BaseReactive
   ...
   clicked: ->
-    ...
+    @alias[0].emails.set(1, new C(email:'myEmail@email.es'))
                 </code>
             </pre>
         </li>
@@ -303,8 +324,11 @@ class A extends BaseReactive
     ...
     flag:
       type: Boolean
+  show: -> (@flag and '==> ' + @first) or ''
                 </code>
             </pre>
+            <button sb sb-hover='flag'>hover me</button>
+            <span sb sb-text="show"></span>
         </li>
     </ul>
 </template>
