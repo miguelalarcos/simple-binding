@@ -51,6 +51,7 @@ getter_setter = (obj, attr) ->
 
 class BaseReactive
   constructor: (dct)->
+    @__computations = []
     for attr, value of @constructor.schema
       Object.defineProperty @, attr, getter_setter(@, '_' + attr)
     for k, v of dct
@@ -64,6 +65,10 @@ class BaseReactive
         p = parseInt(p)
       subdoc = subdoc[p]
     return [subdoc, path[-1..][0]]
+
+  destroy: ->
+    for c in @__computations
+      c.stop()
 
 keyUpHelper = (self, el) ->
   (event) ->
@@ -200,82 +205,84 @@ textHelper = (el, self, text)->
     else
       $(el).text subdoc[name]
 
+rebind = (t) ->
+  self = t
+  self.model.destroy()
+  self.model = self.data.model
+
+  for el in t.findAll("[sb]")
+    elementBinds(el, self)
+
 Template.sb_basic.helpers
   model: ->
-    model = UI._templateInstance().model
-    model.__path = ''
-    model
-  subModel: (path) ->
-    model = UI._templateInstance().model
-    [doc, name] = model.subDoc(path)
-    doc[name].__path = path
-    doc[name]
-  path: (attr)->
-    this.__path + '.' + attr
-  list: (name)->
-    path = this.__path + '.' + name
-    if /^\./.test(path) then path = path[1..]
-    for elem, i in this[name]
-      elem.__path = path + '.' + i
-    this[name]
+    t = UI._templateInstance()
+    if t.__binded and t.model != t.data.model
+      rebind(t)
+    t.__binded = true
+    this.model
+
 
 Template.sb_basic.hooks
-  created: ->
-    this.computations = []
   rendered: ->
     self = this
-    #for c in self.computations
-    #  c.stop()
-    #self.computations = []
+    if self.data
+      self.model = self.data.model
+
     for el in this.findAll("[sb]")
-      text = $(el).attr('sb-text')
-      if text
-        self.computations.push Tracker.autorun textHelper(el, self, text)
-      fade = $(el).attr('sb-fade')
-      if fade
-        self.computations.push Tracker.autorun fadeHelper(el, self, fade)
-      click = $(el).attr('sb-click')
-      if click
-        clickHelper(el, self, click)
-      hover = $(el).attr('sb-hover')
-      if hover
-        hoverHelper(el, self, hover)
-      disabled = $(el).attr('sb-disabled')
-      if disabled
-        self.computations.push Tracker.autorun disabledHelper(el, self, disabled)
-      bind = $(el).attr('sb-bind')
-      if bind
-        $(el).bind 'keyup', keyUpHelper(self, el)
-        self.computations.push Tracker.autorun bindHelper(el, self, bind)
-      check = $(el).attr('sb-check')
-      if check
-        $(el).bind 'click', clickCheckHelper(self, el)
-        self.computations.push Tracker.autorun checkHelper(el, self, check)
-      bool = $(el).attr('sb-bool')
-      if bool
-        $(el).bind 'click', clickBoolHelper(self, el)
-        self.computations.push Tracker.autorun boolHelper(el, self, bool)
-      visible = $(el).attr('sb-visible')
-      if visible
-        self.computations.push Tracker.autorun visibleHelper(el, self, visible)
-      radio = $(el).attr('sb-radio')
-      if radio
-        $(el).bind 'click', clickRadioHelper(self, el)
-        self.computations.push Tracker.autorun radioHelper(el, self, radio)
-      select_ = $(el).attr("sb-select")
-      if select_
-        $(el).bind 'change', changeSelectHelper(self, el)
-        self.computations.push Tracker.autorun selectHelper(el, self, select_)
-      classes = $(el).attr("sb-class")
-      if classes
-        self.computations.push Tracker.autorun classesHelper(el, self, classes)
-      focus = $(el).attr('sb-focus')
-      if focus
-        focusHelper(el, self, focus)
+      if el.done
+        continue
+      el.done = true
+      elementBinds(el, self)
 
   destroyed: ->
-    for c in this.computations
-      c.stop()
+    this.model.destroy()
+
+elementBinds = (el, self) ->
+  text = $(el).attr('sb-text')
+  if text
+    self.model.__computations.push Tracker.autorun textHelper(el, self, text)
+  fade = $(el).attr('sb-fade')
+  if fade
+    self.model.__computations.push Tracker.autorun fadeHelper(el, self, fade)
+  click = $(el).attr('sb-click')
+  if click
+    clickHelper(el, self, click)
+  hover = $(el).attr('sb-hover')
+  if hover
+    hoverHelper(el, self, hover)
+  disabled = $(el).attr('sb-disabled')
+  if disabled
+    self.model.__computations.push Tracker.autorun disabledHelper(el, self, disabled)
+  bind = $(el).attr('sb-bind')
+  if bind
+    $(el).bind 'keyup', keyUpHelper(self, el)
+    self.model.__computations.push Tracker.autorun bindHelper(el, self, bind)
+  check = $(el).attr('sb-check')
+  if check
+    $(el).bind 'click', clickCheckHelper(self, el)
+    self.model.__computations.push Tracker.autorun checkHelper(el, self, check)
+  bool = $(el).attr('sb-bool')
+  if bool
+    $(el).bind 'click', clickBoolHelper(self, el)
+    self.model.__computations.push Tracker.autorun boolHelper(el, self, bool)
+  visible = $(el).attr('sb-visible')
+  if visible
+    self.model.__computations.push Tracker.autorun visibleHelper(el, self, visible)
+  radio = $(el).attr('sb-radio')
+  if radio
+    $(el).bind 'click', clickRadioHelper(self, el)
+    self.model.__computations.push Tracker.autorun radioHelper(el, self, radio)
+  select_ = $(el).attr("sb-select")
+  if select_
+    $(el).bind 'change', changeSelectHelper(self, el)
+    self.model.__computations.push Tracker.autorun selectHelper(el, self, select_)
+  classes = $(el).attr("sb-class")
+  if classes
+    self.model.__computations.push Tracker.autorun classesHelper(el, self, classes)
+  focus = $(el).attr('sb-focus')
+  if focus
+    focusHelper(el, self, focus)
+
 ###
 dropdownChangeHelper = (self, el)->
   (value, text) ->
@@ -296,5 +303,5 @@ Template.sb_basic.hooks
       select_ = $(el).attr("sb-dropdown")
       $(el).dropdown
         onChange: dropdownChangeHelper(self, el)
-      self.computations.push Tracker.autorun dropdowntHelper(el, self, select_)
+      self.model.__computations.push Tracker.autorun dropdowntHelper(el, self, select_)
 ###

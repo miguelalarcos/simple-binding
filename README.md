@@ -36,46 +36,30 @@ Template.hello2.helpers
     names
 ```
 
-In the template of the example you can see, when iterating:
+This is an example on how to call a template:
 
 ```html
-{{#with model}}
-    {{#each list 'alias'}}
-        <input type="text" sb sb-bind="{{path 'alias'}}">
-...
-```
-
-where you have to set the context of the model and iterate 'alias' thanks to *list*, that sets an attribute *_path* in each element. Later you use *path* to get the current path plus the attribute you want to bind to.
-
-or
-
-```html
-    {{#with subModel 'alias.0.emails.0'}}
-        <input type="text" sb sb-bind="{{path 'email'}}">
+<template name="B">
+    {{#with model}}
+        <span sb sb-text="aliasFunc"></span>
+        <input type="text" sb sb-bind="alias">
+        {{#each emails}}
+            {{>C model=this}}
+        {{/each}}
     {{/with}}
+</template>
 ```
 
-where subModel sets the context to that doc.
+There are two important things:
+* {{#with model}} It sets the model in the context and rebinds the template with a new model if the model change.
+* {{>C model=this}} You have to pass the model to the template.
 
 The package uses ```aldeed:template-extension```, so you have to do, to initialize:
 
 ```coffee
 Template.hello2.inheritsHooksFrom("sb_basic")
 Template.hello2.inheritsHelpersFrom("sb_basic")
-
-Template.hello2.hooks
-  created: ->
-    this.model = new A
-      first: 'miguel'
-      last: 'alarcos'
-      lista: ['miguel']
-      numbers: []
-      flag: false
-      sex: 'male'
-      alias: [new B
-        alias: 'mola'
-        emails: [new C(email:'m@m.es'), new C(email: 'm2@m.es')]
-      ]
+...
 ```
 
 Note: Instead of extend from *BaseReactive* you can extend from [*soop.Base*](https://github.com/miguelalarcos/soop), to have the persistence to Mongo.
