@@ -1,4 +1,8 @@
 Template.testBindings.inheritsHooksFrom("sb_basic")
+Template.nested.inheritsHooksFrom("sb_basic")
+
+Template.testBindings.helpers
+  echo: (x)->console.log x
 
 class B extends BaseReactive
   @schema:
@@ -155,3 +159,26 @@ describe 'suite to test reactiveArray', ->
     Meteor.flush()
     test.equal value, 'miguel'
     c.stop()
+
+describe 'complex actions suite', ->
+  el = null
+  beforeAll ->
+    el = Blaze.renderWithData(Template.testBindings, {model: model},$('body')[0])
+    Meteor.flush()
+  afterAll ->
+    Blaze.remove(el)
+
+  it 'test destroy simple', (test)->
+    nested = model.nested
+    stubs.create 'nested_destroy', nested, 'destroy'
+    model.nested = new B
+      flag: true
+    Meteor.flush()
+    expect(stubs.nested_destroy).to.have.been.called
+
+  it 'test destroy null', (test)->
+    nested = model.nested
+    stubs.create 'nested_destroy', nested, 'destroy'
+    model.nested = null
+    Meteor.flush()
+    expect(stubs.nested_destroy).to.have.been.called

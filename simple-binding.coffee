@@ -91,13 +91,15 @@ clickCheckHelper = (self, el)->
 bindHelper = (el, self, bind) ->
   ->
     [subdoc, name] = self.model.subDoc(bind)
+    if subdoc is null then return
     $(el).val subdoc[name]
 
 checkHelper = (el, self, check) ->
   ->
     [subdoc, name] = self.model.subDoc(check)
+    if subdoc is null then return
     value = $(el).attr('value')
-    if value in subdoc[name] #self.model[check]
+    if value in subdoc[name]
       $(el).prop('checked', true)
     else
       $(el).prop('checked', false)
@@ -114,6 +116,7 @@ clickBoolHelper = (self, el) ->
 boolHelper = (el, self, bool) ->
   ->
     [subdoc, name] = self.model.subDoc(bool)
+    if subdoc is null then return
     if subdoc[name]
       $(el).prop('checked', true)
     else
@@ -123,6 +126,7 @@ boolHelper = (el, self, bool) ->
 disabledHelper = (el, self, disabled) ->
   ->
     [subdoc, name] = self.model.subDoc(disabled)
+    if subdoc is null then return
     if subdoc[name]()
       $(el).prop("disabled", true)
     else
@@ -131,6 +135,7 @@ disabledHelper = (el, self, disabled) ->
 visibleHelper = (el, self, visible)->
   ->
     [subdoc, name] = self.model.subDoc(visible)
+    if subdoc is null then return
     if subdoc[name]()
       $(el).removeClass("sb-invisible")
     else
@@ -139,6 +144,7 @@ visibleHelper = (el, self, visible)->
 classesHelper = (el, self, classes) ->
   ->
     [subdoc, name] = self.model.subDoc(classes)
+    if subdoc is null then return
     $(el).removeClass()
     $(el).addClass(subdoc[name]())
 
@@ -169,14 +175,16 @@ changeSelectHelper = (self, el)->
 selectHelper = (el, self, select_) ->
   ->
     [subdoc, name] = self.model.subDoc(select_)
+    if subdoc is null then return
     value = subdoc[name]
     $(el).val(value)
 
 radioHelper = (el, self, radio) ->
   ->
     [subdoc, name] = self.model.subDoc(radio)
+    if subdoc is null then return
     value = $(el).attr('value')
-    if value == subdoc[name]#self.model[radio]
+    if value == subdoc[name]
       $(el).prop('checked', true)
     else
       $(el).prop('checked', false)
@@ -190,7 +198,7 @@ clickHelper = (el, self, click)->
 fadeHelper = (el, self, fade)->
   ->
     [subdoc, name] = self.model.subDoc(fade)
-    #value = self.model[fade]
+    if subdoc is null then return
     value = subdoc[name]()
     if value
       $(el).fadeIn()
@@ -200,6 +208,7 @@ fadeHelper = (el, self, fade)->
 textHelper = (el, self, text)->
   ->
     [subdoc, name] = self.model.subDoc(text)
+    if subdoc is null then return
     if _.isFunction(subdoc[name])
       $(el).text subdoc[name]()
     else
@@ -209,10 +218,6 @@ rebind = (t) ->
   self = t
   self.model.destroy()
   self.model = self.data.model
-
-  #for el in t.findAll("[sb-template]:first-of-type [sb]")
-    #if el.__klass == self.model.constructor #.name # self.data.klass
-  #    elementBinds(el, self)
 
   all = t.findAll("[sb-template] [sb]")
   notValid = t.findAll("[sb-template] [sb-template] [sb]")
@@ -224,21 +229,9 @@ rebind = (t) ->
 Template.withModel.helpers
   model: ->
     t = Template.instance()
-    #console.log '-->', t.model, t.data, t.data.model
-
     if t.parent().model isnt undefined and t.model != t.data.model
       rebind(t.parent())
     this.model
-
-#Template.sb_basic.helpers
-#  model: ->
-#    t = Template.instance()
-#    #if t.__binded and t.model != t.data.model
-#    if t.model isnt undefined and t.model != t.data.model
-
-#      rebind(t)
-#    #t.__binded = true
-#    this.model
 
 Template.sb_basic.hooks
   rendered: ->

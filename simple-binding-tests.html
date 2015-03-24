@@ -1,6 +1,12 @@
 <body>
 </body>
 
+<template name="nested">
+    {{#withModel}}
+        <div sb sb-text="flag"></div>
+    {{/withModel}}
+</template>
+
 <template name="testBindings">
     {{#withModel}}
     <input id='0' type="text" sb sb-bind="first">
@@ -18,6 +24,9 @@
     </select>
     <input sb id='5' type="radio" name="sex" value="male" sb-radio="sex">Male
     <input sb id='6' type="radio" name="sex" value="female" sb-radio="sex">Female
-    <div id="7" sb sb-text="nested.show"></div>
+    {{#if this.nested}}
+        <div id="7" sb sb-text="nested.show"></div>
+        {{> nested model=this.nested}}
+    {{/if}}
     {{/withModel}}
 </template>
