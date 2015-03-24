@@ -9,29 +9,30 @@
 </template>
 
 <template name="D">
-    {{#with model}}
+    {{#withModel}}
         <span sb sb-text="value"></span>
-    {{/with}}
+    {{/withModel}}
 </template>
 
 <template name="C">
-    {{#with model}}
+    {{#withModel}}
         <span sb sb-text="email"></span>
         <input type="text" sb sb-bind="email">
-    {{/with}}
+    {{/withModel}}
 </template>
 
 <template name="B">
-    {{#with model}}
+    {{#withModel}}
         <span sb sb-text="aliasFunc"></span>
         <input type="text" sb sb-bind="alias">
         {{#each emails}}
             {{>C model=this}}
         {{/each}}
-    {{/with}}
+    {{/withModel}}
 </template>
 
 <template name="hello2">
+    {{#withModel}}
     <h3>Full example:</h3>
     <br>
     first name:
@@ -97,7 +98,8 @@
     <button sb sb-click="pop">pop</button>
     <div sb sb-text="sum"></div>
     <br>
-    {{#each this.model.alias}}
+    {{#each this.alias}}
+        :)
         {{>B model=this}}
     {{/each}}
     <br>
@@ -331,4 +333,5 @@ class A extends BaseReactive
             <span sb sb-text="show"></span>
         </li>
     </ul>
+    {{/withModel}}
 </template>
