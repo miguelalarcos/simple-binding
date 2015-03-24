@@ -49,6 +49,10 @@ class A extends BaseReactive
     cow: new Cow
       speak: 'muu!!!'
       houses: [new House(tv:false)]
+  push: -> @age.cow.houses.push(new House(tv: true))
+  pop: ->  @age.cow.houses.pop()
+  splice111: -> @age.cow.houses.splice(1,1,new House(tv: true))
+  set0: -> @age.cow.houses.set(0, new House(tv: true))
 
 Template.Cow.helpers
   echo: (x)-> console.log x
