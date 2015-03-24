@@ -211,7 +211,7 @@ rebind = (t) ->
   self.model = self.data.model
 
   for el in t.findAll("[sb]")
-    if el.__klass == self.data.klass
+    if el.__klass == self.model.constructor #.name # self.data.klass
       elementBinds(el, self)
 
 Template.sb_basic.helpers
@@ -229,8 +229,8 @@ Template.sb_basic.hooks
     self.model = self.data.model
 
     for el in this.findAll("[sb]")
-      if not el.__klass  or el.__klass == self.data.klass
-        el.__klass = self.data.klass
+      if not el.__klass  or el.__klass == self.model.constructor #.name #self.data.klass
+        el.__klass = self.model.constructor #.name #self.data.klass
         elementBinds(el, self)
 
   destroyed: ->

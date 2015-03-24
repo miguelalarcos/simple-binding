@@ -1,0 +1,48 @@
+<body>
+  {{> bodyTemplate}}
+</body>
+
+<template name="bodyTemplate">
+    {{#with data}}
+        {{>A model=this}}
+    {{/with}}
+</template>
+
+<template name="A">
+    {{#with model}}
+        <div sb sb-text="first"></div>
+        <div sb sb-text="age.value"></div>
+        <div sb sb-text="isOld"></div>
+        <button sb sb-text="age.value" sb-click="age17"></button>
+        <div sb sb-text="age.cow.speak"></div>
+        <input type="checkbox" sb sb-bool="age.cow.houses.0.tv">
+        {{> B model=this.age}}
+    {{/with}}
+</template>
+
+<template name="B">
+    {{#with model}}
+        <div sb sb-text="value"></div>
+        {{> Cow model=this.cow}}
+    {{/with}}
+</template>
+
+<template name="Cow">
+    {{#with model}}
+        speak:
+        <div sb sb-text="speak"></div>
+        <input type="text" sb sb-bind="speak">
+        <ul>
+            {{#each this.houses}}
+                <li>{{> House model=this}}</li>
+            {{/each}}
+        </ul>
+    {{/with}}
+</template>
+
+<template name="House">
+    {{#with model}}
+        <div>Tv on?<div sb sb-text="tv"></div></div>
+        <input type="checkbox" sb sb-bool="tv">
+    {{/with}}
+</template>
