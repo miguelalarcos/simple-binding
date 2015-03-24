@@ -40,18 +40,18 @@ This is an example on how to call a template:
 
 ```html
 <template name="B">
-    {{#with model}}
+    {{#withModel}}
         <span sb sb-text="aliasFunc"></span>
         <input type="text" sb sb-bind="alias">
         {{#each emails}}
             {{>C model=this}}
         {{/each}}
         {{>D model=this.cow}}
-    {{/with}}
+    {{/withModel}}
 </template>
 ```
 
-* {{#with model}} It sets the model in the context and rebinds the template with a new model if the model change.
+* {{#withModel}} It sets the model in the context and rebinds the template with a new model if the model change.
 * {{>C model=this}}. You have to pass the model to the template.
 * {{>D model=this.subModel}} The same but this is not an array.
 
@@ -59,8 +59,6 @@ The package uses ```aldeed:template-extension```, so you have to do, to initiali
 
 ```coffee
 Template.B.inheritsHooksFrom("sb_basic")
-Template.B.inheritsHelpersFrom("sb_basic")
-...
 ```
 
 The model is an instance of *BaseReactive*:
@@ -75,27 +73,6 @@ class Cow extends BaseReactive
 ```
 
 Note: Instead of extend from *BaseReactive* you can extend from [*soop.Base*](https://github.com/miguelalarcos/soop), to have the persistence to Mongo.
-
-Implementation details
-----------------------
-The package need to distinguish when an element has been binded to a model. This is because when rendering a template, I'm doing the next:
-
-```coffee
-for el in this.findAll("[sb]")
-   elementBinds(el, self)
-```
-
-So it tries to bind the elements of the subtemplates already binded (subtemplates render first). The solution I have found is the next one:
-
-```coffee
-for el in this.findAll("[sb]")
-  if not el.__klass  or el.__klass == self.model.constructor
-    el.__klass = self.model.constructor
-    elementBinds(el, self)
-```
-
-I don't know a better way to do that.
-So there's a limitation with this package, i.e., you can not have a model A as a descendant of another model A. Any way, is this recursive model possible with javascript?
 
 TODO:
 -----

@@ -210,28 +210,47 @@ rebind = (t) ->
   self.model.destroy()
   self.model = self.data.model
 
-  for el in t.findAll("[sb]")
-    if el.__klass == self.model.constructor #.name # self.data.klass
-      elementBinds(el, self)
+  #for el in t.findAll("[sb-template]:first-of-type [sb]")
+    #if el.__klass == self.model.constructor #.name # self.data.klass
+  #    elementBinds(el, self)
 
-Template.sb_basic.helpers
+  all = t.findAll("[sb-template] [sb]")
+  notValid = t.findAll("[sb-template] [sb-template] [sb]")
+  for el in all
+    if el in notValid
+      continue
+    elementBinds(el, self)
+
+Template.withModel.helpers
   model: ->
     t = Template.instance()
-    #if t.__binded and t.model != t.data.model
-    if t.model isnt undefined and t.model != t.data.model
-      rebind(t)
-    #t.__binded = true
+    #console.log '-->', t.model, t.data, t.data.model
+
+    if t.parent().model isnt undefined and t.model != t.data.model
+      rebind(t.parent())
     this.model
+
+#Template.sb_basic.helpers
+#  model: ->
+#    t = Template.instance()
+#    #if t.__binded and t.model != t.data.model
+#    if t.model isnt undefined and t.model != t.data.model
+
+#      rebind(t)
+#    #t.__binded = true
+#    this.model
 
 Template.sb_basic.hooks
   rendered: ->
     self = this
     self.model = self.data.model
 
-    for el in this.findAll("[sb]")
-      if not el.__klass  or el.__klass == self.model.constructor #.name #self.data.klass
-        el.__klass = self.model.constructor #.name #self.data.klass
-        elementBinds(el, self)
+    all = this.findAll("[sb-template] [sb]")
+    notValid = this.findAll("[sb-template] [sb-template] [sb]")
+    for el in all
+      if el in notValid
+        continue
+      elementBinds(el, self)
 
   destroyed: ->
     this.model.destroy()

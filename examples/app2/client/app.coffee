@@ -1,11 +1,11 @@
 Template.A.inheritsHooksFrom("sb_basic")
-Template.A.inheritsHelpersFrom("sb_basic")
+#Template.A.inheritsHelpersFrom("sb_basic")
 Template.B.inheritsHooksFrom("sb_basic")
-Template.B.inheritsHelpersFrom("sb_basic")
+#Template.B.inheritsHelpersFrom("sb_basic")
 Template.Cow.inheritsHooksFrom("sb_basic")
-Template.Cow.inheritsHelpersFrom("sb_basic")
+#Template.Cow.inheritsHelpersFrom("sb_basic")
 Template.House.inheritsHooksFrom("sb_basic")
-Template.House.inheritsHelpersFrom("sb_basic")
+#Template.House.inheritsHelpersFrom("sb_basic")
 
 Template.bodyTemplate.helpers
   data: ->

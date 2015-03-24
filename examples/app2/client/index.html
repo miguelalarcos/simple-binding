@@ -9,7 +9,8 @@
 </template>
 
 <template name="A">
-    {{#with model}}
+
+    {{#withModel}}
         <div sb sb-text="first"></div>
         <div sb sb-text="age.value"></div>
         <div sb sb-text="isOld"></div>
@@ -23,18 +24,23 @@
         <button sb sb-click="set0">set0</button>
         <div sb sb-text="listaToString"></div>
         <button sb sb-click="pushLista">push lista</button>
-    {{/with}}
+    {{/withModel}}
+
 </template>
 
 <template name="B">
-    {{#with model}}
+
+    {{#withModel}}
         <div sb sb-text="value"></div>
         {{> Cow model=this.cow}}
-    {{/with}}
+    {{/withModel}}
+
 </template>
 
 <template name="Cow">
-    {{#with model}}
+
+    {{#withModel}}
+
         speak:
         <div sb sb-text="speak"></div>
         <input type="text" sb sb-bind="speak">
@@ -43,12 +49,16 @@
                 <li>{{> House model=this}}</li>
             {{/each}}
         </ul>
-    {{/with}}
+
+    {{/withModel}}
+
 </template>
 
 <template name="House">
-    {{#with model}}
+
+    {{#withModel}}
         <div>Tv on?<div sb sb-text="tv"></div></div>
         <input type="checkbox" sb sb-bool="tv">
-    {{/with}}
+    {{/withModel}}
+
 </template>

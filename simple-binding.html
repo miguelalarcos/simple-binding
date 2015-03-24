@@ -1,2 +1,10 @@
 <template name="sb_basic">
 </template>
+
+<template name="withModel">
+    <div sb-template>
+        {{#with model}}
+            {{> UI.contentBlock this}}
+        {{/with}}
+    </div>
+</template>
