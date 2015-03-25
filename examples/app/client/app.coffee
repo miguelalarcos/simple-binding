@@ -1,11 +1,11 @@
 Template.hello2.inheritsHooksFrom("sb_basic")
-Template.hello2.inheritsHelpersFrom("sb_basic")
+#Template.hello2.inheritsHelpersFrom("sb_basic")
 Template.C.inheritsHooksFrom("sb_basic")
-Template.C.inheritsHelpersFrom("sb_basic")
+#Template.C.inheritsHelpersFrom("sb_basic")
 Template.B.inheritsHooksFrom("sb_basic")
-Template.B.inheritsHelpersFrom("sb_basic")
+#Template.B.inheritsHelpersFrom("sb_basic")
 Template.D.inheritsHooksFrom("sb_basic")
-Template.D.inheritsHelpersFrom("sb_basic")
+#Template.D.inheritsHelpersFrom("sb_basic")
 
 hljs.initHighlightingOnLoad()
 
@@ -145,4 +145,7 @@ Template.hello2.helpers
   """
 
   hoverDemo: -> """<button sb sb-hover='flag'>hover me</button>
+  """
+
+  visibleDemo: -> """<div sb sb-visible="flag"></div>
   """

@@ -24,9 +24,9 @@
     </select>
     <input sb id='5' type="radio" name="sex" value="male" sb-radio="sex">Male
     <input sb id='6' type="radio" name="sex" value="female" sb-radio="sex">Female
-    {{#if this.nested}}
+    <div sb sb-visible="nested">
         <div id="7" sb sb-text="nested.show"></div>
         {{> nested model=this.nested}}
-    {{/if}}
+    </div>
     {{/withModel}}
 </template>

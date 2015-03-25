@@ -24,6 +24,7 @@ API
 * *sb-class* to bind the classes of the element to the result of a function.
 * *sb-focus* binds to a boolean.
 * *sb-hover* binds to a boolean.
+* *sb-visible* binds to a var or function.
 
 In the case of an attribute that is an array, it will be converted to *ReactiveArray*, and you can use *push*, *pop*, *shift*, *unshift*, *splice* and a method *set* that is ```set=(pos, value)->```. You can use yourself the *ReactiveArray*, this way:
 
@@ -54,6 +55,13 @@ This is an example on how to call a template:
 * {{#withModel}} It sets the model in the context and rebinds the template with a new model if the model change.
 * {{>C model=this}}. You have to pass the model to the template.
 * {{>D model=this.subModel}} The same but this is not an array.
+
+You can set a model to null:
+```coffee
+... = new A
+  a1: new B()
+  a2: null # instead of new C(), for example
+```
 
 The package uses ```aldeed:template-extension```, so you have to do, to initialize every template:
 

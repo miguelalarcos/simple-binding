@@ -136,10 +136,14 @@ visibleHelper = (el, self, visible)->
   ->
     [subdoc, name] = self.model.subDoc(visible)
     if subdoc is null then return
-    if subdoc[name]()
-      $(el).removeClass("sb-invisible")
+    if _.isFunction(subdoc[name])
+      val = subdoc[name]()
     else
-      $(el).addClass("sb-invisible")
+      val = subdoc[name]
+    if val
+      $(el).show() #removeClass("sb-invisible")
+    else
+      $(el).hide() #addClass("sb-invisible")
 
 classesHelper = (el, self, classes) ->
   ->
@@ -216,8 +220,10 @@ textHelper = (el, self, text)->
 
 rebind = (t) ->
   self = t
-  self.model.destroy()
+  if self.model
+    self.model.destroy()
   self.model = self.data.model
+  if self.model is null then return
 
   all = t.findAll("[sb-template] [sb]")
   notValid = t.findAll("[sb-template] [sb-template] [sb]")
@@ -246,7 +252,8 @@ Template.sb_basic.hooks
       elementBinds(el, self)
 
   destroyed: ->
-    this.model.destroy()
+    if this.model
+      this.model.destroy()
 
 elementBinds = (el, self) ->
   text = $(el).attr('sb-text')

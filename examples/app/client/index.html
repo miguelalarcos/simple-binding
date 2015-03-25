@@ -332,6 +332,15 @@ class A extends BaseReactive
             <button sb sb-hover='flag'>hover me</button>
             <span sb sb-text="show"></span>
         </li>
+        <li>
+            sb-visible: binds to an attribute or function.
+            <pre>
+                <code class="html">
+{{visibleDemo}}
+                </code>
+            </pre>
+            <div sb sb-visible="flag">This text can be hidden</div>
+        </li>
     </ul>
     {{/withModel}}
 </template>
