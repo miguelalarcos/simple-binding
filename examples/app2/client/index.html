@@ -16,7 +16,7 @@
         <div sb sb-text="isOld"></div>
         <button sb sb-text="age.value" sb-click="age17"></button>
         <div sb sb-text="age.cow.speak"></div>
-        <input type="checkbox" sb sb-bool="age.cow.houses.0.tv">
+        <input type="checkbox" sb sb-bool="age.cow.houses.0.tv" sb-visible="age.cow.houses.0">
         {{> B model=this.age}}
         <button sb sb-click="push">push</button>
         <button sb sb-click="pop">pop</button>

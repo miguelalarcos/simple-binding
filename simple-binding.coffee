@@ -64,6 +64,7 @@ class BaseReactive
       if not _.isNaN(parseInt(p))
         p = parseInt(p)
       subdoc = subdoc[p]
+      if subdoc is null or subdoc is undefined then return [null, '']
     return [subdoc, path[-1..][0]]
 
   destroy: ->

@@ -1,6 +1,6 @@
 Package.describe({
     name: 'miguelalarcos:simple-binding',
-    version: '0.3.4',
+    version: '0.3.5',
     summary: 'Simple two way bindings for Meteor',
     git: 'https://github.com/miguelalarcos/simple-binding.git',
     documentation: 'README.md'

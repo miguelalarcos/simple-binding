@@ -57,6 +57,13 @@ This is an example on how to call a template:
 * {{>C model=this}}. You have to pass the model to the template.
 * {{>D model=this.subModel}} The same but this is not an array.
 
+You can use nested expressions like:
+
+```html
+<input type="text" sb sb-disabled="alias.0.notCan" sb-bind="alias.0.alias">
+<div sb sb-text="age.value">
+```
+
 You can set a model to null:
 
 ```coffee
@@ -65,11 +72,11 @@ You can set a model to null:
   a2: null # instead of new C(), for example
 ```
 
-and can use nested expressions like:
+Be careful, because if you have a computation that uses the model you set to null and you use the related ui component, you will have errors.
+So is better to hide the component in those cases:
 
 ```html
-<input type="text" sb sb-disabled="alias.0.notCan" sb-bind="alias.0.alias">
-<div sb sb-text="age.value">
+<input type="checkbox" sb sb-bool="age.cow.houses.0.tv" sb-visible="age.cow.houses.0">
 ```
 
 The package uses ```aldeed:template-extension```, so you have to do, to initialize every template:
@@ -103,6 +110,9 @@ class A extends BaseReactive
 ```
 
 Note: (future) Instead of extend from *BaseReactive* you can extend from [*soop.Base*](https://github.com/miguelalarcos/soop), to have the persistence to Mongo.
+
+Issue: be careful when using {{#if ...}} because the single elements inside probably will not have the chance to bind, not the templates inside that will bind in created event.
+(The elements have the chance to bind because the template where they are is rendered).
 
 TODO:
 -----
