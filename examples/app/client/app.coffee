@@ -1,11 +1,7 @@
 Template.hello2.inheritsHooksFrom("sb_basic")
-#Template.hello2.inheritsHelpersFrom("sb_basic")
 Template.C.inheritsHooksFrom("sb_basic")
-#Template.C.inheritsHelpersFrom("sb_basic")
 Template.B.inheritsHooksFrom("sb_basic")
-#Template.B.inheritsHelpersFrom("sb_basic")
 Template.D.inheritsHooksFrom("sb_basic")
-#Template.D.inheritsHelpersFrom("sb_basic")
 
 hljs.initHighlightingOnLoad()
 
@@ -31,17 +27,17 @@ Template.hello2.helpers
     options.depend()
     options
 
-class D extends BaseReactive
+class D extends ReactiveModel
   @schema:
     value:
       type: Number
 
-class C extends BaseReactive
+class C extends ReactiveModel
   @schema:
     email:
       type: String
 
-class B extends BaseReactive
+class B extends ReactiveModel
   @schema:
     alias:
       type: String
@@ -53,7 +49,7 @@ class B extends BaseReactive
   notCan: -> @alias == 'miguel'
   toggleFunc: -> @toggle
 
-class A extends BaseReactive
+class A extends ReactiveModel
   @schema:
     first:
       type: String
@@ -73,6 +69,7 @@ class A extends BaseReactive
       type: [Number]
     firstFocus:
       type: Boolean
+  log: (x) -> console.log x
   listaToString: -> '[' + @lista.toString() + ']'
   txtFirstFocus: -> (@firstFocus and 'focus in') or ''
   classesFunc: -> if @flag then 'myClass' else ''
@@ -136,6 +133,9 @@ Template.hello2.helpers
   """
 
   clickDemo: -> """<button sb sb-click="clicked">click</button>
+  """
+
+  eventDemo: -> """<input type='text' sb sb-event='keyup log'>
   """
 
   fadeDemo: -> """<div sb sb-fade="alias.0.toggleFunc">game over!</div>

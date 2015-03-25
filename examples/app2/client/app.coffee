@@ -1,11 +1,7 @@
 Template.A.inheritsHooksFrom("sb_basic")
-#Template.A.inheritsHelpersFrom("sb_basic")
 Template.B.inheritsHooksFrom("sb_basic")
-#Template.B.inheritsHelpersFrom("sb_basic")
 Template.Cow.inheritsHooksFrom("sb_basic")
-#Template.Cow.inheritsHelpersFrom("sb_basic")
 Template.House.inheritsHooksFrom("sb_basic")
-#Template.House.inheritsHelpersFrom("sb_basic")
 
 Template.bodyTemplate.helpers
   data: ->
@@ -18,27 +14,27 @@ Template.bodyTemplate.helpers
           speak: 'muu'
           houses: [new House(tv: true)]
 
-class House extends BaseReactive
+class House extends ReactiveModel
   @schema:
     tv:
       type: Boolean
 
 
-class Cow extends BaseReactive
+class Cow extends ReactiveModel
   @schema:
     speak:
       type: String
     houses:
       type: [House]
 
-class B extends BaseReactive
+class B extends ReactiveModel
   @schema:
     value:
       type: Number
     cow:
       type: Cow
 
-class A extends BaseReactive
+class A extends ReactiveModel
   @schema:
     first:
       type: String

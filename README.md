@@ -26,6 +26,7 @@ API
 * *sb-focus* binds to a boolean.
 * *sb-hover* binds to a boolean.
 * *sb-visible* binds to a var or function.
+* *sb-event* binds to a jQuery event.
 
 In the case of an attribute that is an array, it will be converted to *ReactiveArray*, and you can use *push*, *pop*, *shift*, *unshift*, *splice* and a method *set* that is ```set=(pos, value)->```. You can use yourself the *ReactiveArray*, this way:
 
@@ -85,10 +86,10 @@ The package uses ```aldeed:template-extension```, so you have to do, to initiali
 Template.B.inheritsHooksFrom("sb_basic")
 ```
 
-The model is an instance of *BaseReactive*:
+The model is an instance of *ReactiveModel*:  (*BaseReactive* is deprecated)
 
 ```coffee
-class A extends BaseReactive
+class A extends ReactiveModel
   @schema:
     first:
       type: String
@@ -109,7 +110,7 @@ class A extends BaseReactive
   push: -> @age.cow.houses.push(new House(tv: true))
 ```
 
-Note: (future) Instead of extend from *BaseReactive* you can extend from [*soop.Base*](https://github.com/miguelalarcos/soop), to have the persistence to Mongo.
+Note: (future) Instead of extend from *ReactiveModel* you can extend from [*soop.Base*](https://github.com/miguelalarcos/soop), to have the persistence to Mongo.
 
 Issue: be careful when using {{#if ...}} because the single elements inside probably will not have the chance to bind, not the templates inside that will bind in created event.
 (The elements have the chance to bind because the template where they are is rendered).

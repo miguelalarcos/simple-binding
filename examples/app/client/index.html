@@ -125,7 +125,7 @@
             sb-bind: binds an input with an attribute of the model:
             <pre>
                 <code class="coffee">
-class A extends BaseReactive
+class A extends ReactiveModel
   @schema:
     first:
       type: String
@@ -146,7 +146,7 @@ class A extends BaseReactive
             sb-check: binds the checkbox to a list (checked if its value is in the list):
             <pre>
                 <code class="coffee">
-class A extends BaseReactive
+class A extends ReactiveModel
   @schema:
     lista:
       type: [String]
@@ -164,7 +164,7 @@ class A extends BaseReactive
             sb-bool: binds the checkbox to a boolean of the model.
             <pre>
                 <code class="coffee">
-class A extends BaseReactive
+class A extends ReactiveModel
   @schema:
     flag:
       type: Boolean
@@ -182,7 +182,7 @@ class A extends BaseReactive
             sb-radio: binds the radio element with the field specified.
             <pre>
                 <code class="coffee">
-class A extends BaseReactive
+class A extends ReactiveModel
   @schema:
     sex:
       type: String
@@ -234,7 +234,7 @@ class A extends BaseReactive
             Disable if function notCan returns true.
             <pre>
                 <code class="coffee">
-class A extends BaseReactive
+class A extends ReactiveModel
   ...
   notCan: -> not @first or not @last
                 </code>
@@ -251,7 +251,7 @@ class A extends BaseReactive
             </pre>
             <pre>
                 <code class="coffee">
-class A extends BaseReactive
+class A extends ReactiveModel
   ...
   firstFocus:
     type: Boolean
@@ -268,7 +268,7 @@ class A extends BaseReactive
             </pre>
             <pre>
                 <code class="coffee">
-class A extends BaseReactive
+class A extends ReactiveModel
   ...
   clicked: ->
     @alias[0].emails.set(1, new C(email:'myEmail@email.es'))
@@ -284,14 +284,14 @@ class A extends BaseReactive
             </pre>
             <pre>
                 <code class="coffee">
-class B extends BaseReactive
+class B extends ReactiveModel
   @schema:
     ...
     toggle:
       type: Boolean
     toggleFunc: -> @toggle
 
-class A extends BaseReactive
+class A extends ReactiveModel
   @schema:
     ...
     alias:
@@ -321,7 +321,7 @@ classesFunc: -> if @flag then 'myClass' else ''
             </pre>
             <pre>
                 <code class="coffee">
-class A extends BaseReactive
+class A extends ReactiveModel
   @schema:
     ...
     flag:
@@ -340,7 +340,15 @@ class A extends BaseReactive
                 </code>
             </pre>
             <div sb sb-visible="flag">This div and its content can be hidden</div>
-            ---
+        </li>
+        <li>
+            sb-event: binds to a jQuery event.
+            <pre>
+                <code class="html">
+{{eventDemo}}
+                </code>
+            </pre>
+            <input type='text' sb sb-event='keyup log'>
         </li>
     </ul>
     {{/withModel}}

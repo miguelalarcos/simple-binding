@@ -49,7 +49,7 @@ getter_setter = (obj, attr) ->
       dep.changed()
       obj[attr] = value
 
-class BaseReactive
+class ReactiveModel
   constructor: (dct)->
     @__computations = []
     for attr, value of @constructor.schema
@@ -70,6 +70,8 @@ class BaseReactive
   destroy: ->
     for c in @__computations
       c.stop()
+
+BaseReactive = ReactiveModel
 
 keyUpHelper = (self, el) ->
   (event) ->
@@ -197,8 +199,13 @@ radioHelper = (el, self, radio) ->
 clickHelper = (el, self, click)->
   [subdoc, name] = self.model.subDoc(click)
   $(el).click ->
-    #self.model[click]()
     subdoc[name]()
+
+eventHelper = (el, self, event)->
+  [event, f] = event.split(' ')
+  [subdoc, name] = self.model.subDoc(f)
+  $(el).on event, (evt) ->
+    subdoc[name](evt)
 
 fadeHelper = (el, self, fade)->
   ->
@@ -266,6 +273,9 @@ elementBinds = (el, self) ->
   click = $(el).attr('sb-click')
   if click
     clickHelper(el, self, click)
+  event = $(el).attr('sb-event')
+  if event
+    eventHelper(el, self, event)
   hover = $(el).attr('sb-hover')
   if hover
     hoverHelper(el, self, hover)

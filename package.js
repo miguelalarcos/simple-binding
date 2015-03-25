@@ -1,6 +1,6 @@
 Package.describe({
     name: 'miguelalarcos:simple-binding',
-    version: '0.3.5',
+    version: '0.3.6',
     summary: 'Simple two way bindings for Meteor',
     git: 'https://github.com/miguelalarcos/simple-binding.git',
     documentation: 'README.md'
@@ -14,9 +14,9 @@ Package.onUse(function(api) {
     api.use('underscore');
     api.use('aldeed:template-extension@3.4.3');
     api.addFiles('simple-binding.html', 'client');
-    //api.addFiles('simple-binding.css', 'client');
     api.addFiles('simple-binding.coffee', 'client');
     api.export('BaseReactive', 'client');
+    api.export('ReactiveModel', 'client');
     api.export('reactiveArray', 'client');
 });
 
