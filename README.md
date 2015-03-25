@@ -57,10 +57,17 @@ This is an example on how to call a template:
 * {{>D model=this.subModel}} The same but this is not an array.
 
 You can set a model to null:
+
 ```coffee
 ... = new A
   a1: new B()
   a2: null # instead of new C(), for example
+```
+
+and can use nested expressions like:
+
+```html
+<input type="text" sb sb-disabled="alias.0.notCan" sb-bind="alias.0.alias">
 ```
 
 The package uses ```aldeed:template-extension```, so you have to do, to initialize every template:
@@ -78,6 +85,7 @@ class Cow extends BaseReactive
       type: String
     houses:
       type: [House]
+  say: -> @speak
 ```
 
 Note: Instead of extend from *BaseReactive* you can extend from [*soop.Base*](https://github.com/miguelalarcos/soop), to have the persistence to Mongo.
