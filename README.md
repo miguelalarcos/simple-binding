@@ -7,6 +7,7 @@ Simple two way bindings for Meteor.
 Explanation
 -----------
 You can see a demo with explanation [here](http://simple-binding.meteor.com). See also the example that comes with the package.
+Please note that till not reach the v1.0.0 the API may change.
 
 API
 ---
@@ -68,6 +69,7 @@ and can use nested expressions like:
 
 ```html
 <input type="text" sb sb-disabled="alias.0.notCan" sb-bind="alias.0.alias">
+<div sb sb-text="age.value">
 ```
 
 The package uses ```aldeed:template-extension```, so you have to do, to initialize every template:
@@ -79,18 +81,31 @@ Template.B.inheritsHooksFrom("sb_basic")
 The model is an instance of *BaseReactive*:
 
 ```coffee
-class Cow extends BaseReactive
+class A extends BaseReactive
   @schema:
-    speak:
+    first:
       type: String
-    houses:
-      type: [House]
-  say: -> @speak
+    last:
+      type: String
+    lista:
+      type: [Number]
+    age:
+      type: B
+  can: -> @first and @last
+  listaToString: -> @lista.toString()
+  isOld: -> @age.value > 18
+  age17: -> @age = new B
+    value: 17
+    cow: new Cow
+      speak: 'muu!!!'
+      houses: [new House(tv:false)]
+  push: -> @age.cow.houses.push(new House(tv: true))
 ```
 
-Note: Instead of extend from *BaseReactive* you can extend from [*soop.Base*](https://github.com/miguelalarcos/soop), to have the persistence to Mongo.
+Note: (future) Instead of extend from *BaseReactive* you can extend from [*soop.Base*](https://github.com/miguelalarcos/soop), to have the persistence to Mongo.
 
 TODO:
 -----
 * fully integrate with ```soop```. Not tested.
 * more tests.
+* examples with more sense :)
