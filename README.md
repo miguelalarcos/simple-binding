@@ -26,7 +26,7 @@ API
 * *sb-focus* binds to a boolean.
 * *sb-hover* binds to a boolean.
 * *sb-visible* binds to a var or function.
-* *sb-event* binds to a jQuery event.
+* *sb-events* binds to several jQuery events.
 
 In the case of an attribute that is an array, it will be converted to *ReactiveArray*, and you can use *push*, *pop*, *shift*, *unshift*, *splice* and a method *set* that is ```set=(pos, value)->```. You can use yourself the *ReactiveArray*, this way:
 

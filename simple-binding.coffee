@@ -202,7 +202,7 @@ clickHelper = (el, self, click)->
     subdoc[name]()
 
 eventHelper = (el, self, event)->
-  [event, f] = event.split(' ')
+  [event, f] = event.split(/\s+/)
   [subdoc, name] = self.model.subDoc(f)
   $(el).on event, (evt) ->
     subdoc[name](evt)
@@ -273,9 +273,10 @@ elementBinds = (el, self) ->
   click = $(el).attr('sb-click')
   if click
     clickHelper(el, self, click)
-  event = $(el).attr('sb-event')
-  if event
-    eventHelper(el, self, event)
+  events = $(el).attr('sb-events')
+  if events
+    for p in events.split(',')
+      eventHelper(el, self, p.trim())
   hover = $(el).attr('sb-hover')
   if hover
     hoverHelper(el, self, hover)

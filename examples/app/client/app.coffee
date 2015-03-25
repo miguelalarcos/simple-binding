@@ -135,7 +135,7 @@ Template.hello2.helpers
   clickDemo: -> """<button sb sb-click="clicked">click</button>
   """
 
-  eventDemo: -> """<input type='text' sb sb-event='keyup log'>
+  eventDemo: -> """<input type='text' sb sb-events='click log, keyup log'>
   """
 
   fadeDemo: -> """<div sb sb-fade="alias.0.toggleFunc">game over!</div>

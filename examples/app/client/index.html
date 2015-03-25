@@ -342,13 +342,13 @@ class A extends ReactiveModel
             <div sb sb-visible="flag">This div and its content can be hidden</div>
         </li>
         <li>
-            sb-event: binds to a jQuery event.
+            sb-events: binds to several jQuery events.
             <pre>
                 <code class="html">
 {{eventDemo}}
                 </code>
             </pre>
-            <input type='text' sb sb-event='keyup log'>
+            <input type='text' sb sb-events='click log, keyup log'>
         </li>
     </ul>
     {{/withModel}}
