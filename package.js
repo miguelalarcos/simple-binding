@@ -1,6 +1,6 @@
 Package.describe({
     name: 'miguelalarcos:simple-binding',
-    version: '0.3.7',
+    version: '0.3.8',
     summary: 'Simple two way bindings for Meteor',
     git: 'https://github.com/miguelalarcos/simple-binding.git',
     documentation: 'README.md'
@@ -27,6 +27,7 @@ Package.onTest(function(api) {
     api.use('tinytest');
     api.use('tracker');
     api.use('coffeescript');
+    api.use('jquery');
     api.use('templating');
     api.use('underscore');
     api.use('practicalmeteor:munit', 'client');
