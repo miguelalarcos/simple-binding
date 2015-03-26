@@ -7,15 +7,15 @@ Package.describe({
 });
 
 Package.onUse(function(api) {
-    api.versionsFrom('1.0.4.1');
+    api.versionsFrom('1.0.5');
     api.use('coffeescript');
     api.use('tracker');
     api.use('jquery');
     api.use('templating');
     api.use('underscore');
     api.use('aldeed:template-extension@3.4.3');
-    //api.addFiles('customCheck.html', 'client');
-    //api.addFiles('customCheck.coffee', 'client');
+    api.addFiles('customCheck.html', 'client');
+    api.addFiles('customCheck.coffee', 'client');
     api.addFiles('simple-binding.html', 'client');
     api.addFiles('simple-binding.coffee', 'client');
     api.export('BaseReactive', 'client');
@@ -31,7 +31,6 @@ Package.onTest(function(api) {
     api.use('templating');
     api.use('underscore');
     api.use('practicalmeteor:munit', 'client');
-    api.use('aldeed:template-extension@3.4.3');
     api.use('miguelalarcos:simple-binding');
     api.addFiles('simple-binding-tests.html', 'client');
     api.addFiles('simple-binding-tests.coffee', 'client');
