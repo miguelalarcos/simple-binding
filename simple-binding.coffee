@@ -125,6 +125,23 @@ boolHelper = (el, self, bool) ->
     else
       $(el).prop('checked', false)
 
+clickCustomBoolHelper = (self, el) ->
+  (event) ->
+    name = $(el).attr('sb-custom-bool')
+    [subdoc, name] = self.model.subDoc(name)
+    if $(el).val()
+      subdoc[name] = false
+    else
+      subdoc[name] = true
+
+customBoolHelper = (el, self, bool) ->
+  ->
+    [subdoc, name] = self.model.subDoc(bool)
+    if subdoc is null then return
+    if subdoc[name]
+      $(el).val(true)
+    else
+      $(el).val(false)
 
 disabledHelper = (el, self, disabled) ->
   ->
@@ -295,6 +312,12 @@ elementBinds = (el, self) ->
   if bool
     $(el).bind 'click', clickBoolHelper(self, el)
     self.model.__computations.push Tracker.autorun boolHelper(el, self, bool)
+  #
+  custom_bool = $(el).attr('sb-custom-bool')
+  if custom_bool
+    $(el).bind 'click', clickCustomBoolHelper(self, el)
+    self.model.__computations.push Tracker.autorun customBoolHelper(el, self, custom_bool)
+  #
   visible = $(el).attr('sb-visible')
   if visible
     self.model.__computations.push Tracker.autorun visibleHelper(el, self, visible)

@@ -350,6 +350,16 @@ class A extends ReactiveModel
             </pre>
             <input type='text' sb sb-events='click log, keyup log'>
         </li>
+        <li>
+            sb-custom-bool: binds to a bool custom widget. Note that we don't write 'sb' at the element; it's done in the template. See the file customCheck.css to know how to do yourself a custom bool widget.
+            (CSS from http://cssdeck.com/labs/css-checkbox-styles.)
+            <pre>
+                <code class="html">
+{{customBoolDemo}}
+                </code>
+            </pre>
+            {{> customCheck class="customCheck myCheck" sb-custom-bool="flag"}}
+        </li>
     </ul>
     {{/withModel}}
 </template>

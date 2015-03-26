@@ -149,3 +149,6 @@ Template.hello2.helpers
 
   visibleDemo: -> """<div sb sb-visible="flag"></div>
   """
+
+  customBoolDemo: -> """{{> customCheck class="customCheck myCheck" sb-custom-bool="flag"}}
+  """

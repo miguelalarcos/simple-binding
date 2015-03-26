@@ -1,6 +1,6 @@
 Package.describe({
     name: 'miguelalarcos:simple-binding',
-    version: '0.3.6',
+    version: '0.3.7',
     summary: 'Simple two way bindings for Meteor',
     git: 'https://github.com/miguelalarcos/simple-binding.git',
     documentation: 'README.md'
@@ -10,11 +10,14 @@ Package.onUse(function(api) {
     api.versionsFrom('1.0.4.1');
     api.use('coffeescript');
     api.use('tracker');
+    api.use('jquery');
     api.use('templating');
     api.use('underscore');
     api.use('aldeed:template-extension@3.4.3');
     api.addFiles('simple-binding.html', 'client');
     api.addFiles('simple-binding.coffee', 'client');
+    api.addFiles('customCheck.html', 'client');
+    api.addFiles('customCheck.coffee', 'client');
     api.export('BaseReactive', 'client');
     api.export('ReactiveModel', 'client');
     api.export('reactiveArray', 'client');
