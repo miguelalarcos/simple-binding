@@ -14,8 +14,8 @@ Package.onUse(function(api) {
     api.use('templating');
     api.use('underscore');
     api.use('aldeed:template-extension@3.4.3');
-    api.addFiles('customCheck.html', 'client');
-    api.addFiles('customCheck.coffee', 'client');
+    //api.addFiles('customCheck.html', 'client');
+    //api.addFiles('customCheck.coffee', 'client');
     api.addFiles('simple-binding.html', 'client');
     api.addFiles('simple-binding.coffee', 'client');
     api.export('BaseReactive', 'client');
