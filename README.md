@@ -4,10 +4,6 @@ simple-binding
 ==============
 Simple two way bindings for Meteor.
 
-Note on Travis
---------------
-You can see that the project doesn't pass the Travis build. I don't know why. You can clone the repository and execute ```meteor test-packages ./``` and see that it passes the tests.
-
 Explanation
 -----------
 You can see a demo with explanation [here](http://simple-binding.meteor.com). See also the example that comes with the package.
@@ -125,4 +121,4 @@ TODO:
 * fully integrate with ```soop```. Not tested.
 * more tests.
 * examples with more sense :)
-* make Travis work ok again.
+
