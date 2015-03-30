@@ -8,7 +8,7 @@ Template.bodyTemplate.helpers
     new A
       first: 'miguel'
       lista: [1,2,3]
-      date: moment()
+      date: moment().toDate()
       age: new B
         value: 20
         cow: new Cow
@@ -47,11 +47,11 @@ class A extends sb.ReactiveModel
       type: Date
     age:
       type: B
-  formatDate: -> @date.format('DD-MM-YYYY')
+  formatDate: -> moment(@date).format('DD-MM-YYYY')
   listaToString: -> @lista.toString()
   isOld: -> @age.value > 18
   age17: ->
-    @date = moment()
+    @date = moment().toDate()
     @age = new B
       value: 17
       cow: new Cow

@@ -13,16 +13,16 @@ getMomentFromTemplate = (t)->
   return moment(txt, t.data.format)
 
 Template.sbDateTime.events
-  'focusout .xdatetime-input': (e,t)->
-    atts = t.data
-    txtdate = $(t.find('.xdatetime-input')).val()
-    date = moment(txtdate, atts.format, true)
-    if not date.isValid()
-      if atts.time
-        date = moment()
-      else
-        date = moment().startOf('day')
-      $(t.find('.xdatetime-input')).val(date.format(atts.format))
+  #'focusout .xdatetime-input': (e,t)->
+  #  atts = t.data
+  #  txtdate = $(t.find('.xdatetime-input')).val()
+  #  date = moment(txtdate, atts.format, true)
+  #  if not date.isValid()
+  #    if atts.time
+  #      date = moment()
+  #    else
+  #      date = moment().startOf('day')
+  #    $(t.find('.xdatetime-input')).val(date.format(atts.format))
 
   'click .show-calendar': (e, t)->
     show_calendar.set true
@@ -43,7 +43,7 @@ Template.sbDateTime.events
       date = this.date
     m_ = moment(date, 'YYYY-MM-DD HH:mm')
     widget = t.find('.xwidget')
-    $(widget).trigger('dateChange', [m_])
+    $(widget).trigger('dateChange', [m_.toDate()])
     unless atts.time == true
       show_calendar.set(false)
 
@@ -51,49 +51,49 @@ Template.sbDateTime.events
     date = getMomentFromTemplate(t)
     date.subtract(1, 'months')
     widget = t.find('.xwidget')
-    $(widget).trigger('dateChange', [date])
+    $(widget).trigger('dateChange', [date.toDate()])
 
   'click .plus-month': (e,t)->
     date = getMomentFromTemplate(t)
     date.add(1, 'months')
     widget = t.find('.xwidget')
-    $(widget).trigger('dateChange', [date])
+    $(widget).trigger('dateChange', [date.toDate()])
 
   'click .minus-year': (e,t)->
     date = getMomentFromTemplate(t)
     date.subtract(1, 'years')
     widget = t.find('.xwidget')
-    $(widget).trigger('dateChange', [date])
+    $(widget).trigger('dateChange', [date.toDate()])
 
   'click .plus-year': (e,t)->
     date = getMomentFromTemplate(t)
     date.add(1, 'years')
     widget = t.find('.xwidget')
-    $(widget).trigger('dateChange', [date])
+    $(widget).trigger('dateChange', [date.toDate()])
 
   'click .minus-hour': (e,t)->
     date = getMomentFromTemplate(t)
     date.subtract(1, 'hours')
     widget = t.find('.xwidget')
-    $(widget).trigger('dateChange', [date])
+    $(widget).trigger('dateChange', [date.toDate()])
 
   'click .plus-hour': (e,t)->
     date = getMomentFromTemplate(t)
     date.add(1, 'hours')
     widget = t.find('.xwidget')
-    $(widget).trigger('dateChange', [date])
+    $(widget).trigger('dateChange', [date.toDate()])
 
   'click .minus-minute': (e,t)->
     date = getMomentFromTemplate(t)
     date.subtract(1, 'minutes')
     widget = t.find('.xwidget')
-    $(widget).trigger('dateChange', [date])
+    $(widget).trigger('dateChange', [date.toDate()])
 
   'click .plus-minute': (e,t)->
     date = getMomentFromTemplate(t)
     date.add(1, 'minutes')
     widget = t.find('.xwidget')
-    $(widget).trigger('dateChange', [date])
+    $(widget).trigger('dateChange', [date.toDate()])
 
 
 dayRow = (week, date)->

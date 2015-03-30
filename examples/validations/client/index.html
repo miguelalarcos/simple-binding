@@ -1,0 +1,22 @@
+<body>
+    {{> demo }}
+</body>
+
+<template name="demo">
+    {{#with data}}
+        {{> A model=this}}
+    {{/with}}
+</template>
+
+<template name="B">
+    {{#withModel}}
+        <input type="text" sb sb-bind="b1">
+    {{/withModel}}
+</template>
+
+<template name="A">
+    {{#withModel}}
+        {{> B model= this.a3 }}
+        <button sb sb-disabled="isNotValid">click</button>
+    {{/withModel}}
+</template>

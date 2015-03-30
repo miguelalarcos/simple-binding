@@ -57,6 +57,40 @@ class ReactiveModel
     for k, v of dct
       @[k] = v
 
+  _validate: (ret, path) ->
+    for attr, sch of @constructor.schema
+      if not (sch.optional and not @[attr])
+        if sch.type == String
+          ret[path + '.' + attr + '.type'] = _.isString(@[attr])
+        else if sch.type == sb.Integer or sch.type == sb.Float
+          ret[path + '.' + attr + '.type'] = _.isNumber(@[attr])
+        else if sch.type == Boolean
+          ret[path + '.' + attr + '.type'] = _.isBoolean(@[attr])
+        else if sch.type == Date
+          ret[path + '.' + attr + '.type'] = _.isDate(@[attr])
+        else if @[attr] instanceof sb.ReactiveModel
+          ret[path + '.' + attr + '.type'] = @[attr] instanceof sb.ReactiveModel
+          @[attr].validate(ret, path + '.' + attr)
+          continue
+      if sch.validation
+        ret[path + '.' + attr + '.validation'] = sch.validation(@[attr])
+    ret
+
+  validate: (ret, path) ->
+    if not ret
+      ret = {}
+      path = ''
+    @_validate(ret, path)
+    if @validation
+      ret[path + '.validation'] = @validation()
+    ret
+
+  isValid: ->
+    for k, v of @validate()
+      if not v
+        return false
+    return true
+
   subDoc: (path)->
     subdoc = @
     path = path.split('.')

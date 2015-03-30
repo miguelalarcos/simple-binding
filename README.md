@@ -28,7 +28,7 @@ API
 * *sb-visible* binds to a var or function.
 * *sb-events* binds to several jQuery events.
 * *sb-custom-bool* binds to a bool custom widget. See the examples to know how to do it.
-* *sb-datetime* binds to a moment.
+* *sb-datetime* binds to a Date.
 
 In the case of an attribute that is an array, it will be converted to a reactive array, and you can use *push*, *pop*, *shift*, *unshift*, *splice* and a method *set* that is ```set=(pos, value)->```. You can use yourself the *reactiveArray*, this way:
 
@@ -111,6 +111,40 @@ class A extends sb.ReactiveModel
       houses: [new House(tv:false)]
   push: -> @age.cow.houses.push(new House(tv: true))
 ```
+
+Validations
+-----------
+You can have validations as in this example:
+
+```coffee
+class B extends sb.ReactiveModel
+  @schema:
+    b1:
+      type: sb.Float
+      validation: (x) -> x > 1.0
+  validation: ->
+    @b1 > 10.0
+
+class A extends sb.ReactiveModel
+  @schema:
+    a1:
+      type: String
+      validation: (x) -> /^hello /.test(x)
+    a2:
+      type: sb.Integer
+      validation: (x) -> 10 < x < 20
+    a3:
+      type: B
+  validation: ->
+    @a1=='hello world' and @a2==15 and @a3.b1 > 0
+  isNotValid: -> not @isValid()
+```
+
+```html
+<button sb sb-disabled="isNotValid">click</button>
+```
+
+As you can see there's a validation rule for every field and a general validation that has visibility of all fields.
 
 Note: (future) Instead of extend from *ReactiveModel* you can extend from [*soop.Base*](https://github.com/miguelalarcos/soop), to have the persistence to Mongo.
 

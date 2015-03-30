@@ -12,7 +12,7 @@ Template.hello.helpers
     new A
       first: 'miguel'
       last: 'alarcos'
-      date: moment()
+      date: moment().toDate()
       lista: ['miguel']
       numbers: []
       flag: false
@@ -72,7 +72,7 @@ class A extends sb.ReactiveModel
       type: [Number]
     firstFocus:
       type: Boolean
-  days: -> @date.diff(moment(), 'days') + ' days.'
+  days: -> moment(@date).diff(moment(), 'days') + ' days.'
   log: (x) -> console.log x
   listaToString: -> '[' + @lista.toString() + ']'
   txtFirstFocus: -> (@firstFocus and 'focus in') or ''
