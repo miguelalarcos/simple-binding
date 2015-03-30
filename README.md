@@ -88,10 +88,10 @@ The package uses ```aldeed:template-extension```, so you have to do, to initiali
 Template.B.inheritsHooksFrom("sb_basic")
 ```
 
-The model is an instance of *ReactiveModel*:
+The model is an instance of *Model*:
 
 ```coffee
-class A extends sb.ReactiveModel
+class A extends sb.Model
   @schema:
     first:
       type: String
@@ -117,7 +117,7 @@ Validations
 You can have validations as in this example:
 
 ```coffee
-class B extends sb.ReactiveModel
+class B extends sb.Model
   @schema:
     b1:
       type: sb.Float
@@ -125,7 +125,7 @@ class B extends sb.ReactiveModel
   validation: ->
     @b1 > 10.0
 
-class A extends sb.ReactiveModel
+class A extends sb.Model
   @schema:
     a1:
       type: String
@@ -137,7 +137,6 @@ class A extends sb.ReactiveModel
       type: B
   validation: ->
     @a1=='hello world' and @a2==15 and @a3.b1 > 0
-  isNotValid: -> not @isValid()
 ```
 
 ```html
@@ -146,14 +145,21 @@ class A extends sb.ReactiveModel
 
 As you can see there's a validation rule for every field and a general validation that has visibility of all fields.
 
-Note: (future) Instead of extend from *ReactiveModel* you can extend from [*soop.Base*](https://github.com/miguelalarcos/soop), to have the persistence to Mongo.
-
 Issue: be careful when using {{#if ...}} because the single elements inside probably will not have the chance to bind, not the templates inside that will bind in created event (not tested).
 (The elements have the chance to bind because the template where they are is rendered).
 
+Notes
+-----
+*schema* is a reserved word. Example of use:
+```coffee
+error_a2: -> if not @schema['a2'].validation(@a2) then 'error de integer 10<x<20' else ''
+```
+
 TODO:
 -----
-* fully integrate with ```soop```. Not tested.
+* fully integrate with ```soop```. Not tested. [*soop.Base*](https://github.com/miguelalarcos/soop)
 * more tests.
 * examples with more sense :)
+* dirty attribute so the update only updates the modified attributes.
+
 

@@ -16,6 +16,7 @@ Package.onUse(function(api) {
     api.use('reactive-var');
     api.use('momentjs:moment@2.9.0');
     api.use('aldeed:template-extension@3.4.3');
+    api.addFiles('main-simple-binding.coffee', ['client', 'server']);
     api.addFiles('sb-datetime.css', 'client');
     api.addFiles('sb-datetime.html', 'client');
     api.addFiles('sb-datetime.coffee', 'client');
@@ -23,7 +24,8 @@ Package.onUse(function(api) {
     api.addFiles('customCheck.coffee', 'client');
     api.addFiles('simple-binding.html', 'client');
     api.addFiles('simple-binding.coffee', 'client');
-    api.export('sb', 'client');
+    api.addFiles('simple-binding-server.coffee', 'server');
+    api.export('sb', ['client', 'server']);
 });
 
 Package.onTest(function(api) {

@@ -15,20 +15,20 @@ Template.bodyTemplate.helpers
           speak: 'muu'
           houses: [new House(tv: true)]
 
-class House extends sb.ReactiveModel
+class House extends sb.Model
   @schema:
     tv:
       type: Boolean
 
 
-class Cow extends sb.ReactiveModel
+class Cow extends sb.Model
   @schema:
     speak:
       type: String
     houses:
       type: [House]
 
-class B extends sb.ReactiveModel
+class B extends sb.Model
   @schema:
     value:
       type: sb.Float # Number
@@ -37,7 +37,7 @@ class B extends sb.ReactiveModel
   valuex2: ->
     @value*2
 
-class A extends sb.ReactiveModel
+class A extends sb.Model
   @schema:
     first:
       type: String

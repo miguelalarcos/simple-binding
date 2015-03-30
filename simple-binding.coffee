@@ -49,13 +49,37 @@ getter_setter = (obj, attr) ->
       dep.changed()
       obj[attr] = value
 
-class ReactiveModel
+isSubClass = (klass, super_) ->
+  klass.prototype instanceof super_
+
+class Model
   constructor: (dct)->
+    if dct._id
+      @_id = dct._id
+    @schema = @constructor.schema
     @__computations = []
-    for attr, value of @constructor.schema
+    for attr, value of @schema
       Object.defineProperty @, attr, getter_setter(@, '_' + attr)
     for k, v of dct
-      @[k] = v
+      if isSubClass(@schema[k].type, Model) and not (v instanceof @schema[k].type)
+        @[k] = new @schema[k].type(v)
+      else
+        @[k] = v
+
+  toBDD: ->
+    ret = {}
+    for k, v of @schema
+      if isSubClass(@schema[k].type, Model)
+        ret[k] = @[k].toBDD()
+      else
+        ret[k] = @[k]
+    ret
+
+  save: ->
+    if not @_id
+      @_id = @constructor.collection.insert @toBDD()
+    else
+      @constructor.collection.update @_id, {$set: @toBDD()}
 
   _validate: (ret, path) ->
     for attr, sch of @constructor.schema
@@ -68,8 +92,8 @@ class ReactiveModel
           ret[path + '.' + attr + '.type'] = _.isBoolean(@[attr])
         else if sch.type == Date
           ret[path + '.' + attr + '.type'] = _.isDate(@[attr])
-        else if @[attr] instanceof sb.ReactiveModel
-          ret[path + '.' + attr + '.type'] = @[attr] instanceof sb.ReactiveModel
+        else if @[attr] instanceof sb.Model
+          ret[path + '.' + attr + '.type'] = @[attr] instanceof sb.Model
           @[attr].validate(ret, path + '.' + attr)
           continue
       if sch.validation
@@ -91,6 +115,8 @@ class ReactiveModel
         return false
     return true
 
+  isNotValid: -> not @isValid()
+
   subDoc: (path)->
     subdoc = @
     path = path.split('.')
@@ -105,21 +131,18 @@ class ReactiveModel
     for c in @__computations
       c.stop()
 
-class Integer
-class Float
-
 keyUpHelper = (self, el) ->
   (event) ->
     name = $(el).attr('sb-bind')
     [subdoc, name] = self.model.subDoc(name)
     prop = subdoc.constructor.schema[name]
-    if prop.type is Integer
+    if prop.type is sb.Integer
       value = parseInt($(el).val())
       if value
         subdoc[name] = value
       else
         subdoc[name] = $(el).val()
-    else if prop.type is Float
+    else if prop.type is sb.Float
       value = parseFloat($(el).val())
       if value
         subdoc[name] = value
@@ -403,10 +426,9 @@ elementBinds = (el, self) ->
   if focus
     focusHelper(el, self, focus)
 
-sb = {}
-sb.Integer = Integer
-sb.Float = Float
-sb.ReactiveModel = ReactiveModel
+#sb = {}
+
+sb.Model = Model
 sb.reactiveArray = reactiveArray
 
 ###

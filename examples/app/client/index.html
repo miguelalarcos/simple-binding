@@ -125,7 +125,7 @@
             sb-bind: binds an input with an attribute of the model:
             <pre>
                 <code class="coffee">
-class A extends ReactiveModel
+class A extends Model
   @schema:
     first:
       type: String
@@ -146,7 +146,7 @@ class A extends ReactiveModel
             sb-check: binds the checkbox to a list (checked if its value is in the list):
             <pre>
                 <code class="coffee">
-class A extends ReactiveModel
+class A extends Model
   @schema:
     lista:
       type: [String]
@@ -164,7 +164,7 @@ class A extends ReactiveModel
             sb-bool: binds the checkbox to a boolean of the model.
             <pre>
                 <code class="coffee">
-class A extends ReactiveModel
+class A extends Model
   @schema:
     flag:
       type: Boolean
@@ -182,7 +182,7 @@ class A extends ReactiveModel
             sb-radio: binds the radio element with the field specified.
             <pre>
                 <code class="coffee">
-class A extends ReactiveModel
+class A extends Model
   @schema:
     sex:
       type: String
@@ -234,7 +234,7 @@ class A extends ReactiveModel
             Disable if function notCan returns true.
             <pre>
                 <code class="coffee">
-class A extends ReactiveModel
+class A extends Model
   ...
   notCan: -> not @first or not @last
                 </code>
@@ -251,7 +251,7 @@ class A extends ReactiveModel
             </pre>
             <pre>
                 <code class="coffee">
-class A extends ReactiveModel
+class A extends Model
   ...
   firstFocus:
     type: Boolean
@@ -268,7 +268,7 @@ class A extends ReactiveModel
             </pre>
             <pre>
                 <code class="coffee">
-class A extends ReactiveModel
+class A extends Model
   ...
   clicked: ->
     @alias[0].emails.set(1, new C(email:'myEmail@email.es'))
@@ -284,14 +284,14 @@ class A extends ReactiveModel
             </pre>
             <pre>
                 <code class="coffee">
-class B extends ReactiveModel
+class B extends Model
   @schema:
     ...
     toggle:
       type: Boolean
     toggleFunc: -> @toggle
 
-class A extends ReactiveModel
+class A extends Model
   @schema:
     ...
     alias:
@@ -321,7 +321,7 @@ classesFunc: -> if @flag then 'myClass' else ''
             </pre>
             <pre>
                 <code class="coffee">
-class A extends ReactiveModel
+class A extends Model
   @schema:
     ...
     flag:

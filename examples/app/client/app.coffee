@@ -28,17 +28,17 @@ Template.hello2.helpers
     options.depend()
     options
 
-class D extends sb.ReactiveModel
+class D extends sb.Model
   @schema:
     value:
       type: Number
 
-class C extends sb.ReactiveModel
+class C extends sb.Model
   @schema:
     email:
       type: String
 
-class B extends sb.ReactiveModel
+class B extends sb.Model
   @schema:
     alias:
       type: String
@@ -50,7 +50,7 @@ class B extends sb.ReactiveModel
   notCan: -> @alias == 'miguel'
   toggleFunc: -> @toggle
 
-class A extends sb.ReactiveModel
+class A extends sb.Model
   @schema:
     first:
       type: String

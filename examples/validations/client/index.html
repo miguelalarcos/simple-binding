@@ -11,12 +11,19 @@
 <template name="B">
     {{#withModel}}
         <input type="text" sb sb-bind="b1">
+        <div sb sb-text="error_b1"></div>
+        <div sb sb-text="error_g"></div>
     {{/withModel}}
 </template>
 
 <template name="A">
     {{#withModel}}
+        <input type="text" sb sb-bind="a1">
+        <div sb sb-text="error_a1"></div>
+        <input type="text" sb sb-bind="a2">
+        <div sb sb-text="error_a2"></div>
         {{> B model= this.a3 }}
-        <button sb sb-disabled="isNotValid">click</button>
+        <button sb sb-disabled="isNotValid" sb-click="save">save</button>
+        <div sb sb-text="error_g"></div>
     {{/withModel}}
 </template>
