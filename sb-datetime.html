@@ -1,0 +1,37 @@
+<template name="sbDateTime">
+    <div sb class="xwidget xdatetime" {{this}}>
+        <div class="ui icon input">
+            <input type='text' disabled class="xdatetime-input"><i class="calendar icon show-calendar"></i>
+        </div>
+        {{#if show_calendar}}
+            <div class="xdatetime-popover">
+              <div class="xdatetime-header">
+                <i class="minus icon minus-month"></i>
+                {{month}}
+                <i class="plus icon plus-month"></i>
+                <i class="minus icon minus-year"></i>
+                {{year}}
+                <i class="plus icon plus-year"></i>
+              </div>
+              {{#each week}}
+                <div class="xdatetime-week">
+                  {{#each day this ..}}
+                    <span class="xdatetime-day {{decoration}}" date={{this.date}}>{{this.value}}</span>
+                  {{/each}}
+                </div>
+                {{/each}}
+            {{#if show_time}}
+                <div class="ui input form">
+                    <span class="inline field">
+                        <i class="minus icon minus-hour"></i>
+                        <i class="plus icon plus-hour"></i>
+                        <span class="{{checkDST}}">{{time}}</span>
+                        <i class="minus icon minus-minute"></i>
+                        <i class="plus icon plus-minute"></i>
+                    </span>
+                </div>
+            {{/if}}
+            </div>
+        {{/if}}
+    </div>
+</template>

@@ -71,13 +71,40 @@ class ReactiveModel
     for c in @__computations
       c.stop()
 
-BaseReactive = ReactiveModel
+class Integer
+class Float
 
 keyUpHelper = (self, el) ->
   (event) ->
     name = $(el).attr('sb-bind')
     [subdoc, name] = self.model.subDoc(name)
-    subdoc[name] = $(el).val()
+    prop = subdoc.constructor.schema[name]
+    if prop.type is Integer
+      value = parseInt($(el).val())
+      if value
+        subdoc[name] = value
+      else
+        subdoc[name] = $(el).val()
+    else if prop.type is Float
+      value = parseFloat($(el).val())
+      if value
+        subdoc[name] = value
+      else
+        subdoc[name] = $(el).val()
+    else
+      subdoc[name] = $(el).val()
+
+dateChangeHelper = (self, el)->
+  (event, param) ->
+    name = $(el).attr('sb-datetime')
+    [subdoc, name] = self.model.subDoc(name)
+    subdoc[name] = param
+
+dateHelper = (el, self, date)->
+  ->
+    [subdoc, name] = self.model.subDoc(date)
+    if subdoc is null then return
+    $(el).val subdoc[name]
 
 clickCheckHelper = (self, el)->
   (event) ->
@@ -304,6 +331,12 @@ elementBinds = (el, self) ->
   if bind
     $(el).bind 'keyup', keyUpHelper(self, el)
     self.model.__computations.push Tracker.autorun bindHelper(el, self, bind)
+  #
+  date = $(el).attr('sb-datetime')
+  if date
+    $(el).bind 'dateChange', dateChangeHelper(self, el)
+    self.model.__computations.push Tracker.autorun dateHelper(el, self, date)
+  #
   check = $(el).attr('sb-check')
   if check
     $(el).bind 'click', clickCheckHelper(self, el)
@@ -335,6 +368,12 @@ elementBinds = (el, self) ->
   focus = $(el).attr('sb-focus')
   if focus
     focusHelper(el, self, focus)
+
+sb = {}
+sb.Integer = Integer
+sb.Float = Float
+sb.ReactiveModel = ReactiveModel
+sb.reactiveArray = reactiveArray
 
 ###
 dropdownChangeHelper = (self, el)->

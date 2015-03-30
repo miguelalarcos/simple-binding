@@ -1,0 +1,78 @@
+.xdatetime {
+  position: relative;
+}
+
+.xdatetime-popover {
+  position: absolute;
+  z-index: 2;
+  cursor: pointer;
+  background-color: #fff;
+  border: 1px solid #e8e9ed;
+  border-radius: 4px;
+}
+
+.xdatetime-header {
+  background: #e8e9ed;
+  margin-bottom: 0.5em;
+}
+
+.xdatetime-popover i.icon {
+  margin: 0 0.5em;
+}
+
+.xdatetime-popover div {
+  display: block;
+  width: auto;
+  padding: 0.5em;
+  text-align: center;
+}
+
+.xdatetime-popover div:last-child {
+  margin-bottom: 0.5em;
+}
+
+.xdatetime-day {
+  padding: 0.5em;
+  border-radius: 4px;
+}
+
+.xdatetime-day:hover {
+  background-color: #e8e9ed;
+}
+
+.minus-minute:hover, .plus-minute:hover, .minus-hour:hover, .plus-hour:hover,
+.minus-month:hover, .plus-month:hover, .minus-year:hover, .plus-year:hover
+{
+  color: #F85555;
+}
+
+.set-time:hover, .set-year:hover {
+  color: #536DE5;
+}
+
+.xbold {
+  font-weight: bold;
+}
+
+.xcursive {
+  color: lightgrey; /*#e8e9ed;*/
+  font-style: italic;
+}
+
+.xcursive.xdatetime-day:hover {
+  color: #222;
+}
+
+.xunderline {
+  text-decoration: underline;
+}
+
+.xdatetime-day.xtoday {
+  background: #F85555;
+  color: #fff;
+  text-decoration: none;
+}
+
+.red {
+  color: #F85555;
+}

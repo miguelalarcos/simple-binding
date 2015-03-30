@@ -10,3 +10,5 @@ insecure
 coffeescript
 miguelalarcos:simple-binding
 sewdn:highlightjs
+semantic:ui-css
+momentjs:moment

@@ -4,13 +4,13 @@ Template.nested.inheritsHooksFrom("sb_basic")
 Template.testBindings.helpers
   echo: (x)->console.log x
 
-class B extends BaseReactive
+class B extends sb.ReactiveModel
   @schema:
     flag:
       type: Boolean
   show: -> (@flag and 'hola') or ''
 
-class A extends BaseReactive
+class A extends sb.ReactiveModel
   @schema:
     first:
       type: String

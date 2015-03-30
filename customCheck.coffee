@@ -9,5 +9,7 @@ $.fn.customCheck = (name)->
     this.type = 'customCheck'
   this
 
-Template.customCheck.rendered = ->
-  $(this.find('.customCheck')).customCheck()
+Template.sbCustomCheck.rendered = ->
+  el = $(this.find('.customCheck'))
+  el.customCheck()
+  el.addClass el.attr('sb-customcheck-class')

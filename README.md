@@ -28,6 +28,7 @@ API
 * *sb-visible* binds to a var or function.
 * *sb-events* binds to several jQuery events.
 * *sb-custom-bool* binds to a bool custom widget. See the examples to know how to do it.
+* *sb-datetime* binds to a moment.
 
 In the case of an attribute that is an array, it will be converted to a reactive array, and you can use *push*, *pop*, *shift*, *unshift*, *splice* and a method *set* that is ```set=(pos, value)->```. You can use yourself the *reactiveArray*, this way:
 
@@ -87,10 +88,10 @@ The package uses ```aldeed:template-extension```, so you have to do, to initiali
 Template.B.inheritsHooksFrom("sb_basic")
 ```
 
-The model is an instance of *ReactiveModel*:  (*BaseReactive* is deprecated)
+The model is an instance of *ReactiveModel*:
 
 ```coffee
-class A extends ReactiveModel
+class A extends sb.ReactiveModel
   @schema:
     first:
       type: String

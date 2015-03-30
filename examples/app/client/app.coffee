@@ -5,13 +5,14 @@ Template.D.inheritsHooksFrom("sb_basic")
 
 hljs.initHighlightingOnLoad()
 
-options = reactiveArray(['miguel', 'veronica', 'bernardo'])
+options = sb.reactiveArray(['miguel', 'veronica', 'bernardo'])
 
 Template.hello.helpers
   data: ->
     new A
       first: 'miguel'
       last: 'alarcos'
+      date: moment()
       lista: ['miguel']
       numbers: []
       flag: false
@@ -27,17 +28,17 @@ Template.hello2.helpers
     options.depend()
     options
 
-class D extends ReactiveModel
+class D extends sb.ReactiveModel
   @schema:
     value:
       type: Number
 
-class C extends ReactiveModel
+class C extends sb.ReactiveModel
   @schema:
     email:
       type: String
 
-class B extends ReactiveModel
+class B extends sb.ReactiveModel
   @schema:
     alias:
       type: String
@@ -49,12 +50,14 @@ class B extends ReactiveModel
   notCan: -> @alias == 'miguel'
   toggleFunc: -> @toggle
 
-class A extends ReactiveModel
+class A extends sb.ReactiveModel
   @schema:
     first:
       type: String
     last:
       type: String
+    date:
+      type: Date
     lista:
       type: [String]
     sex:
@@ -69,6 +72,7 @@ class A extends ReactiveModel
       type: [Number]
     firstFocus:
       type: Boolean
+  days: -> @date.diff(moment(), 'days') + ' days.'
   log: (x) -> console.log x
   listaToString: -> '[' + @lista.toString() + ']'
   txtFirstFocus: -> (@firstFocus and 'focus in') or ''
@@ -150,5 +154,8 @@ Template.hello2.helpers
   visibleDemo: -> """<div sb sb-visible="flag"></div>
   """
 
-  customBoolDemo: -> """{{> customCheck class="customCheck myCheck" sb-custom-bool="flag"}}
+  customBoolDemo: -> """{{> sbCustomCheck sb-customcheck-class="myCheck" sb-custom-bool="flag"}}
+  """
+
+  dateDemo: -> """{{> sbDateTime sb-datetime='date' format='DD-MM-YYYY HH:mm' time=true}}
   """
