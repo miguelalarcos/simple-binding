@@ -22,7 +22,9 @@
         <div sb sb-text="error_a1"></div>
         <input type="text" sb sb-bind="a2">
         <div sb sb-text="error_a2"></div>
-        {{> B model= this.a3 }}
+        {{#each this.a3}}
+            {{> B model= this }}
+        {{/each}}
         <button sb sb-disabled="isNotValid" sb-click="save">save</button>
         <div sb sb-text="error_g"></div>
     {{/withModel}}

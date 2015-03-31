@@ -1,6 +1,7 @@
 @Acollection = new Mongo.Collection 'A'
 
 class @B extends sb.Model
+  @exclude = []
   @schema:
     b1:
       type: sb.Float
@@ -11,6 +12,7 @@ class @B extends sb.Model
   error_g: -> if not @validation() then 'error not > 10.0' else ''
 
 class @A extends sb.Model
+  @exclude = []
   @collection: Acollection
   @schema:
     a1:
@@ -20,9 +22,9 @@ class @A extends sb.Model
       type: sb.Integer
       validation: (x) -> 10 < x < 20
     a3:
-      type: B
+      type: [B]
   validation: ->
-    @a1=='hello world' and @a2==15 and @a3.b1 > 0
+    @a1=='hello world' and @a2==15 and @a3[0].b1 > 0
   error_a1: -> if not @schema['a1'].validation(@a1) then 'not match /^hello/' else ''
   error_a2: -> if not @schema['a2'].validation(@a2) then 'error de integer 10<x<20' else ''
-  error_g: -> if not @validation() then "error not @a1=='hello world' and @a2==15 and @a3.b1 > 0" else ''
+  error_g: -> if not @validation() then "error not @a1=='hello world' and @a2==15 and @a3[0].b1 > 0" else ''

@@ -70,11 +70,11 @@ class Model
     for k, v of @schema
       if k in @constructor.exclude
         continue
-      if _.isArray(@schema[k]) and isSubClass(@schema[k][0].type, Model)
+      if _.isArray(v.type) and isSubClass(v.type[0], Model)
         ret[k] = []
         for x in @[k]
-          ret[k].push x.toBDDInsert()
-      else if isSubClass(@schema[k].type, Model)
+          ret[k].push x.toBDD()
+      else if isSubClass(v.type, Model)
         ret[k] = @[k].toBDD()
       else
         ret[k] = @[k]

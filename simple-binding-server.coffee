@@ -15,9 +15,14 @@ class Model
     for attr, value of @constructor.schema
       Object.defineProperty @, attr, getter_setter(@, '_' + attr)
     for k, v of dct
-      if k in @constructor.exclude
-        continue
-      if k != '_id' and isSubClass(@schema[k].type, Model)
+      if k != '_id'
+        @[k] = v
+      else if _.isArray(v) and isSubClass(@schema[k][0].type, Model)
+        ret = []
+        for a in v
+          ret.push new @schema[k][0].type(a)
+        @[k] = ret
+      else if isSubClass(@schema[k].type, Model)
         @[k] = new @schema[k].type(v)
       else
         @[k] = v
