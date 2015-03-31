@@ -117,6 +117,8 @@ Validations
 You can have validations as in this example:
 
 ```coffee
+@Acollection = new Mongo.Collection 'A'
+
 class B extends sb.Model
   @schema:
     b1:
@@ -126,6 +128,7 @@ class B extends sb.Model
     @b1 > 10.0
 
 class A extends sb.Model
+  @collection: Acollection
   @schema:
     a1:
       type: String
@@ -140,11 +143,12 @@ class A extends sb.Model
 ```
 
 ```html
-<button sb sb-disabled="isNotValid">click</button>
+<button sb sb-disabled="isNotValid" sb-click="save">save</button>
 ```
 
 As you can see there's a validation rule for every field and a general validation that has visibility of all fields.
-The *Model* has three util methods: *validate*, *isValid*, *isNotValid*. *validate* returns an object where keys are the path of every attribute, and value is true or false depending if it passes the validation.
+The *Model* has three util methods of validation: *validate*, *isValid*, *isNotValid*. *validate* returns an object where keys are the path of every attribute, and value is true or false depending if it passes the validation.
+Also, it has a method *save* that will insert or update the object into Mongo DB.
 
 Issues
 ------
@@ -160,10 +164,10 @@ error_a2: -> if not @schema['a2'].validation(@a2) then 'error de integer 10<x<20
 
 TODO:
 -----
-* fully integrate with ```soop```. Not tested. [*soop.Base*](https://github.com/miguelalarcos/soop)
+* fully integrate with [soop](https://github.com/miguelalarcos/soop).
 * more tests.
 * examples with more sense :)
 * dirty attribute so the update only updates the modified attributes. (may be will not be implemented)
-* implement exclude server side.
+* implement *exclude* server side and test both sides.
 
 
