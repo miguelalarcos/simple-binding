@@ -4,3 +4,4 @@ Acollection.allow
   update: (userId, doc, fields, modifier) ->
     doc = modifier['$set']
     new A(doc).isValid()
+

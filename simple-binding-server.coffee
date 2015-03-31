@@ -9,12 +9,15 @@ getter_setter = (obj, attr) ->
       obj[attr] = value
 
 class Model
+  @exclude = []
   constructor: (dct)->
     @schema = @constructor.schema
     for attr, value of @constructor.schema
       Object.defineProperty @, attr, getter_setter(@, '_' + attr)
     for k, v of dct
-      if isSubClass(@schema[k].type, Model)
+      if k in @constructor.exclude
+        continue
+      if k != '_id' and isSubClass(@schema[k].type, Model)
         @[k] = new @schema[k].type(v)
       else
         @[k] = v

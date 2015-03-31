@@ -53,9 +53,8 @@ isSubClass = (klass, super_) ->
   klass.prototype instanceof super_
 
 class Model
+  @exclude = []
   constructor: (dct)->
-    if dct._id
-      @_id = dct._id
     @schema = @constructor.schema
     @__computations = []
     for attr, value of @schema
@@ -69,7 +68,13 @@ class Model
   toBDD: ->
     ret = {}
     for k, v of @schema
-      if isSubClass(@schema[k].type, Model)
+      if k in @constructor.exclude
+        continue
+      if _.isArray(@schema[k]) and isSubClass(@schema[k][0].type, Model)
+        ret[k] = []
+        for x in @[k]
+          ret[k].push x.toBDDInsert()
+      else if isSubClass(@schema[k].type, Model)
         ret[k] = @[k].toBDD()
       else
         ret[k] = @[k]
