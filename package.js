@@ -1,6 +1,6 @@
 Package.describe({
     name: 'miguelalarcos:simple-binding',
-    version: '0.5.1',
+    version: '0.6.0',
     summary: 'Simple two way bindings for Meteor',
     git: 'https://github.com/miguelalarcos/simple-binding.git',
     documentation: 'README.md'
@@ -20,8 +20,6 @@ Package.onUse(function(api) {
     api.addFiles('sb-datetime.css', 'client');
     api.addFiles('sb-datetime.html', 'client');
     api.addFiles('sb-datetime.coffee', 'client');
-    api.addFiles('sb-customCheck.html', 'client');
-    api.addFiles('sb-customCheck.coffee', 'client');
     api.addFiles('simple-binding.html', 'client');
     api.addFiles('simple-binding-client.coffee', 'client');
     api.addFiles('simple-binding-server.coffee', 'server');

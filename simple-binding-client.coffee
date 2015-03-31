@@ -164,6 +164,18 @@ keyUpHelper = (self, el) ->
     else
       subdoc[name] = $(el).val()
 
+customWidgetChangeHelper = (self, el)->
+  (event, param) ->
+    name = $(el).attr('sb-custom-widget')
+    [subdoc, name] = self.model.subDoc(name)
+    subdoc[name] = param
+
+customWidgetHelper = (el, self, custom)->
+  ->
+    [subdoc, name] = self.model.subDoc(custom)
+    if subdoc is null then return
+    $(el).val subdoc[name]
+
 dateChangeHelper = (self, el)->
   (event, param) ->
     name = $(el).attr('sb-datetime')
@@ -221,24 +233,6 @@ boolHelper = (el, self, bool) ->
       $(el).prop('checked', true)
     else
       $(el).prop('checked', false)
-
-clickCustomBoolHelper = (self, el) ->
-  (event) ->
-    name = $(el).attr('sb-custom-bool')
-    [subdoc, name] = self.model.subDoc(name)
-    if $(el).val()
-      subdoc[name] = false
-    else
-      subdoc[name] = true
-
-customBoolHelper = (el, self, bool) ->
-  ->
-    [subdoc, name] = self.model.subDoc(bool)
-    if subdoc is null then return
-    if subdoc[name]
-      $(el).val(true)
-    else
-      $(el).val(false)
 
 disabledHelper = (el, self, disabled) ->
   ->
@@ -402,6 +396,11 @@ elementBinds = (el, self) ->
     $(el).bind 'keyup', keyUpHelper(self, el)
     self.model.__computations.push Tracker.autorun bindHelper(el, self, bind)
   #
+  custom = $(el).attr('sb-custom-widget')
+  if custom
+    $(el).bind 'dateChange', customWidgetChangeHelper(self, el)
+    self.model.__computations.push Tracker.autorun customWidgetHelper(el, self, custom)
+  #
   date = $(el).attr('sb-datetime')
   if date
     $(el).bind 'dateChange', dateChangeHelper(self, el)
@@ -415,12 +414,7 @@ elementBinds = (el, self) ->
   if bool
     $(el).bind 'click', clickBoolHelper(self, el)
     self.model.__computations.push Tracker.autorun boolHelper(el, self, bool)
-  #
-  custom_bool = $(el).attr('sb-custom-bool')
-  if custom_bool
-    $(el).bind 'click', clickCustomBoolHelper(self, el)
-    self.model.__computations.push Tracker.autorun customBoolHelper(el, self, custom_bool)
-  #
+
   visible = $(el).attr('sb-visible')
   if visible
     self.model.__computations.push Tracker.autorun visibleHelper(el, self, visible)
@@ -439,30 +433,5 @@ elementBinds = (el, self) ->
   if focus
     focusHelper(el, self, focus)
 
-#sb = {}
-
 sb.Model = Model
 sb.reactiveArray = reactiveArray
-
-###
-dropdownChangeHelper = (self, el)->
-  (value, text) ->
-    name = $(el).attr('sb-dropdown')
-    [subdoc, name] = self.model.subDoc(name)
-    subdoc[name] = value
-
-dropdowntHelper = (el, self, select_) ->
-  ->
-    [subdoc, name] = self.model.subDoc(select_)
-    value = subdoc[name]
-    $(el).dropdown('set text', value)
-
-Template.sb_basic.hooks
-  rendered: ->
-    self = this
-    for el in this.findAll("[sb].ui.dropdown")
-      select_ = $(el).attr("sb-dropdown")
-      $(el).dropdown
-        onChange: dropdownChangeHelper(self, el)
-      self.model.__computations.push Tracker.autorun dropdowntHelper(el, self, select_)
-###

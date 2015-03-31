@@ -342,16 +342,6 @@ class A extends Model
             <div sb sb-visible="flag">This div and its content can be hidden</div>
         </li>
         <li>
-            sb-custom-bool: binds to a bool custom widget. Note that we don't write 'sb' at the element; it's done in the template. See the file customCheck.css to know how to do yourself a custom bool widget.
-            (CSS from http://cssdeck.com/labs/css-checkbox-styles.)
-            <pre>
-                <code class="html">
-{{customBoolDemo}}
-                </code>
-            </pre>
-            {{> sbCustomCheck sb-customcheck-class="myCheck" sb-custom-bool="flag"}}
-        </li>
-        <li>
             sb-datetime: binds to a Date.
             <pre>
                 <code>

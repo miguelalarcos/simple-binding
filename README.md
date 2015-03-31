@@ -27,7 +27,7 @@ API
 * *sb-hover* binds to a boolean.
 * *sb-visible* binds to a var or function.
 * *sb-events* binds to several jQuery events.
-* *sb-custom-bool* binds to a bool custom widget. See the examples to know how to do it.
+* *sb-custom-widget* binds to a custom widget. See example *app2* where there's a custom boolean widget.
 * *sb-datetime* binds to a Date.
 
 In the case of an attribute that is an array, it will be converted to a reactive array, and you can use *push*, *pop*, *shift*, *unshift*, *splice* and a method *set* that is ```set=(pos, value)->```. You can use yourself the *reactiveArray*, this way:
