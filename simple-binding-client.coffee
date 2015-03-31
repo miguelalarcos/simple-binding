@@ -59,9 +59,17 @@ class Model
     @__computations = []
     for attr, value of @schema
       Object.defineProperty @, attr, getter_setter(@, '_' + attr)
-    for k, v of dct
-      if isSubClass(@schema[k].type, Model) and not (v instanceof @schema[k].type)
-        @[k] = new @schema[k].type(v)
+    for k, sch of @schema
+      v = dct[k]
+      if v is undefined or v is null
+        continue
+      if _.isArray(v) and isSubClass(sch.type[0], Model) and not (v[0] instanceof sch.type[0])
+        ret = []
+        for a in v
+          ret.push new sch.type[0](a)
+        @[k] = ret
+      if isSubClass(sch.type, Model) and not (v instanceof sch.type)
+        @[k] = new sch.type(v)
       else
         @[k] = v
 
