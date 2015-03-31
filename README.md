@@ -119,15 +119,19 @@ You can have validations as in this example:
 ```coffee
 @Acollection = new Mongo.Collection 'A'
 
-class B extends sb.Model
+class @B extends sb.Model
+  @exclude = []
   @schema:
     b1:
       type: sb.Float
       validation: (x) -> x > 1.0
   validation: ->
     @b1 > 10.0
+  error_b1: -> if not @schema['b1'].validation(@b1) then 'error not > 1.0' else ''
+  error_g: -> if not @validation() then 'error not > 10.0' else ''
 
-class A extends sb.Model
+class @A extends sb.Model
+  @exclude = []
   @collection: Acollection
   @schema:
     a1:
@@ -135,20 +139,51 @@ class A extends sb.Model
       validation: (x) -> /^hello/.test(x)
     a2:
       type: sb.Integer
-      validation: (x) -> 10 < x < 20
+      validation: (x, self) -> if /^H/.test(self.a1) then 10 < x < 20 else x>0
     a3:
-      type: B
+      type: [B]
   validation: ->
-    @a1=='hello world' and @a2==15 and @a3.b1 > 0
+    @a1=='hello world' and @a2==15 and @a3[0].b1 > 0
+  error_a1: -> if not @schema['a1'].validation(@a1) then 'not match /^hello/' else ''
+  error_a2: -> if not @schema['a2'].validation(@a2, @) then 'error de integer 10<x<20' else ''
+  error_g: -> if not @validation() then "error not @a1=='hello world' and @a2==15 and @a3[0].b1 > 0" else ''
 ```
+
+As you can see there's a validation rule for every field and a general validation.
+The *Model* has three util methods of validation: *validate*, *isValid*, *isNotValid*. *validate* returns an object where keys are the path of every attribute, and value is true or false depending if it passes the validation.
+Also, it has a method *save* that will insert or update the object into the given collection.
+
+Forms
+-----
+
+You can have a *form* like this (see the validation example):
 
 ```html
-<button sb sb-disabled="isNotValid" sb-click="save">save</button>
+<template name="B">
+    {{#withModel}}
+        <input type="text" sb sb-bind="b1">
+        <div sb sb-text="error_b1"></div>
+        <div sb sb-text="error_g"></div>
+    {{/withModel}}
+</template>
+
+<template name="A">
+    {{#withModel}}
+        <input type="text" sb sb-bind="a1">
+        <div sb sb-text="error_a1"></div>
+        <input type="text" sb sb-bind="a2">
+        <div sb sb-text="error_a2"></div>
+        {{#each this.a3}}
+            {{> B model= this }}
+        {{/each}}
+        <button sb sb-disabled="isNotValid" sb-click="save">save</button>
+        <div sb sb-text="error_g"></div>
+    {{/withModel}}
+</template>
 ```
 
-As you can see there's a validation rule for every field and a general validation that has visibility of all fields.
-The *Model* has three util methods of validation: *validate*, *isValid*, *isNotValid*. *validate* returns an object where keys are the path of every attribute, and value is true or false depending if it passes the validation.
-Also, it has a method *save* that will insert or update the object into the given collection. You have to do server side validation. This is an example on how to do it:
+
+You have to do server side validation. This is an example on how to do it:
 ```coffee
 Acollection.allow
   insert: (userId, doc) ->
@@ -172,10 +207,11 @@ error_a2: -> if not @schema['a2'].validation(@a2) then 'error de integer 10<x<20
 
 TODO:
 -----
-* fully integrate with [soop](https://github.com/miguelalarcos/soop).
-* more tests.
+* fully integrate with [soop](https://github.com/miguelalarcos/soop). (no priority)
+* more tests. (important)
 * examples with more sense :)
-* dirty attribute so the update only updates the modified attributes. (may be will not be implemented)
+* dirty attribute so the update only updates the modified attributes. (maybe will not be implemented)
 * implement *exclude* server side and test both sides.
+* integrate with [roles-e](https://github.com/miguelalarcos/roles-e). (using deny instead of allow)
 
 

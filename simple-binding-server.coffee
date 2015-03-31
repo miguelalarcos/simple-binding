@@ -45,7 +45,7 @@ class Model
           @[attr].validate(ret, path + '.' + attr)
           continue
       if sch.validation
-        ret[path + '.' + attr + '.validation'] = sch.validation(@[attr])
+        ret[path + '.' + attr + '.validation'] = sch.validation(@[attr], @)
     ret
 
   validate: (ret, path) ->
