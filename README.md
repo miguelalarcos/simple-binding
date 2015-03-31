@@ -129,7 +129,7 @@ class A extends sb.Model
   @schema:
     a1:
       type: String
-      validation: (x) -> /^hello /.test(x)
+      validation: (x) -> /^hello/.test(x)
     a2:
       type: sb.Integer
       validation: (x) -> 10 < x < 20
@@ -144,7 +144,10 @@ class A extends sb.Model
 ```
 
 As you can see there's a validation rule for every field and a general validation that has visibility of all fields.
+The *Model* has three util methods: *validate*, *isValid*, *isNotValid*. *validate* returns an object where keys are the path of every attribute, and value is true or false depending if it passes the validation.
 
+Issues
+------
 Issue: be careful when using {{#if ...}} because the single elements inside probably will not have the chance to bind, not the templates inside that will bind in created event (not tested).
 (The elements have the chance to bind because the template where they are is rendered).
 
@@ -160,6 +163,7 @@ TODO:
 * fully integrate with ```soop```. Not tested. [*soop.Base*](https://github.com/miguelalarcos/soop)
 * more tests.
 * examples with more sense :)
-* dirty attribute so the update only updates the modified attributes.
+* dirty attribute so the update only updates the modified attributes. (may be will not be implemented)
+* implement exclude server side.
 
 
