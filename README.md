@@ -148,7 +148,15 @@ class A extends sb.Model
 
 As you can see there's a validation rule for every field and a general validation that has visibility of all fields.
 The *Model* has three util methods of validation: *validate*, *isValid*, *isNotValid*. *validate* returns an object where keys are the path of every attribute, and value is true or false depending if it passes the validation.
-Also, it has a method *save* that will insert or update the object into Mongo DB.
+Also, it has a method *save* that will insert or update the object into the given collection. You have to do server side validation. This is an example on how to do it:
+```coffee
+Acollection.allow
+  insert: (userId, doc) ->
+    new A(doc).isValid()
+  update: (userId, doc, fields, modifier) ->
+    doc = modifier['$set']
+    new A(doc).isValid()
+```
 
 Issues
 ------
