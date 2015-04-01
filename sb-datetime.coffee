@@ -1,5 +1,5 @@
-show_calendar = new ReactiveVar(false)
-first_click = true
+show_calendar = new ReactiveVar(false) #it is only used at the beginning of the app. Later it's used .hide() and .show()
+# the reason is that to render the calendar we need data from the template, that is not already rendered.
 
 isLocalRepeated = (m) ->
   dateLocal = m
@@ -10,8 +10,8 @@ isLocalRepeated = (m) ->
     false
 
 getMomentFromTemplate = (t)->
-  txt = $(t.find('.xdatetime-input')).val()
-  return moment(txt, t.data.format)
+  el = t.find('.xdatetime')
+  $(el).data('moment').get()
 
 Template.sbDateTime.events
   #'focusout .xdatetime-input': (e,t)->
@@ -27,17 +27,12 @@ Template.sbDateTime.events
 
   'click .show-calendar': (e, t)->
     show_calendar.set true
-    Meteor.flush()
     all_pops = $('body').find('.xdatetime-popover').get()
     current = t.find('.xdatetime-popover')
     for pop in all_pops
       if pop != current
         $(pop).hide()
-    if first_click
-      $(current).show()
-      first_click = false
-    else
-      $(current).toggle()
+    $(current).toggle()
 
   'click .xdatetime-day': (e, t)->
     atts = t.data
@@ -50,7 +45,8 @@ Template.sbDateTime.events
     widget = t.find('.xwidget')
     $(widget).trigger('dateChange', [m_.toDate()])
     unless atts.time == true
-      show_calendar.set(false)
+      current = t.find('.xdatetime-popover')
+      $(current).hide()
 
   'click .minus-month': (e,t)->
     date = getMomentFromTemplate(t)
@@ -138,35 +134,30 @@ Template.sbDateTime.helpers
   time: ->
     t = Template.instance()
     el = t.find('.xdatetime')
-    $(el).data('dep').depend()
-    getMomentFromTemplate(t).format('HH:mm')
+    $(el).data('moment').get().format('HH:mm')
 
   year: ->
     t = Template.instance()
     el = t.find('.xdatetime')
-    $(el).data('dep').depend()
-    getMomentFromTemplate(t).format('YYYY')
+    $(el).data('moment').get().format('YYYY')
 
   month: ->
     t = Template.instance()
     el = t.find('.xdatetime')
-    $(el).data('dep').depend()
-    getMomentFromTemplate(t).format('MM')
+    $(el).data('moment').get().format('MM')
 
   week: -> (i for i in [0...6])
 
   day: (week) ->
     t = Template.instance()
     el = t.find('.xdatetime')
-    $(el).data('dep').depend()
-    date = getMomentFromTemplate(t)
+    date = $(el).data('moment').get()
     dayRow(week, date.clone())
 
   checkDST: ->
     t = Template.instance()
     el = t.find('.xdatetime')
-    $(el).data('dep').depend()
-    date = getMomentFromTemplate(t)
+    date = $(el).data('moment').get()
     if isLocalRepeated date.clone() then 'red' else ''
 
 
@@ -179,7 +170,7 @@ $.valHooks['sbdatetime'] =
   set: (el, value)->
     format = $(el).attr('format')
     $(el).find('.xdatetime-input').val(moment(value).format(format))
-    $(el).data('dep').changed()
+    $(el).data('moment').set(moment(value))
 
 $.fn.sbdatetime = (name)->
   this.each ->
@@ -189,4 +180,5 @@ $.fn.sbdatetime = (name)->
 Template.sbDateTime.rendered = ->
   $(this.find('.xwidget')).sbdatetime()
   for el in this.findAll('.xwidget.xdatetime')
-    $(el).data('dep', new Tracker.Dependency())
+    $(el).data('moment', new ReactiveVar())
+    $(el).find('.xdatetime-popover').hide()

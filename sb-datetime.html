@@ -3,8 +3,8 @@
         <div class="ui icon input">
             <input type='text' disabled class="xdatetime-input"><i class="calendar icon show-calendar"></i>
         </div>
+        <div class="xdatetime-popover">
         {{#if show_calendar}}
-            <div class="xdatetime-popover">
               <div class="xdatetime-header">
                 <i class="minus icon minus-month"></i>
                 {{month}}
@@ -31,7 +31,7 @@
                     </span>
                 </div>
             {{/if}}
-            </div>
         {{/if}}
+        </div>
     </div>
 </template>
