@@ -14,16 +14,17 @@ getMomentFromTemplate = (t)->
   $(el).data('moment').get()
 
 Template.sbDateTime.events
-  #'focusout .xdatetime-input': (e,t)->
-  #  atts = t.data
-  #  txtdate = $(t.find('.xdatetime-input')).val()
-  #  date = moment(txtdate, atts.format, true)
-  #  if not date.isValid()
-  #    if atts.time
-  #      date = moment()
-  #    else
-  #      date = moment().startOf('day')
-  #    $(t.find('.xdatetime-input')).val(date.format(atts.format))
+  'focusout .xdatetime-input': (e,t)->
+    atts = t.data
+    txtdate = $(t.find('.xdatetime-input')).val()
+    date = moment(txtdate, atts.format, true)
+    if not date.isValid()
+      if atts.time
+        date = moment()
+      else
+        date = moment().startOf('day')
+    widget = t.find('.xwidget')
+    $(widget).trigger('dateChange', [date.toDate()])
 
   'click .show-calendar': (e, t)->
     show_calendar.set true
