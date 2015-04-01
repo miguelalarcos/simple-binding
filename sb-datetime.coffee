@@ -1,4 +1,5 @@
 show_calendar = new ReactiveVar(false)
+first_click = true
 
 isLocalRepeated = (m) ->
   dateLocal = m
@@ -32,7 +33,11 @@ Template.sbDateTime.events
     for pop in all_pops
       if pop != current
         $(pop).hide()
-    $(current).toggle()
+    if first_click
+      $(current).show()
+      first_click = false
+    else
+      $(current).toggle()
 
   'click .xdatetime-day': (e, t)->
     atts = t.data

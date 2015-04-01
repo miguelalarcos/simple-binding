@@ -9,6 +9,7 @@ Template.bodyTemplate.helpers
       first: 'miguel'
       lista: [1,2,3]
       date: moment().toDate()
+      date2: moment().toDate()
       age: new B
         value: 20
         cow: new Cow
@@ -44,6 +45,8 @@ class A extends sb.Model
     lista:
       type: [Number]
     date:
+      type: Date
+    date2:
       type: Date
     age:
       type: B
