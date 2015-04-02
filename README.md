@@ -185,12 +185,8 @@ You can have a *form* like this (see the validation example):
 
 You have to do server side validation. This is an example on how to do it:
 ```coffee
-Acollection.allow
-  insert: (userId, doc) ->
-    new A(doc).isValid()
-  update: (userId, doc, fields, modifier) ->
-    doc = modifier['$set']
-    new A(doc).isValid()
+sb.allowIfValid(A)
+#sb.denyIfNotValid(A)
 ```
 
 Issues

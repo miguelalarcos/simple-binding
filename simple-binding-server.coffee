@@ -66,3 +66,21 @@ class Model
   isNotValid: -> not @isValid()
 
 sb.Model = Model
+denyIfNotValid = (klass) ->
+  klass.collection.deny
+    insert: (userId, doc) ->
+      new klass(doc).isNotValid()
+    update: (userId, doc, fields, modifier) ->
+      doc = modifier['$set']
+      new klass(doc).isNotValid()
+
+allowIfValid = (klass) ->
+  klass.collection.allow
+    insert: (userId, doc) ->
+      new klass(doc).isValid()
+    update: (userId, doc, fields, modifier) ->
+      doc = modifier['$set']
+      new klass(doc).isValid()
+
+sb.denyIfNotValid = denyIfNotValid
+sb.allowIfValid = allowIfValid
