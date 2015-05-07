@@ -28,8 +28,34 @@ class Model
       else
         @[k] = v
 
-
   _validate: (ret, path) ->
+    for attr, sch of @constructor.schema
+      if not sch.optional and @[attr] is undefined
+        ret[path + '.' + attr + '.required'] = false
+      if @[attr] isnt undefined
+        if sch.type == String and not _.isString(@[attr])
+          ret[path + '.' + attr + '.type'] = false
+        else if (sch.type == sb.Integer or sch.type == sb.Float) and not _.isNumber(@[attr])
+          ret[path + '.' + attr + '.type'] = false
+        else if sch.type == Boolean and not _.isBoolean(@[attr])
+          ret[path + '.' + attr + '.type'] = false
+        else if sch.type == Date and not _.isDate(@[attr])
+          ret[path + '.' + attr + '.type'] = false
+        else if isSubClass(sch.type, sb.Model)
+          if not (@[attr] instanceof sb.Model)
+            ret[path + '.' + attr + '.type'] = false
+          else
+            @[attr].validate(ret, path + '.' + attr)
+        #
+    for attr, sch of @constructor.schema
+      if sch.validation and _.isEmpty(ret)
+        ret[path + '.' + attr + '.validation'] = sch.validation(@[attr], @)
+
+    if @validation and _.isEmpty(ret)
+      ret[path + '.validation'] = @validation()
+    ret
+
+  __validate: (ret, path) ->
     for attr, sch of @constructor.schema
       if not (sch.optional and not @[attr])
         if sch.type == String
@@ -53,8 +79,8 @@ class Model
       ret = {}
       path = ''
     @_validate(ret, path)
-    if @validation
-      ret[path + '.validation'] = @validation()
+    #if @validation
+    #  ret[path + '.validation'] = @validation()
     ret
 
   isValid: ->
