@@ -2,7 +2,7 @@
 
 simple-binding
 ==============
-Simple two way bindings for Meteor.
+Simple two way bindings for Meteor, with nested objects and validation.
 
 Explanation
 -----------
@@ -150,7 +150,7 @@ class @A extends sb.Model
 ```
 
 As you can see there's a validation rule for every field and a general validation.
-The *Model* has three util methods of validation: *validate*, *isValid*, *isNotValid*. *validate* returns an object where keys are the path of every attribute, and value is true or false depending if it passes the validation.
+The *Model* has two util methods of validation: *isValid*, *isNotValid*.
 Also, it has a method *save* that will insert or update the object into the given collection.
 
 Forms
@@ -203,7 +203,6 @@ error_a2: -> if not @schema['a2'].validation(@a2) then 'error de integer 10<x<20
 
 TODO:
 -----
-* fully integrate with [soop](https://github.com/miguelalarcos/soop). (no priority)
 * more tests. (important)
 * examples with more sense :)
 * dirty attribute so the update only updates the modified attributes. (maybe will not be implemented)

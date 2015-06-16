@@ -1,0 +1,23 @@
+<body>
+    {{> xbody}}
+</body>
+
+<template name="xbody">
+    {{> A model=myModel}}
+</template>
+
+<template name="B">
+    {{#withModel}}
+        <span sb sb-text="b"></span>
+        <input type="text" sb sb-bind="b">
+    {{/withModel}}
+</template>
+
+<template name="A">
+    {{#withModel}}
+        <span sb sb-text="a"></span>
+        <input type="text" sb sb-bind="a">
+        {{> B model=this.b }}
+        <button sb sb-click="click">set B</button>
+    {{/withModel}}
+</template>

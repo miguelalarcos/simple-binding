@@ -94,39 +94,7 @@ class Model
     else
       @constructor.collection.update @_id, {$set: @toBDD()}
 
-  _validate: (ret, path) ->
-    for attr, sch of @constructor.schema
-      if not (sch.optional and not @[attr])
-        if sch.type == String
-          ret[path + '.' + attr + '.type'] = _.isString(@[attr])
-        else if sch.type == sb.Integer or sch.type == sb.Float
-          ret[path + '.' + attr + '.type'] = _.isNumber(@[attr])
-        else if sch.type == Boolean
-          ret[path + '.' + attr + '.type'] = _.isBoolean(@[attr])
-        else if sch.type == Date
-          ret[path + '.' + attr + '.type'] = _.isDate(@[attr])
-        else if @[attr] instanceof sb.Model
-          ret[path + '.' + attr + '.type'] = @[attr] instanceof sb.Model
-          @[attr].validate(ret, path + '.' + attr)
-          continue
-      if sch.validation
-        ret[path + '.' + attr + '.validation'] = sch.validation(@[attr], @)
-    ret
-
-  validate: (ret, path) ->
-    if not ret
-      ret = {}
-      path = ''
-    @_validate(ret, path)
-    if @validation
-      ret[path + '.validation'] = @validation()
-    ret
-
-  isValid: ->
-    for k, v of @validate()
-      if not v
-        return false
-    return true
+  isValid: -> sb.validate(@, @constructor.schema)
 
   isNotValid: -> not @isValid()
 
@@ -351,7 +319,8 @@ rebind = (t) ->
 Template.withModel.helpers
   model: ->
     t = Template.instance()
-    if t.parent().model isnt undefined and t.model != t.data.model
+    #if t.parent().model isnt undefined and t.model != t.data.model
+    if t.parent().model isnt undefined and t.parent().model != t.parent().data.model
       rebind(t.parent())
     this.model
 
