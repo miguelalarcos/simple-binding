@@ -1,0 +1,1 @@
+sb.allowIfValid(@collectionA, ASchema)

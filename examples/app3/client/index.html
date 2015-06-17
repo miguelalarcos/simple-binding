@@ -4,6 +4,18 @@
 
 <template name="xbody">
     {{> A model=myModel}}
+    {{#each items}}
+        <div>
+            <a class='item' _id="{{_id}}">{{a}}</a>
+        </div>
+    {{/each}}
+</template>
+
+<template name="C">
+    {{#withModel}}
+        <span sb sb-text="c"></span>
+        <input type="text" sb sb-bind="c">
+    {{/withModel}}
 </template>
 
 <template name="B">
@@ -15,9 +27,14 @@
 
 <template name="A">
     {{#withModel}}
-        <span sb sb-text="a"></span>
+        <span sb sb-text="texto"></span>
         <input type="text" sb sb-bind="a">
         {{> B model=this.b }}
+        {{#each this.c}}
+            {{> C model=this}}
+        {{/each}}
         <button sb sb-click="click">set B</button>
+        <button sb sb-click="save">save</button>
+        <button sb sb-click="reset">reset</button>
     {{/withModel}}
 </template>
