@@ -10,7 +10,6 @@ sb.validate = (object, schema) ->
   if Meteor.isServer
     for attr of object
       if attr not in (x for x of schema) # _.keys
-        console.log attr, (x for x of schema), schema
         return false
   for attr, sch of schema
     value = object[attr]
@@ -27,11 +26,9 @@ sb.validate = (object, schema) ->
         return false
       else if _.isArray(value)
         for v in value
-          console.log sch.type, sch.type[0]
           if not sb.validate(v, sch.type[0]) then return false
         continue
       else if _.isObject(value)
-        console.log sch.type
         if not sb.validate(value, sch.type) then return false
         continue
     if sch.validation

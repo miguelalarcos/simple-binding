@@ -48,7 +48,7 @@ This is an example on how to call a template:
     {{#withModel}}
         <span sb sb-text="aliasFunc"></span>
         <input type="text" sb sb-bind="alias">
-        {{#each emails}}
+        {{#each this.emails}}
             {{>C model=this}}
         {{/each}}
         {{>D model=this.cow}}
@@ -92,7 +92,7 @@ The model is an instance of *Model*:
 
 ```coffee
 class A extends sb.Model
-  @schema:
+  @schema: new sb.Schema
     first:
       type: String
     last:
@@ -100,7 +100,7 @@ class A extends sb.Model
     lista:
       type: [Number]
     age:
-      type: B
+      type: BSchema
   can: -> @first and @last
   listaToString: -> @lista.toString()
   isOld: -> @age.value > 18
@@ -117,23 +117,16 @@ Validations
 You can have validations as in this example:
 
 ```coffee
+# in lib folder, for example, so client and server can see the next definitions
 @Acollection = new Mongo.Collection 'A'
 
-class @B extends sb.Model
-  @exclude = []
-  @schema:
-    b1:
-      type: sb.Float
-      validation: (x) -> x > 1.0
-  validation: ->
-    @b1 > 10.0
-  error_b1: -> if not @schema['b1'].validation(@b1) then 'error not > 1.0' else ''
-  error_g: -> if not @validation() then 'error not > 10.0' else ''
+@BSchema = new sb.Schema
+  b1:
+    type: sb.Float
+    optional: true
+    validation: (x) -> x > 1.0
 
-class @A extends sb.Model
-  @exclude = []
-  @collection: Acollection
-  @schema:
+@ASchema = new sb.Schema
     a1:
       type: String
       validation: (x) -> /^hello/.test(x)
@@ -141,12 +134,21 @@ class @A extends sb.Model
       type: sb.Integer
       validation: (x, self) -> if /^H/.test(self.a1) then 10 < x < 20 else x>0
     a3:
-      type: [B]
+      type: [BSchema]
+
+# in client side
+class @B extends sb.Model
+  @schema: BSchema
+  error_b1: -> if not @schema['b1'].validation(@b1) then 'error not > 1.0' else ''
+
+class @A extends sb.Model
+  @collection: Acollection
+  @schema: ASchema
   error_a1: -> if not @schema['a1'].validation(@a1) then 'not match /^hello/' else ''
   error_a2: -> if not @schema['a2'].validation(@a2, @) then 'error de integer 10<x<20' else ''
 ```
 
-As you can see there's a validation rule for every field.
+As you can see there's a validation rule for every field, that is passed the attribute that is going to be validated and a second argument with the object.
 The *Model* has two util methods of validation: *isValid*, *isNotValid*.
 Also, it has a method *save* that will insert or update the object into the given collection.
 
@@ -177,11 +179,10 @@ You can have a *form* like this (see the validation example):
 </template>
 ```
 
-
 You have to do server side validation. This is an example on how to do it:
 ```coffee
-sb.allowIfValid(collection, schema)
-#sb.denyIfNotValid(collection, schema)
+sb.allowIfValid(Acollection, ASchema)
+#sb.denyIfNotValid(Acollection, ASchema)
 ```
 
 Issues
@@ -202,6 +203,3 @@ TODO:
 * examples with more sense :)
 * dirty attribute so the update only updates the modified attributes. (maybe will not be implemented)
 * implement *exclude* server side and test both sides.
-* integrate with [roles-e](https://github.com/miguelalarcos/roles-e). (using deny instead of allow)
-
-

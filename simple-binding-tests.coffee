@@ -5,13 +5,13 @@ Template.testBindings.helpers
   echo: (x)->console.log x
 
 class B extends sb.Model
-  @schema:
+  @schema: new sb.Schema
     flag:
       type: Boolean
   show: -> (@flag and 'hola') or ''
 
 class A extends sb.Model
-  @schema:
+  @schema: new sb.Schema
     first:
       type: String
     cinema:
