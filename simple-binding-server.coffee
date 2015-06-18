@@ -1,3 +1,7 @@
+class Model
+
+sb.Model = Model
+
 denyIfNotValid = (collection, schema) ->
   collection.deny
     insert: (userId, doc) ->

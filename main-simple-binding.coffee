@@ -11,9 +11,10 @@ sb.validate = (object, schema) ->
     for attr of object
       if attr not in (x for x of schema) # _.keys
         return false
+
   for attr, sch of schema
     value = object[attr]
-    if not sch.optional and value is undefined # null, ''?
+    if not sch.optional and (value is undefined or value is null or value == '')
       return false
     if value isnt undefined
       if sch.type == String and not _.isString(value)
@@ -26,19 +27,19 @@ sb.validate = (object, schema) ->
         return false
       else if _.isArray(value)
         for v in value
-          if not sb.validate(v, sch.type[0]) then return false
+          if not sb.validate(v, sch.type[0].schema) then return false
         continue
       else if _.isObject(value)
-        if not sb.validate(value, sch.type) then return false
+        if not sb.validate(value, sch.type.schema) then return false
         continue
     if sch.validation
       if not sch.validation(value, @) then return false
 
   return true
 
-class Schema
-  constructor: (dct)->
-    for k, v of dct
-      @[k] = v
+#class Schema
+#  constructor: (dct)->
+#    for k, v of dct
+#      @[k] = v
 
-sb.Schema = Schema
+#sb.Schema = Schema

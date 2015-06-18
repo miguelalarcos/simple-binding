@@ -63,29 +63,29 @@ class Model
       v = dct[k]
       if v is undefined or v is null
         continue
-      #if _.isArray(v) and isSubClass(sch.type[0], Model) and not (v[0] instanceof sch.type[0])
-      #  ret = []
-      #  for a in v
-      #    ret.push new sch.type[0](a)
-      #  @[k] = ret
+      if _.isArray(v) and isSubClass(sch.type[0], Model) and not (v[0] instanceof sch.type[0])
+        ret = []
+        for a in v
+          ret.push new sch.type[0](a)
+        @[k] = ret
       #  console.log @, ret
-      #else if isSubClass(sch.type, Model) and not (v instanceof sch.type)
-      #  @[k] = new sch.type(v)
-      #else
-      @[k] = v
+      else if isSubClass(sch.type, Model) and not (v instanceof sch.type)
+        @[k] = new sch.type(v)
+      else
+        @[k] = v
 
   toBDD: ->
     ret = {}
     for k, v of @schema
       if k in @constructor.exclude
         continue
-      #if _.isArray(v.type) and isSubClass(v.type[0], Model)
-      if _.isArray(v.type) and (v.type[0] instanceof sb.Schema)
+      if _.isArray(v.type) and isSubClass(v.type[0], Model)
+      #if _.isArray(v.type) and (v.type[0] instanceof sb.Schema)
         ret[k] = []
         for x in @[k]
           ret[k].push x.toBDD()
-      #else if isSubClass(v.type, Model)
-      else if v.type instanceof sb.Schema
+      else if isSubClass(v.type, Model)
+      #else if v.type instanceof sb.Schema
         ret[k] = @[k].toBDD()
       else
         ret[k] = @[k]

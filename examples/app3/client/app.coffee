@@ -2,23 +2,6 @@ Template.A.inheritsHooksFrom("sb_basic")
 Template.B.inheritsHooksFrom("sb_basic")
 Template.C.inheritsHooksFrom("sb_basic")
 
-class C extends sb.Model
-  @schema: CSchema
-
-
-class B extends sb.Model
-  @schema: BSchema
-
-class A extends sb.Model
-  @collection: collectionA
-  @schema: ASchema
-  click: ->
-    @b = new B(b: 'insert coin')
-    @c.set 0, new C(c: 7)
-    @c.push new C(c: 8)
-  texto: -> 'hola ' + @a
-  reset: -> Session.set 'A_id', null
-
 Session.set 'A_id', null
 
 Template.xbody.helpers
