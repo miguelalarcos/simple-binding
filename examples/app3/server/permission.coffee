@@ -1,1 +1,1 @@
-sb.allowIfValid(@collectionA, A.schema)
+sb.allowIfValid(A)

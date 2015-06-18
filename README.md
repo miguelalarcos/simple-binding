@@ -92,7 +92,7 @@ The model is an instance of *Model*:
 
 ```coffee
 class A extends sb.Model
-  @schema: new sb.Schema
+  @schema: 
     first:
       type: String
     last:
@@ -120,13 +120,17 @@ You can have validations as in this example:
 # in lib folder, for example, so client and server can see the next definitions
 @Acollection = new Mongo.Collection 'A'
 
-@BSchema = new sb.Schema
-  b1:
-    type: sb.Float
-    optional: true
-    validation: (x) -> x > 1.0
+class @B extends sb.Model
+  @schema:
+    b1:
+      type: sb.Float
+      optional: true
+      validation: (x) -> x > 1.0
+  error_b1: -> if not @schema['b1'].validation(@b1) then 'error not > 1.0' else ''
 
-@ASchema = new sb.Schema
+class @A extends sb.Model
+  @collection: Acollection
+  @schema:
     a1:
       type: String
       validation: (x) -> /^hello/.test(x)
@@ -135,15 +139,6 @@ You can have validations as in this example:
       validation: (x, self) -> if /^H/.test(self.a1) then 10 < x < 20 else x>0
     a3:
       type: [BSchema]
-
-# in client side
-class @B extends sb.Model
-  @schema: BSchema
-  error_b1: -> if not @schema['b1'].validation(@b1) then 'error not > 1.0' else ''
-
-class @A extends sb.Model
-  @collection: Acollection
-  @schema: ASchema
   error_a1: -> if not @schema['a1'].validation(@a1) then 'not match /^hello/' else ''
   error_a2: -> if not @schema['a2'].validation(@a2, @) then 'error de integer 10<x<20' else ''
 ```
@@ -181,8 +176,8 @@ You can have a *form* like this (see the validation example):
 
 You have to do server side validation. This is an example on how to do it:
 ```coffee
-sb.allowIfValid(Acollection, ASchema)
-#sb.denyIfNotValid(Acollection, ASchema)
+sb.allowIfValid(model)
+#sb.denyIfNotValid(model)
 ```
 
 Issues

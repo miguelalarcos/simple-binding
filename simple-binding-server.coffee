@@ -2,7 +2,9 @@ class Model
 
 sb.Model = Model
 
-denyIfNotValid = (collection, schema) ->
+denyIfNotValid = (model) ->
+  collection = model.collection
+  schema = model.schema
   collection.deny
     insert: (userId, doc) ->
       not sb.validate(doc, schema)
@@ -10,7 +12,9 @@ denyIfNotValid = (collection, schema) ->
       doc = modifier['$set']
       not sb.validate(doc, schema)
 
-allowIfValid = (collection, schema) ->
+allowIfValid = (model) ->
+  collection = model.collection
+  schema = model.schema
   collection.allow
     insert: (userId, doc) ->
       sb.validate(doc, schema)
