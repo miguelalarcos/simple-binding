@@ -14,7 +14,7 @@ Template.sbCustomBool.events
     el = t.find('input[type=checkbox]')
     value = $(el).prop('checked')
     widget = t.find('.xwidget')
-    $(widget).trigger('dateChange', [not value])
+    $(widget).trigger('customChange', [not value])
 
 Template.sbCustomBool.rendered = ->
   el = $(this.find('.customBool'))

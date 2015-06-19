@@ -382,7 +382,7 @@ elementBinds = (el, self) ->
   #
   custom = $(el).attr('sb-custom-widget')
   if custom
-    $(el).bind 'dateChange', customWidgetChangeHelper(self, el)
+    $(el).bind 'customChange', customWidgetChangeHelper(self, el)
     self.model.__computations.push Tracker.autorun customWidgetHelper(el, self, custom)
   #
   date = $(el).attr('sb-datetime')
