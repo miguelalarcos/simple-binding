@@ -1,0 +1,12 @@
+<template name='sbAutocomplete'>
+    <div sb class="xwidget xautocomplete ui input" tabindex=100 {{this}}>
+        <input type='text' class="xautocomplete-input">
+        <div class="xpopover" tabindex=100>
+            <table class="ui table xpopover-table">
+                {{#each items}}
+                    <tr index={{this.index}} class="xitem {{this.selected}}">{{{this.content}}}</tr>
+                {{/each}}
+            </table>
+        </div>
+    </div>
+</template>

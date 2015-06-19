@@ -1,0 +1,14 @@
+<body>
+    {{> xbody }}
+</body>
+
+<template name="xbody">
+    {{> autocomplete model=myModel }}
+</template>
+
+<template name="autocomplete">
+    {{#withModel}}
+        {{> sbAutocomplete sb-autocomplete='a' call='data' fieldRef='surname' renderKey='surname' id='demoId'}}
+        {{> sbAutocomplete sb-autocomplete='a' call='data' fieldRef='surname' renderKey='surname' id='demoId2'}}
+    {{/withModel}}
+</template>

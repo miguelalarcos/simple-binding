@@ -198,3 +198,5 @@ TODO:
 * examples with more sense :)
 * dirty attribute so the update only updates the modified attributes. (maybe will not be implemented)
 * implement *exclude* server side and test both sides.
+* implement arrays for primitives (now you can use objects with the keyword 'value')
+* autocomplete feature

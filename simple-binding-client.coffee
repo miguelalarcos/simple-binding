@@ -159,6 +159,18 @@ dateHelper = (el, self, date)->
     if subdoc is null then return
     $(el).val subdoc[name]
 
+autocompleteChangeHelper = (self, el)->
+  (event, param) ->
+    name = $(el).attr('sb-autocomplete')
+    [subdoc, name] = self.model.subDoc(name)
+    subdoc[name] = param
+
+autocompleteHelper = (el, self, autocomplete)->
+  ->
+    [subdoc, name] = self.model.subDoc(autocomplete)
+    if subdoc is null then return
+    $(el).val subdoc[name]
+
 clickCheckHelper = (self, el)->
   (event) ->
     name = $(el).attr('sb-check')
@@ -377,6 +389,12 @@ elementBinds = (el, self) ->
   if date
     $(el).bind 'dateChange', dateChangeHelper(self, el)
     self.model.__computations.push Tracker.autorun dateHelper(el, self, date)
+  #
+  #
+  autocomplete = $(el).attr('sb-autocomplete')
+  if autocomplete
+    $(el).bind 'textChange', autocompleteChangeHelper(self, el)
+    self.model.__computations.push Tracker.autorun autocompleteHelper(el, self, autocomplete)
   #
   check = $(el).attr('sb-check')
   if check

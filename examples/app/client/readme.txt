@@ -1,1 +1,0 @@
-Please note that this example is not yet actualized to the last version of the library.
