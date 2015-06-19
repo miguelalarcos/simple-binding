@@ -1,2 +1,2 @@
 Meteor.methods
-  'data': -> [{surname: 'Dawkins'}, {surname: 'Dennet'}, {surname: 'Darwin'}]
+  'data': (query) -> surnamesCollection.find({surname: {$regex: '^.*'+query+'.*$'}})

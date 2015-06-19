@@ -29,7 +29,48 @@ API
 * *sb-events* binds to several jQuery events.
 * *sb-custom-widget* binds to a custom widget. See example *app2* where there's a custom boolean widget.
 * *sb-datetime* binds to a Date.
+* *sb-autocomplete* binds to an autocomplete widget.
 
+The *sb-autocomplete* is not explained in the example above, so I explain it here: (see the autocomplete-demo)
+the example of use is:
+
+```html
+{{> sbAutocomplete sb-autocomplete='a' call='data' fieldRef='surname' renderKey='surname' id='demoId'}}
+{{> sbAutocomplete sb-autocomplete='a' collection='surnamesCollection' fieldRef='surname' renderFunction='surnameFunc' id='demoId2'}}
+```
+
+If you use the *call* method: you can't do validation.
+
+```coffee
+Meteor.methods
+  'data': (query) -> surnamesCollection.find({surname: {$regex: '^.*'+query+'.*$'}})
+```
+
+If you use the *collection* method:
+you must subscribe to a publication that serves all the data of the collection (it must be small) so you can do validation:
+
+```coffee
+class A extends sb.Model
+  @schema:
+    a:
+      type: String
+      validation: (x) -> surnamesCollection.findOne({surname: x})
+
+```
+
+If you use the *renderFunction* instead of *renderKey*:
+
+```coffee
+@surnameFunc = (x, query) -> Blaze.toHTMLWithData(Template.surname, x)
+```
+
+```html
+<template name="surname">
+    <td>{{this.name}} <b>{{this.surname}}</b></td>
+</template>
+```
+
+---
 In the case of an attribute that is an array, it will be converted to a reactive array, and you can use *push*, *pop*, *shift*, *unshift*, *splice* and a method *set* that is ```set=(pos, value)->```. You can use yourself the *reactiveArray*, this way:
 
 ```coffee
