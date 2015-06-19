@@ -37,9 +37,3 @@ sb.validate = (object, schema) ->
 
   return true
 
-#class Schema
-#  constructor: (dct)->
-#    for k, v of dct
-#      @[k] = v
-
-#sb.Schema = Schema

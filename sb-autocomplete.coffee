@@ -22,16 +22,32 @@ Template.sbAutocomplete.helpers
     query_ = query.get()
     atts = this
     call = atts.call
-    renderFunction = atts.renderfunction or generalRenderFunction(atts.renderKey)
+    collection = atts.collection
+    renderFunction = atts.renderFunction
+    if renderFunction
+      renderFunction = window[renderFunction]
+    else
+      renderFunction = generalRenderFunction(atts.renderKey)
 
     if atts.id == current_input and query_ != ''
-      Meteor.call call, query_, (error, result)->
+      if call
+        Meteor.call call, query_, (error, result)->
+          items.remove({})
+          for item, i in result
+            rendered = renderFunction(item, query_)
+            value = item[atts.fieldRef]
+            items.insert({value: value, content:rendered, index: i, remote_id: item._id, doc: item})
+        items.find({})
+      else
+        dct = {}
+        dct[atts.fieldRef] = {$regex: '^.*'+query_+'.*$'}
+        result = window[collection].find(dct).fetch()
         items.remove({})
         for item, i in result
           rendered = renderFunction(item, query_)
           value = item[atts.fieldRef]
-          items.insert({value: value, content:rendered, index: i, remote_id: item._id, doc: item})
-      items.find({})
+          items.insert({value: value, content: rendered, index: i, remote_id: item._id, doc: item})
+        items.find({})
     else
       null
 

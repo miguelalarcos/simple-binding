@@ -1,0 +1,1 @@
+@surnamesCollection = new Mongo.Collection('Surnames')
