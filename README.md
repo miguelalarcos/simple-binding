@@ -167,7 +167,7 @@ class @B extends sb.Model
       type: sb.Float
       optional: true
       validation: (x) -> x > 1.0
-  error_b1: -> if not @schema['b1'].validation(@b1) then 'error not > 1.0' else ''
+  error_b1: -> if not @validation('b1') then 'error not > 1.0' else ''
 
 class @A extends sb.Model
   @collection: Acollection
@@ -180,8 +180,8 @@ class @A extends sb.Model
       validation: (x, self) -> if /^H/.test(self.a1) then 10 < x < 20 else x>0
     a3:
       type: [BSchema]
-  error_a1: -> if not @schema['a1'].validation(@a1) then 'not match /^hello/' else ''
-  error_a2: -> if not @schema['a2'].validation(@a2, @) then 'error de integer 10<x<20' else ''
+  error_a1: -> if not @validation('a1') then 'not match /^hello/' else ''
+  error_a2: -> if not @validation('a2') then 'error de integer 10<x<20' else ''
 ```
 
 As you can see there's a validation rule for every field, that is passed the attribute that is going to be validated and a second argument with the object.
@@ -228,7 +228,7 @@ Issue: be careful when using {{#if ...}} because the single elements inside prob
 
 Notes
 -----
-*schema* is a reserved word. Example of use:
+*schema* is a reserved word. Example of use: (deprecated)
 ```coffee
 error_a2: -> if not @schema['a2'].validation(@a2) then 'error de integer 10<x<20' else ''
 ```

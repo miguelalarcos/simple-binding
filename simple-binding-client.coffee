@@ -97,6 +97,8 @@ class Model
     else
       @constructor.collection.update @_id, {$set: @toBDD()}
 
+  validation: (attr) -> @schema[attr].validation(@[attr], @)
+
   isValid: -> sb.validate(@, @constructor.schema)
 
   isNotValid: -> not @isValid()
