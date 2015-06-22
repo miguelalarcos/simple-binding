@@ -2,7 +2,7 @@
 
 simple-binding
 ==============
-Simple two way bindings for Meteor, with nested objects and validation.
+Simple two way bindings for Meteor, with nested models and validation.
 
 Explanation
 -----------
@@ -85,21 +85,23 @@ Template.hello2.helpers
 This is an example on how to call a template:
 
 ```html
-<template name="B">
-    {{#withModel}}
-        <span sb sb-text="aliasFunc"></span>
-        <input type="text" sb sb-bind="alias">
-        {{#each this.emails}}
-            {{>C model=this}}
-        {{/each}}
-        {{>D model=this.cow}}
-    {{/withModel}}
+<body>
+    {{> xbody }}
+</body>
+
+<template name="xbody">
+    {{> sbT template='A' model=myModel}}
+</template>
+
+<template name="A">
+    <input type="text" sb sb-bind="a">
+    <div sb sb-text="a"></div>
+    {{#each this.model.emails}}
+        {{> sbT template='C' model=this}}
+    {{/each}}
+    {{> sbT template='D' model=this.model.cow}}
 </template>
 ```
-
-* {{#withModel}} It sets the model in the context and rebinds the template with a new model if the model change.
-* {{>C model=this}}. You have to pass the model to the template.
-* {{>D model=this.subModel}} The same but this is not an array.
 
 You can use nested expressions like:
 
@@ -121,12 +123,6 @@ So is better to hide the component in those cases:
 
 ```html
 <input type="checkbox" sb sb-bool="age.cow.houses.0.tv" sb-visible="age.cow.houses.0">
-```
-
-The package uses ```aldeed:template-extension```, so you have to do, to initialize every template:
-
-```coffee
-Template.B.inheritsHooksFrom("sb_basic")
 ```
 
 The model is an instance of *Model*:
@@ -195,23 +191,19 @@ You can have a *form* like this (see the validation example):
 
 ```html
 <template name="B">
-    {{#withModel}}
-        <input type="text" sb sb-bind="b1">
-        <div sb sb-text="error_b1"></div>
-    {{/withModel}}
+    <input type="text" sb sb-bind="b1">
+    <div sb sb-text="error_b1"></div>
 </template>
 
 <template name="A">
-    {{#withModel}}
-        <input type="text" sb sb-bind="a1">
-        <div sb sb-text="error_a1"></div>
-        <input type="text" sb sb-bind="a2">
-        <div sb sb-text="error_a2"></div>
-        {{#each this.a3}}
-            {{> B model= this }}
-        {{/each}}
-        <button sb sb-disabled="isNotValid" sb-click="save">save</button>
-    {{/withModel}}
+    <input type="text" sb sb-bind="a1">
+    <div sb sb-text="error_a1"></div>
+    <input type="text" sb sb-bind="a2">
+    <div sb sb-text="error_a2"></div>
+    {{#each this.model.a3}}
+        {{> sbT template='B' model= this }}
+    {{/each}}
+    <button sb sb-disabled="isNotValid" sb-click="save">save</button>
 </template>
 ```
 
@@ -240,4 +232,3 @@ TODO:
 * dirty attribute so the update only updates the modified attributes. (maybe will not be implemented)
 * implement *exclude* server side and test both sides.
 * implement arrays for primitives (now you can use objects with the keyword 'value')
-* autocomplete feature

@@ -1,5 +1,5 @@
-Template.testBindings.inheritsHooksFrom("sb_basic")
-Template.nested.inheritsHooksFrom("sb_basic")
+#Template.testBindings.inheritsHooksFrom("sb_basic")
+#Template.nested.inheritsHooksFrom("sb_basic")
 
 Template.testBindings.helpers
   echo: (x)->console.log x

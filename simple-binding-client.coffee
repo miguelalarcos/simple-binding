@@ -333,15 +333,14 @@ rebind = (t) ->
       continue
     elementBinds(el, self)
 
-Template.withModel.helpers
+Template.sbT.helpers
   model: ->
     t = Template.instance()
-    #if t.parent().model isnt undefined and t.model != t.data.model
-    if t.parent().model isnt undefined and t.parent().model != t.parent().data.model
-      rebind(t.parent())
-    this.model
+    if t.model isnt undefined and t.model != t.data.model
+      rebind(t)
+    this
 
-Template.sb_basic.hooks
+Template.sbT.hooks
   rendered: ->
     self = this
     self.model = self.data.model

@@ -1,10 +1,7 @@
-<template name="sb_basic">
-</template>
-
-<template name="withModel">
+<template name="sbT">
     <div sb-template>
         {{#with model}}
-            {{> UI.contentBlock this}}
+            {{> UI.dynamic template=this.template}}
         {{/with}}
     </div>
 </template>

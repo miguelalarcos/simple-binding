@@ -1,0 +1,21 @@
+<body>
+    {{> xbody }}
+</body>
+
+<template name="xbody">
+    {{> sbT template='A' model=myModel}}
+</template>
+
+<template name="B">
+    <input type="text" sb sb-bind="b">
+    <div sb sb-text="b"></div>
+</template>
+
+<template name="A">
+    <input type="text" sb sb-bind="a">
+    <div sb sb-text="a"></div>
+    {{> sbT template='B' model=this.model.b1}}
+    {{#each this.model.b2}}
+        {{> sbT template='B' model=this}}
+    {{/each}}
+</template>
