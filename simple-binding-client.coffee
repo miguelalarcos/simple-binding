@@ -340,8 +340,9 @@ Template.sbT.helpers
       rebind(t)
     this
 
-Template.sbT.hooks
-  rendered: ->
+#Template.sbT.hooks
+#  rendered: ->
+Template.sbT.onRendered ->
     self = this
     self.model = self.data.model
 
@@ -352,7 +353,8 @@ Template.sbT.hooks
         continue
       elementBinds(el, self)
 
-  destroyed: ->
+#  destroyed: ->
+Template.sbT.onDestroyed ->
     if this.model
       this.model.destroy()
 
