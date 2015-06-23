@@ -1,6 +1,6 @@
-Template.A.inheritsHooksFrom("sb_basic")
-Template.B.inheritsHooksFrom("sb_basic")
-Template.C.inheritsHooksFrom("sb_basic")
+#Template.A.inheritsHooksFrom("sb_basic")
+#Template.B.inheritsHooksFrom("sb_basic")
+#Template.C.inheritsHooksFrom("sb_basic")
 
 Session.set 'A_id', null
 

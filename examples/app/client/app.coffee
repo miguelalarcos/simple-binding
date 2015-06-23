@@ -1,7 +1,7 @@
-Template.hello2.inheritsHooksFrom("sb_basic")
-Template.C.inheritsHooksFrom("sb_basic")
-Template.B.inheritsHooksFrom("sb_basic")
-Template.D.inheritsHooksFrom("sb_basic")
+#Template.hello2.inheritsHooksFrom("sb_basic")
+#Template.C.inheritsHooksFrom("sb_basic")
+#Template.B.inheritsHooksFrom("sb_basic")
+#Template.D.inheritsHooksFrom("sb_basic")
 
 hljs.initHighlightingOnLoad()
 
@@ -9,19 +9,20 @@ options = sb.reactiveArray(['miguel', 'veronica', 'bernardo'])
 
 Template.hello.helpers
   data: ->
-    new A
-      first: 'miguel'
-      last: 'alarcos'
-      date: moment().toDate()
-      lista: ['miguel']
-      numbers: []
-      flag: false
-      sex: 'male'
-      value: new D(value: 8)
-      alias: [new B
-                alias: 'mola'
-                emails: [new C(email:'m@m.es'), new C(email:'m2@m.es')]
-      ]
+    model:
+      new A
+        first: 'miguel'
+        last: 'alarcos'
+        date: moment().toDate()
+        lista: ['miguel']
+        numbers: []
+        flag: false
+        sex: 'male'
+        value: new D(value: 8)
+        alias: [new B
+                  alias: 'mola'
+                  emails: [new C(email:'m@m.es'), new C(email:'m2@m.es')]
+        ]
 
 Template.hello2.helpers
   options: ->

@@ -3,12 +3,10 @@
 </body>
 
 <template name="xbody">
-    {{> A model=myModel }}
+    {{> sbT template='A' model=myModel }}
 </template>
 
 <template name="A">
-    {{#withModel}}
-        <input type="text" sb sb-bind="a">
-        <div sb sb-text="error_a"></div>
-    {{/withModel}}
+    <input type="text" sb sb-bind="a">
+    <div sb sb-text="error_a"></div>
 </template>

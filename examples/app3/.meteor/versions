@@ -26,7 +26,7 @@ livedata@1.0.13
 logging@1.0.7
 meteor@1.1.6
 meteor-platform@1.2.2
-miguelalarcos:simple-binding@0.6.4
+miguelalarcos:simple-binding@0.6.7
 minifiers@1.1.5
 minimongo@1.0.8
 mobile-status-bar@1.0.3

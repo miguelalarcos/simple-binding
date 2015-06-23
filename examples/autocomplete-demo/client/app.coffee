@@ -1,4 +1,4 @@
-Template.autocomplete.inheritsHooksFrom("sb_basic")
+#Template.autocomplete.inheritsHooksFrom("sb_basic")
 
 class A extends sb.Model
   @schema:

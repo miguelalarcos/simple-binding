@@ -11,6 +11,9 @@ class A extends sb.Model
       type: B
     b2:
       type: [B]
+  click: ->
+    @b2.set(0,new B(b:0))
+    @b2.push(new B(b:1))
 
 Template.xbody.helpers
   myModel: -> new A

@@ -3,7 +3,7 @@
 </body>
 
 <template name="xbody">
-    {{> A model=myModel}}
+    {{> sbT template='A' model=myModel}}
     {{#each items}}
         <div>
             <a class='item' _id="{{_id}}">{{a}}</a>
@@ -12,30 +12,24 @@
 </template>
 
 <template name="C">
-    {{#withModel}}
-        <span sb sb-text="c"></span>
-        <input type="text" sb sb-bind="c">
-    {{/withModel}}
+    <span sb sb-text="c"></span>
+    <input type="text" sb sb-bind="c">
 </template>
 
 <template name="B">
-    {{#withModel}}
-        <span sb sb-text="b"></span>
-        <input type="text" sb sb-bind="b">
-    {{/withModel}}
+    <span sb sb-text="b"></span>
+    <input type="text" sb sb-bind="b">
 </template>
 
 <template name="A">
-    {{#withModel}}
-        <span sb sb-text="texto"></span>
-        <input type="text" sb sb-bind="a">
-        {{> B model=this.b }}
-        {{#each this.c}}
-            {{> C model=this}}
-        {{/each}}
-        <button sb sb-click="click">set B</button>
-        <button sb sb-click="save" sb-disabled="isNotValid">save</button>
-        <button sb sb-click="save">save skip client validation</button>
-        <button sb sb-click="reset">reset</button>
-    {{/withModel}}
+    <span sb sb-text="texto"></span>
+    <input type="text" sb sb-bind="a">
+    {{> sbT template='B' model=this.model.b }}
+    {{#each this.model.c}}
+        {{> sbT template='C' model=this}}
+    {{/each}}
+    <button sb sb-click="click">set B</button>
+    <button sb sb-click="save" sb-disabled="isNotValid">save</button>
+    <button sb sb-click="save">save skip client validation</button>
+    <button sb sb-click="reset">reset</button>
 </template>

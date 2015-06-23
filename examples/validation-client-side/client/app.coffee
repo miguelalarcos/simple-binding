@@ -1,4 +1,4 @@
-Template.A.inheritsHooksFrom("sb_basic")
+#Template.A.inheritsHooksFrom("sb_basic")
 
 class A extends sb.Model
   @schema:
