@@ -168,6 +168,8 @@ describe 'complex actions suite', ->
   afterAll ->
     Blaze.remove(el)
 
+  console.log '----------------------------------'
+
   it 'test destroy simple', (test)->
     nested = model.nested
     stubs.create 'nested_destroy', nested, 'destroy'

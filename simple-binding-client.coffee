@@ -4,6 +4,8 @@ reactiveArray = (v, dep) ->
 
   push = v.push
   v.push = (x) ->
+    x.container = v
+    x.parent = v.parent
     dep.changed()
     push.apply v, [x]
 
@@ -19,6 +21,8 @@ reactiveArray = (v, dep) ->
 
   unshift = v.unshift
   v.unshift = (x)->
+    x.container = v
+    x.parent = v.parent
     dep.changed()
     unshift.apply v, [x]
 
@@ -27,7 +31,15 @@ reactiveArray = (v, dep) ->
     dep.changed()
     splice.apply v, [pos, n].concat(args)
 
+  v.remove = (obj) ->
+    for o, i in v
+      if o is obj
+        v.splice(i, 1)
+        break
+
   v.set = (pos, value) ->
+    value.container = v
+    value.parent = v.parent
     dep.changed()
     v[pos] = value
 
@@ -48,6 +60,8 @@ getter_setter = (obj, attr) ->
     if value != obj[attr]
       dep.changed()
       obj[attr] = value
+      if value
+        value.parent = obj
 
 isSubClass = (klass, super_) ->
   klass.prototype instanceof super_
@@ -66,13 +80,22 @@ class Model
       if _.isArray(v) and isSubClass(sch.type[0], Model) and not (v[0] instanceof sch.type[0])
         ret = []
         for a in v
-          ret.push new sch.type[0](a)
+          x = new sch.type[0](a)
+          x.parent = @
+          x.container = ret
+          ret.push x
         @[k] = ret
-      #  console.log @, ret
       else if isSubClass(sch.type, Model) and not (v instanceof sch.type)
-        @[k] = new sch.type(v)
+        x = new sch.type(v)
+        x.parent = @
+        @[k] = x
       else
+        v.parent = @
         @[k] = v
+        if _.isArray(v)
+          for vv in v
+            vv.container = v
+            vv.parent = @
 
   toBDD: ->
     ret = {}
@@ -80,12 +103,10 @@ class Model
       if k in @constructor.exclude
         continue
       if _.isArray(v.type) and isSubClass(v.type[0], Model)
-      #if _.isArray(v.type) and (v.type[0] instanceof sb.Schema)
         ret[k] = []
         for x in @[k]
           ret[k].push x.toBDD()
       else if isSubClass(v.type, Model)
-      #else if v.type instanceof sb.Schema
         ret[k] = @[k].toBDD()
       else
         ret[k] = @[k]
@@ -250,10 +271,13 @@ classesHelper = (el, self, classes) ->
 
 hoverHelper = (el, self, hover)->
   [subdoc, name] = self.model.subDoc(hover)
+  $(el).unbind('hover')
   $(el).hover((->subdoc[name]=true), (->subdoc[name]=false))
 
 focusHelper = (el, self, focus)->
   [subdoc, name] = self.model.subDoc(focus)
+  $(el).unbind('focus')
+  $(el).unbind('focusout')
   $(el).focus(->subdoc[name]=true)
   $(el).focusout(->subdoc[name]=false)
 
@@ -291,12 +315,14 @@ radioHelper = (el, self, radio) ->
 
 clickHelper = (el, self, click)->
   [subdoc, name] = self.model.subDoc(click)
+  $(el).unbind('click')
   $(el).click ->
     subdoc[name]()
 
 eventHelper = (el, self, event)->
   [event, f] = event.split(/\s+/)
   [subdoc, name] = self.model.subDoc(f)
+  $(el).unbind()
   $(el).on event, (evt) ->
     subdoc[name](evt)
 
@@ -359,6 +385,7 @@ Template.sbT.onDestroyed ->
       this.model.destroy()
 
 elementBinds = (el, self) ->
+  #$(el).unbind()
   text = $(el).attr('sb-text')
   if text
     self.model.__computations.push Tracker.autorun textHelper(el, self, text)

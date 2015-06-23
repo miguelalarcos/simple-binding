@@ -71,7 +71,7 @@ If you use the *renderFunction* instead of *renderKey*:
 ```
 
 ---
-In the case of an attribute that is an array, it will be converted to a reactive array, and you can use *push*, *pop*, *shift*, *unshift*, *splice* and a method *set* that is ```set=(pos, value)->```. You can use yourself the *reactiveArray*, this way:
+In the case of an attribute that is an array, it will be converted to a reactive array, and you can use *push*, *pop*, *shift*, *unshift*, *splice*, *remove* and a method *set* that is ```set=(pos, value)->```. You can use yourself the *reactiveArray*, this way:
 
 ```coffee
 names = reactiveArray(['miguel', 'veronica', 'bernardo'])
@@ -211,6 +211,22 @@ You have to do server side validation. This is an example on how to do it:
 ```coffee
 sb.allowIfValid(model)
 #sb.denyIfNotValid(model)
+```
+
+parent and container
+--------------------
+
+Each model object has two important attributes: *parant* and *container*. *parent* references the parent model object of this object.
+*container* references the array where the object is, if any. Example:
+
+```coffee
+class B extends sb.Model
+  @schema:
+    b:
+      type: sb.Integer
+  remove: ->
+    if @container
+      @container.remove(@)
 ```
 
 Issues
