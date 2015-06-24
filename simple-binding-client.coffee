@@ -1,4 +1,7 @@
 reactiveArray = (v, dep) ->
+  if v.wrapped
+    return v
+
   if dep is undefined
     dep = new Tracker.Dependency()
 
@@ -76,7 +79,8 @@ class Model
     for k, sch of @schema
       v = dct[k]
       if v is undefined or v is null
-        continue
+        #continue
+        v = ''
       if _.isArray(v) and isSubClass(sch.type[0], Model) and not (v[0] instanceof sch.type[0])
         ret = []
         for a in v
@@ -90,12 +94,13 @@ class Model
         x.parent = @
         @[k] = x
       else
-        v.parent = @
+        if v
+          v.parent = @
         @[k] = v
         if _.isArray(v)
-          for vv in v
-            vv.container = v
-            vv.parent = @
+          for v_ in v
+            v_.container = v
+            v_.parent = @
 
   toBDD: ->
     ret = {}

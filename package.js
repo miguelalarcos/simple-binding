@@ -1,6 +1,6 @@
 Package.describe({
     name: 'miguelalarcos:simple-binding',
-    version: '0.7.0',
+    version: '0.7.1',
     summary: 'Simple two way bindings for Meteor, with nested models and validation.',
     git: 'https://github.com/miguelalarcos/simple-binding.git',
     documentation: 'README.md'
@@ -36,8 +36,9 @@ Package.onTest(function(api) {
     api.use('jquery');
     api.use('templating');
     api.use('underscore');
-    api.use('practicalmeteor:munit', 'client');
+    api.use('practicalmeteor:munit', ['client', 'server']);
     api.use('miguelalarcos:simple-binding');
     api.addFiles('simple-binding-tests.html', 'client');
     api.addFiles('simple-binding-tests.coffee', 'client');
+    api.addFiles('simple-binding-tests-validations.coffee', 'server');
 });

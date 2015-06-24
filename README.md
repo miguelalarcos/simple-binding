@@ -110,19 +110,11 @@ You can use nested expressions like:
 <div sb sb-text="age.value">
 ```
 
-You can set a model to null:
+You can set a model without values:
 
 ```coffee
 ... = new A
-  a1: new B()
-  a2: null # instead of new C(), for example
-```
-
-Be careful, because if you have a computation that uses the model you set to null and you use the related ui component, you will have errors.
-So is better to hide the component in those cases:
-
-```html
-<input type="checkbox" sb sb-bool="age.cow.houses.0.tv" sb-visible="age.cow.houses.0">
+  a1: new B({})
 ```
 
 The model is an instance of *Model*:
