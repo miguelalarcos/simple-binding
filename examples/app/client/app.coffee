@@ -5,7 +5,7 @@
 
 hljs.initHighlightingOnLoad()
 
-options = sb.reactiveArray(['miguel', 'veronica', 'bernardo'])
+options = new sb.ReactiveArray(['miguel', 'veronica', 'bernardo'])
 
 Template.hello.helpers
   data: ->

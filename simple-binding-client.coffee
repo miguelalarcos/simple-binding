@@ -1,4 +1,58 @@
-reactiveArray = (v, dep) ->
+isSubClass = (klass, super_) ->
+  klass.prototype instanceof super_
+
+class ReactiveArray extends Array
+  constructor: (v, dep) ->
+    if dep is undefined
+      dep = new Tracker.Dependency()
+    @_dep = dep
+    @splice 0, 0, v...
+    for item in v
+      item.__container = @
+
+  extract: ->
+    ret = []
+    for item in @
+      ret.push item
+    ret
+
+  push: (x) ->
+    x.__container = @
+    @_dep.changed()
+    super x
+
+  pop: ->
+    @_dep.changed()
+    super()
+
+  shift: ->
+    @_dep.changed()
+    super()
+
+  unshift: (x) ->
+    x.__container = @
+    @_dep.changed()
+    super x
+
+  splice: (pos, n, args...)->
+    @_dep.changed()
+    super ([pos, n].concat(args))...
+
+  remove: (obj) ->
+    for item, i in @
+      if item is obj
+        @splice(i, 1)
+        break
+
+  set: (pos, value) ->
+    value.__container = @
+    @_dep.changed()
+    @[pos] = value
+
+  depend: ->
+    @_dep.depend()
+
+_reactiveArray = (v, dep) ->
   if v.wrapped
     return v
 
@@ -8,7 +62,7 @@ reactiveArray = (v, dep) ->
   push = v.push
   v.push = (x) ->
     x.container = v
-    x.parent = v.parent
+    #x.parent = v.parent
     dep.changed()
     push.apply v, [x]
 
@@ -25,7 +79,7 @@ reactiveArray = (v, dep) ->
   unshift = v.unshift
   v.unshift = (x)->
     x.container = v
-    x.parent = v.parent
+    #x.parent = v.parent
     dep.changed()
     unshift.apply v, [x]
 
@@ -35,14 +89,14 @@ reactiveArray = (v, dep) ->
     splice.apply v, [pos, n].concat(args)
 
   v.remove = (obj) ->
-    for o, i in v
-      if o is obj
+    for item, i in v
+      if item is obj
         v.splice(i, 1)
         break
 
   v.set = (pos, value) ->
     value.container = v
-    value.parent = v.parent
+    #value.parent = v.parent
     dep.changed()
     v[pos] = value
 
@@ -58,16 +112,13 @@ getter_setter = (obj, attr) ->
     dep.depend()
     obj[attr]
   set: (value) ->
-    if _.isArray(value) and not value.wrapped
-      value = reactiveArray(value, dep)
+    if _.isArray(value) #and not value.wrapped
+      value = new ReactiveArray(value, dep)
     if value != obj[attr]
       dep.changed()
       obj[attr] = value
-      if value
-        value.parent = obj
-
-isSubClass = (klass, super_) ->
-  klass.prototype instanceof super_
+      #if value
+      #  value.parent = obj
 
 class Model
   @exclude = []
@@ -85,22 +136,13 @@ class Model
         ret = []
         for a in v
           x = new sch.type[0](a)
-          x.parent = @
-          x.container = ret
           ret.push x
         @[k] = ret
       else if isSubClass(sch.type, Model) and not (v instanceof sch.type)
         x = new sch.type(v)
-        x.parent = @
         @[k] = x
       else
-        if v
-          v.parent = @
         @[k] = v
-        if _.isArray(v)
-          for v_ in v
-            v_.container = v
-            v_.parent = @
 
   toBDD: ->
     ret = {}
@@ -142,6 +184,10 @@ class Model
   destroy: ->
     for c in @__computations
       c.stop()
+
+  removeFromContainer: ->
+    if @__container
+      @__container.remove(@)
 
 keyUpHelper = (self, el) ->
   (event) ->
@@ -367,7 +413,7 @@ rebind = (t) ->
 Template.sbT.helpers
   model: ->
     t = Template.instance()
-    if t.model isnt undefined and t.model != t.data.model
+    if t.model isnt undefined and t.model isnt t.data.model
       rebind(t)
     this
 
@@ -459,4 +505,5 @@ elementBinds = (el, self) ->
     focusHelper(el, self, focus)
 
 sb.Model = Model
-sb.reactiveArray = reactiveArray
+#sb.reactiveArray = reactiveArray
+sb.ReactiveArray = ReactiveArray

@@ -2,10 +2,8 @@ class B extends sb.Model
   @schema:
     b:
       type: sb.Integer
-  remove: ->
-    if @container
-      @container.remove(@)
-  log: -> console.log @parent
+  remove: -> @removeFromContainer()
+  log: -> console.log 'hello'
 
 class A extends sb.Model
   @schema:

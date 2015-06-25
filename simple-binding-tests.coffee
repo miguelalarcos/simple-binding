@@ -49,13 +49,13 @@ describe 'binding suite', ->
     test.equal model.first, $("body").find("#0").val()
 
   it 'test select multiple', (test)->
-    test.equal model.cinema, $("body").find("#1").val()
+    test.equal model.cinema.extract(), $("body").find("#1").val()
     $("body").find("#1").val('bernardo')
     $("body").find("#1").trigger('change')
-    test.equal model.cinema, ['bernardo']
+    test.equal model.cinema.extract(), ['bernardo']
     model.cinema = ['miguel', 'veronica']
     Meteor.flush()
-    test.equal model.cinema, $("body").find("#1").val()
+    test.equal model.cinema.extract(), $("body").find("#1").val()
 
   it 'test check', (test)->
     test.isTrue $("body").find("#2").is(':checked')
@@ -100,7 +100,26 @@ describe 'binding suite', ->
     Meteor.flush()
     test.equal $("body").find("#7").text(), 'hola'
 
-describe 'suite to test reactiveArray', ->
+describe 'suite to test ReactiveArray single', ->
+  it 'test set', (test)->
+    value = null
+    lista = new sb.ReactiveArray([])
+
+    c = Tracker.autorun ->
+      lista.depend()
+      value = lista[0]
+    lista.set(0, 'bernardo')
+    Meteor.flush()
+    test.equal value, 'bernardo'
+    c.stop()
+
+  it 'test remove', (test) ->
+    b = new B flag: true
+    lista = new sb.ReactiveArray([b])
+    b.removeFromContainer()
+    test.equal lista.extract(), []
+
+describe 'suite to test ReactiveArray', ->
   it 'test set', (test)->
     value = null
     c = Tracker.autorun ->
@@ -176,7 +195,7 @@ describe 'complex actions suite', ->
     Meteor.flush()
     expect(stubs.nested_destroy).to.have.been.called
 
-  it 'test destroy null', (test)->
+  it.skip 'test destroy null', (test)->
     nested = model.nested
     stubs.create 'nested_destroy', nested, 'destroy'
     model.nested = null
