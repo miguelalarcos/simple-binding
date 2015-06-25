@@ -39,5 +39,19 @@ describe 'to BDD suite', ->
 
   it 'test nested empty 2', (test) ->
     x = new D
-      n: new E(n: '', n2: [])
+      n: new E(n: '')
+      n2: []
     test.equal x.toBDD(), {}
+
+describe 'load BDD suite', ->
+  it 'test simple load', (test)->
+    x = new D({})
+    test.equal x.n2, []
+    test.equal x.n.n, ''
+
+  it 'test load with data', (test) ->
+    x = new D
+      n: new E(n: '')
+      n2: []
+    test.equal x.n.n, ''
+    test.equal x.n2, []
