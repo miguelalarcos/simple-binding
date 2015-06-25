@@ -139,8 +139,8 @@ class Model
           ret.push x
         @[k] = ret
       else if isSubClass(sch.type, Model) and not (v instanceof sch.type)
-        x = new sch.type(v)
-        @[k] = x
+        if v == '' then v = {}
+        @[k] = new sch.type(v)
       else
         @[k] = v
 
