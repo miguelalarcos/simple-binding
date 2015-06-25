@@ -205,6 +205,20 @@ sb.allowIfValid(model)
 #sb.denyIfNotValid(model)
 ```
 
+But in production maybe you need to check for the owner of the doc to be updated, for example.
+I recommend to use *ongoworks:security*. The deny function would be something like:
+
+```coffee
+Security.defineMethod "checkUpdateA", 
+  fetch: [],
+  transform: null,
+  deny: (type, arg, userId, doc, fields, modifier) ->
+    if userId !== doc._owner or not sb.validate(modifier['$set'], A.schema)
+      true
+    else
+      false
+```
+
 parent and container
 --------------------
 

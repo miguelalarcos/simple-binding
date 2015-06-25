@@ -156,7 +156,9 @@ class Model
       else if isSubClass(v.type, Model)
         ret[k] = @[k].toBDD()
       else
-        ret[k] = @[k]
+        x = @[k]
+        if x isnt undefined and x isnt null and x != ''
+          ret[k] = x #@[k]
     ret
 
   save: ->
@@ -196,13 +198,13 @@ keyUpHelper = (self, el) ->
     prop = subdoc.constructor.schema[name]
     if prop.type is sb.Integer
       value = parseInt($(el).val())
-      if value
+      if value isnt NaN
         subdoc[name] = value
       else
         subdoc[name] = $(el).val()
     else if prop.type is sb.Float
       value = parseFloat($(el).val())
-      if value
+      if value isnt NaN
         subdoc[name] = value
       else
         subdoc[name] = $(el).val()

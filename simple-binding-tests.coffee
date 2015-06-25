@@ -22,6 +22,8 @@ class A extends sb.Model
       type: String
     nested:
       type: B
+    integer:
+      type: sb.Integer
 
 model = new A
   first: 'miguel'
@@ -30,6 +32,7 @@ model = new A
   sex: 'male'
   nested: new B
     flag: true
+  integer: 5
 
 describe 'binding suite', ->
   el = null
@@ -47,6 +50,11 @@ describe 'binding suite', ->
     model.first = 'bernardo'
     Meteor.flush()
     test.equal model.first, $("body").find("#0").val()
+
+  it 'test bind2', (test)->
+    $("body").find("#8").val(0)
+    $("body").find("#8").trigger('keyup')
+    test.equal model.integer, 0
 
   it 'test select multiple', (test)->
     test.equal model.cinema.extract(), $("body").find("#1").val()
