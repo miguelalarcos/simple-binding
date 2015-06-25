@@ -4,6 +4,18 @@ class A extends sb.Model
       type: String
       optional: true
 
+class E extends sb.Model
+  @schema:
+    n:
+      type: sb.Integer
+      optional: true
+
+class D extends sb.Model
+  @schema:
+    n:
+      type: E
+      optional: true
+
 describe 'to BDD suite', ->
   it 'test simple empty', (test)->
     a = new A a1: ''
@@ -12,3 +24,17 @@ describe 'to BDD suite', ->
   it 'test simple not empty', (test)->
     a = new A a1: 'hello'
     test.equal a.toBDD(), {a1: 'hello'}
+
+  it 'test nested simple', (test) ->
+    x = new D
+      n: new E(n:8)
+    test.equal x.toBDD(), {n: {n:8}}
+
+  it 'test nested empty', (test) ->
+    x = new D({})
+    test.equal x.toBDD(), {}
+
+  it 'test nested empty 2', (test) ->
+    x = new D
+      n: new E(n: '')
+    test.equal x.toBDD(), {}

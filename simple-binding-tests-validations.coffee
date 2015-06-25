@@ -23,6 +23,18 @@ class C extends sb.Model
     n:
       type: [N]
 
+class E extends sb.Model
+  @schema:
+    n:
+      type: sb.Integer
+      optional: true
+
+class D extends sb.Model
+  @schema:
+    n:
+      type: E
+      optional: true
+
 describe 'validation suite', ->
   it 'test simple validation', (test)->
     model =
@@ -79,3 +91,15 @@ describe 'validation suite', ->
     model =
       n: [x: 4]
     test.equal sb.validate(model, C.schema), false
+
+  it 'test nested optional', (test) ->
+    model = {}
+    test.equal sb.validate(model, D.schema), true
+
+  it 'test nested optional 2', (test) ->
+    model = {n: {n:''}}
+    test.equal sb.validate(model, D.schema), true
+
+  it 'test nested optional 3', (test) ->
+    model = {n: {}}
+    test.equal sb.validate(model, D.schema), true

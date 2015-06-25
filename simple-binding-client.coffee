@@ -154,7 +154,9 @@ class Model
         for x in @[k]
           ret[k].push x.toBDD()
       else if isSubClass(v.type, Model)
-        ret[k] = @[k].toBDD()
+        x = @[k].toBDD()
+        if not _.isEmpty(x)
+          ret[k] = x
       else
         x = @[k]
         if x isnt undefined and x isnt null and x != ''
