@@ -15,6 +15,9 @@ class D extends sb.Model
     n:
       type: E
       optional: true
+    n2:
+      type: [E]
+      optional: true
 
 describe 'to BDD suite', ->
   it 'test simple empty', (test)->
@@ -36,5 +39,5 @@ describe 'to BDD suite', ->
 
   it 'test nested empty 2', (test) ->
     x = new D
-      n: new E(n: '')
+      n: new E(n: '', n2: [])
     test.equal x.toBDD(), {}

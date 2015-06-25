@@ -130,8 +130,10 @@ class Model
     for k, sch of @schema
       v = dct[k]
       if v is undefined or v is null
-        #continue
-        v = ''
+        if _.isArray(sch.type)
+          v = []
+        else
+          v = ''
       if _.isArray(v) and isSubClass(sch.type[0], Model) and not (v[0] instanceof sch.type[0])
         ret = []
         for a in v
@@ -150,9 +152,14 @@ class Model
       if k in @constructor.exclude
         continue
       if _.isArray(v.type) and isSubClass(v.type[0], Model)
-        ret[k] = []
+        #ret[k] = []
+        #for x in @[k]
+        #  ret[k].push x.toBDD()
+        r = []
         for x in @[k]
-          ret[k].push x.toBDD()
+          r.push x.toBDD()
+        if not _.isEmpty(r)
+          ret[k] = r
       else if isSubClass(v.type, Model)
         x = @[k].toBDD()
         if not _.isEmpty(x)
