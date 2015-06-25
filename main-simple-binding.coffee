@@ -6,19 +6,26 @@ class Float
 sb.Integer = Integer
 sb.Float = Float
 
+empty = (value) ->
+  if value is undefined or value is null or value == '' or (_.isObject(value) and _.isEmpty(value))
+    true
+  else
+    false
+
 sb.validate = (object, schema) ->
   if Meteor.isServer
+    keys = _.keys(schema)
     for attr of object
-      if attr not in _.keys(schema) #(x for x of schema) # _.keys
+      if attr not in keys
         return false
 
   for attr, sch of schema
     value = object[attr]
-    if not sch.optional and (value is undefined or value is null or value == '')
+    if not sch.optional and empty(value)
       return false
-    if sch.optional and (value is undefined or value is null or value == '')
+    if sch.optional and empty(value)
       continue
-    #if value isnt undefined and value isnt null and value != ''
+
     if sch.type == String and not _.isString(value)
       return false
     else if (sch.type == Integer or sch.type == Float) and not _.isNumber(value)

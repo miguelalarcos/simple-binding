@@ -52,59 +52,6 @@ class ReactiveArray extends Array
   depend: ->
     @_dep.depend()
 
-_reactiveArray = (v, dep) ->
-  if v.wrapped
-    return v
-
-  if dep is undefined
-    dep = new Tracker.Dependency()
-
-  push = v.push
-  v.push = (x) ->
-    x.container = v
-    #x.parent = v.parent
-    dep.changed()
-    push.apply v, [x]
-
-  pop = v.pop
-  v.pop = ->
-    dep.changed()
-    pop.apply v
-
-  shift = v.shift
-  v.shift = ->
-    dep.changed()
-    shift.apply v
-
-  unshift = v.unshift
-  v.unshift = (x)->
-    x.container = v
-    #x.parent = v.parent
-    dep.changed()
-    unshift.apply v, [x]
-
-  splice = v.splice
-  v.splice = (pos, n, args...)->
-    dep.changed()
-    splice.apply v, [pos, n].concat(args)
-
-  v.remove = (obj) ->
-    for item, i in v
-      if item is obj
-        v.splice(i, 1)
-        break
-
-  v.set = (pos, value) ->
-    value.container = v
-    #value.parent = v.parent
-    dep.changed()
-    v[pos] = value
-
-  v.depend = ->
-    dep.depend()
-
-  v.wrapped = true
-  return v
 
 getter_setter = (obj, attr) ->
   dep = new Tracker.Dependency()
@@ -117,8 +64,6 @@ getter_setter = (obj, attr) ->
     if value != obj[attr]
       dep.changed()
       obj[attr] = value
-      #if value
-      #  value.parent = obj
 
 class Model
   @exclude = []
@@ -152,9 +97,6 @@ class Model
       if k in @constructor.exclude
         continue
       if _.isArray(v.type) and isSubClass(v.type[0], Model)
-        #ret[k] = []
-        #for x in @[k]
-        #  ret[k].push x.toBDD()
         r = []
         for x in @[k]
           r.push x.toBDD()
@@ -516,5 +458,4 @@ elementBinds = (el, self) ->
     focusHelper(el, self, focus)
 
 sb.Model = Model
-#sb.reactiveArray = reactiveArray
 sb.ReactiveArray = ReactiveArray
