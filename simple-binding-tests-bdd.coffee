@@ -55,3 +55,10 @@ describe 'load BDD suite', ->
       n2: []
     test.equal x.n.n, ''
     test.equal x.n2, []
+
+  it 'test load with data 2', (test) ->
+    x = new D
+      n: new E(n: 8)
+      n2: [new E(n: 7)]
+    test.equal x.n.n, 8
+    test.equal x.n2[0].n, 7
