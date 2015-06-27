@@ -17,7 +17,7 @@ current_input = null
 generalRenderFunction = (key)->
   (x, query)->
     txt = '<td>' +x[key]+ '</td>'
-    txt.replace(query, "<b>$&</b>")
+    #txt.replace(query, "<b>$&</b>")
 
 Template.sbAutocomplete.helpers
 
