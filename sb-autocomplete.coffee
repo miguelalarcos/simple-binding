@@ -116,3 +116,9 @@ $.fn.sbautocomplete = ->
 
 Template.sbAutocomplete.rendered = ->
   $(this.findAll('.xautocomplete')).sbautocomplete()
+  #
+  el = this.find('.xautocomplete')
+  input = $(el).find('.xautocomplete-input')
+  popover = $(el).find('.xpopover')
+  offset = input.offset()
+  popover.offset({top: offset.top + input.height()*2, left: offset.left})

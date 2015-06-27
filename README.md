@@ -229,6 +229,11 @@ class B extends sb.Model
   remove: -> @removeFromContainer()
 ```
 
+semantic-ui
+-----------
+
+You must install semantic-ui so the datetime widget would be shown correctly (semantic:ui-css).
+
 Issues
 ------
 Issue: be careful when using {{#if ...}} because the single elements inside probably will not have the chance to bind, not the templates inside that will bind in created event (not tested).

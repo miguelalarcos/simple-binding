@@ -183,3 +183,10 @@ Template.sbDateTime.rendered = ->
   for el in this.findAll('.xwidget.xdatetime')
     $(el).data('moment', new ReactiveVar())
     $(el).find('.xdatetime-popover').hide()
+    #
+    input = $(el).find('.xdatetime-input')
+    #offset = input.position()
+    #console.log offset
+    popover = $(el).find('.xdatetime-popover')
+    #popover.offset({top: offset.top + input.height()*2, left: offset.left})
+    popover.offset({top: input.height()*2, left: 0})
