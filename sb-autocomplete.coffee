@@ -1,3 +1,7 @@
+_isValidAutocomplete = new ReactiveDict()
+
+sb.isValidAutocomplete = (id) -> _isValidAutocomplete.get(id)
+
 # query is Reactive var where we are going to keep the text that the user is writing in the current autocomplete input
 query = new ReactiveVar('')
 
@@ -22,7 +26,7 @@ Template.sbAutocomplete.helpers
     query_ = query.get()
     atts = this
     call = atts.call
-    collection = atts.collection
+    #collection = atts.collection
     renderFunction = atts.renderFunction
     if renderFunction
       renderFunction = window[renderFunction]
@@ -30,24 +34,29 @@ Template.sbAutocomplete.helpers
       renderFunction = generalRenderFunction(atts.renderKey)
 
     if atts.id == current_input and query_ != ''
-      if call
-        Meteor.call call, query_, (error, result)->
-          items.remove({})
-          for item, i in result
-            rendered = renderFunction(item, query_)
-            value = item[atts.fieldRef]
-            items.insert({value: value, content:rendered, index: i, remote_id: item._id, doc: item})
-        items.find({})
-      else
-        dct = {}
-        dct[atts.fieldRef] = {$regex: '^.*'+query_+'.*$'}
-        result = window[collection].find(dct).fetch()
+      #if call
+      #
+      Meteor.call call, query_, (error, result)->
         items.remove({})
+        _isValidAutocomplete.set(atts.id, false)
         for item, i in result
           rendered = renderFunction(item, query_)
           value = item[atts.fieldRef]
-          items.insert({value: value, content: rendered, index: i, remote_id: item._id, doc: item})
-        items.find({})
+          if value == query_
+            _isValidAutocomplete.set(atts.id, true)
+          items.insert({value: value, content:rendered, index: i, remote_id: item._id, doc: item})
+      items.find({})
+      #
+      #else
+      #  dct = {}
+      #  dct[atts.fieldRef] = {$regex: '^.*'+query_+'.*$'}
+      #  result = window[collection].find(dct).fetch()
+      #  items.remove({})
+      #  for item, i in result
+      #    rendered = renderFunction(item, query_)
+      #    value = item[atts.fieldRef]
+      #    items.insert({value: value, content: rendered, index: i, remote_id: item._id, doc: item})
+      #  items.find({})
     else
       null
 
@@ -59,6 +68,7 @@ Template.sbAutocomplete.events
     selected = items.findOne({selected: 'xselected'})
     $(t.find '.xautocomplete-input').val(selected.value)
     widget = t.find('.xwidget')
+    _isValidAutocomplete.set($(widget).attr('id'), true)
     $(widget).trigger('textChange', [selected.value])
     items.remove({})
     query.set('')
@@ -81,6 +91,7 @@ Template.sbAutocomplete.events
       query.set('')
       index = -1
       widget = t.find('.xwidget')
+      _isValidAutocomplete.set($(widget).attr('id'), true)
       $(widget).trigger('textChange', [selected.value])
     else if e.keyCode == 27
       items.remove({})

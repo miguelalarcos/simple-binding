@@ -36,26 +36,23 @@ the example of use is:
 
 ```html
 {{> sbAutocomplete sb-autocomplete='a' call='data' fieldRef='surname' renderKey='surname' id='demoId'}}
-{{> sbAutocomplete sb-autocomplete='a' collection='surnamesCollection' fieldRef='surname' renderFunction='surnameFunc' id='demoId2'}}
 ```
 
-If you use the *call* method: you can't do validation.
+Note that you have to give an *id*.
 
 ```coffee
 Meteor.methods
-  'data': (query) -> surnamesCollection.find({surname: {$regex: '^.*'+query+'.*$'}})
+  data: (query) -> surnamesCollection.find({surname: {$regex: '^.*'+query+'.*$'}})
 ```
 
-If you use the *collection* method:
-you must subscribe to a publication that serves all the data of the collection (it must be small) so you can do validation:
+The validation should be a function like this (more on validations later):
 
 ```coffee
-class A extends sb.Model
-  @schema:
-    a:
-      type: String
-      validation: (x) -> surnamesCollection.findOne({surname: x})
-
+validation: (x) ->
+  if Meteor.isServer
+    surnamesCollection.findOne({surname: x})
+  else
+    sb.isValidAutocomplete('demoId')
 ```
 
 If you use the *renderFunction* instead of *renderKey*:
@@ -219,8 +216,8 @@ Security.defineMethod "checkUpdateA",
       false
 ```
 
-parent and container
---------------------
+removeFromContainer
+-------------------
 
 Each model object has a method called *removeFromContainer* that removes this model instance from the array that contains it, if any. Example:
 
