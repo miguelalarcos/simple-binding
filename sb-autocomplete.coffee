@@ -34,8 +34,6 @@ Template.sbAutocomplete.helpers
       renderFunction = generalRenderFunction(atts.renderKey)
 
     if atts.id == current_input and query_ != ''
-      #if call
-      #
       Meteor.call call, query_, (error, result)->
         items.remove({})
         _isValidAutocomplete.set(atts.id, false)
@@ -45,18 +43,7 @@ Template.sbAutocomplete.helpers
           if value == query_
             _isValidAutocomplete.set(atts.id, true)
           items.insert({value: value, content:rendered, index: i, remote_id: item._id, doc: item})
-      items.find({})
-      #
-      #else
-      #  dct = {}
-      #  dct[atts.fieldRef] = {$regex: '^.*'+query_+'.*$'}
-      #  result = window[collection].find(dct).fetch()
-      #  items.remove({})
-      #  for item, i in result
-      #    rendered = renderFunction(item, query_)
-      #    value = item[atts.fieldRef]
-      #    items.insert({value: value, content: rendered, index: i, remote_id: item._id, doc: item})
-      #  items.find({})
+      items.find({}, {sort: {value: 1}})
     else
       null
 
