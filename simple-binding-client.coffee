@@ -70,6 +70,7 @@ class Model
   constructor: (dct)->
     @schema = @constructor.schema
     @__computations = []
+    @_id = dct._id
     for attr, value of @schema
       Object.defineProperty @, attr, getter_setter(@, '_' + attr)
     for k, sch of @schema
