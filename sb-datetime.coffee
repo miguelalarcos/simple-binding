@@ -34,6 +34,8 @@ Template.sbDateTime.events
       if pop != current
         $(pop).hide()
     $(current).toggle()
+    if not $(current).is(':visible')
+      show_calendar.set false
 
   'click .xdatetime-day': (e, t)->
     atts = t.data
@@ -48,7 +50,7 @@ Template.sbDateTime.events
     unless atts.time == true
       current = t.find('.xdatetime-popover')
       $(current).hide()
-      show_calendar.set false
+    show_calendar.set false
 
   'click .minus-month': (e,t)->
     date = getMomentFromTemplate(t)
