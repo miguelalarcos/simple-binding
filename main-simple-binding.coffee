@@ -7,6 +7,8 @@ sb.Integer = Integer
 sb.Float = Float
 
 empty = (value) ->
+  if _.isDate(value)
+    return false
   if value is undefined or value is null or value == '' or (_.isObject(value) and _.isEmpty(value))
     true
   else

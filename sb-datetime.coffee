@@ -48,6 +48,7 @@ Template.sbDateTime.events
     unless atts.time == true
       current = t.find('.xdatetime-popover')
       $(current).hide()
+      show_calendar.set false
 
   'click .minus-month': (e,t)->
     date = getMomentFromTemplate(t)
@@ -170,8 +171,15 @@ $.valHooks['sbdatetime'] =
 
   set: (el, value)->
     format = $(el).attr('format')
-    $(el).find('.xdatetime-input').val(moment(value).format(format))
-    $(el).data('moment').set(moment(value))
+    time = $(el).attr('time')
+    m = moment(value)
+    if not m.isValid()
+      if time
+        m = moment()
+      else
+        m = moment().startOf('day')
+    $(el).find('.xdatetime-input').val(m.format(format))  #(moment(value).format(format))
+    $(el).data('moment').set(m)  #(moment(value))
 
 $.fn.sbdatetime = (name)->
   this.each ->

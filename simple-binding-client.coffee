@@ -79,7 +79,10 @@ class Model
         if _.isArray(sch.type)
           v = []
         else
-          v = ''
+          if sch.type is Date
+            v = moment().startOf('Day').toDate()
+          else
+            v = ''
       if _.isArray(v) and isSubClass(sch.type[0], Model) and not (v[0] instanceof sch.type[0])
         ret = []
         for a in v
@@ -150,13 +153,15 @@ keyUpHelper = (self, el) ->
     prop = subdoc.constructor.schema[name]
     if prop.type is sb.Integer
       value = parseInt($(el).val())
-      if value isnt NaN
+      #if value isnt NaN
+      if not _.isNaN(value)
         subdoc[name] = value
       else
         subdoc[name] = $(el).val()
     else if prop.type is sb.Float
       value = parseFloat($(el).val())
-      if value isnt NaN
+      #if value isnt NaN
+      if not _.isNaN(value)
         subdoc[name] = value
       else
         subdoc[name] = $(el).val()
