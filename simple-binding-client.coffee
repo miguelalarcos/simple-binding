@@ -113,7 +113,10 @@ class Model
       else
         x = @[k]
         if x isnt undefined and x isnt null and x != ''
-          ret[k] = x #@[k]
+          if x instanceof ReactiveArray
+            x = x.extract()
+          ret[k] = x
+
     ret
 
   save: ->
@@ -355,6 +358,16 @@ textHelper = (el, self, text)->
     else
       $(el).text subdoc[name]
 
+htmlHelper = (el, self, html)->
+  ->
+    [subdoc, name] = self.model.subDoc(html)
+    if subdoc is null then return
+    if _.isFunction(subdoc[name])
+      $(el).html subdoc[name]()
+    else
+      $(el).html subdoc[name]
+
+
 rebind = (t) ->
   self = t
   if self.model
@@ -399,6 +412,11 @@ elementBinds = (el, self) ->
   text = $(el).attr('sb-text')
   if text
     self.model.__computations.push Tracker.autorun textHelper(el, self, text)
+  #
+  html = $(el).attr('sb-html')
+  if html
+    self.model.__computations.push Tracker.autorun htmlHelper(el, self, html)
+  #
   fade = $(el).attr('sb-fade')
   if fade
     self.model.__computations.push Tracker.autorun fadeHelper(el, self, fade)
