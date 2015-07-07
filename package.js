@@ -1,6 +1,6 @@
 Package.describe({
     name: 'miguelalarcos:simple-binding',
-    version: '0.7.7',
+    version: '0.7.8',
     summary: 'Simple two way bindings for Meteor, with nested models and validation.',
     git: 'https://github.com/miguelalarcos/simple-binding.git',
     documentation: 'README.md'
