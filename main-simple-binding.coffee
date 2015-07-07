@@ -2,9 +2,11 @@ sb = {}
 
 class Integer
 class Float
+class Html
 
 sb.Integer = Integer
 sb.Float = Float
+sb.Html = Html
 
 empty = (value) ->
   if _.isDate(value)

@@ -169,7 +169,10 @@ keyUpHelper = (self, el) ->
       else
         subdoc[name] = $(el).val()
     else
-      subdoc[name] = $(el).val()
+      if subdoc.constructor.schema[name].type is sb.Html
+        subdoc[name] = $(el).html()
+      else
+        subdoc[name] = $(el).val()
 
 customWidgetChangeHelper = (self, el)->
   (event, param) ->
@@ -223,7 +226,12 @@ bindHelper = (el, self, bind) ->
   ->
     [subdoc, name] = self.model.subDoc(bind)
     if subdoc is null then return
-    $(el).val subdoc[name]
+    if subdoc.constructor.schema[name].type is sb.Html
+      if subdoc[name] != $(el).html()
+        $(el).html subdoc[name]
+    else
+      if subdoc[name] != $(el).val()
+        $(el).val subdoc[name]
 
 checkHelper = (el, self, check) ->
   ->
