@@ -46,7 +46,7 @@ sb.validate = (object, schema) ->
       if not sb.validate(value, sch.type.schema) then return false
       continue
     if sch.validation
-      if not sch.validation(value, @) then return false
+      if not sch.validation(value, object) then return false
 
   return true
 

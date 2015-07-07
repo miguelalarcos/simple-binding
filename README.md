@@ -15,6 +15,7 @@ API
 * *sb*, to mark the element as a *simple bind* element.
 * *sb-bind* binds the input element with the model field specified.
 * *sb-text* is a helper you use to display the field specified (or function that returns a string).
+* *sb-html* is a helper you use to display html of the field specified (or function).
 * *sb-check* binds the checkbox to a list (checked if its value is in the list).
   *sb-bool* binds the checkbox to a boolean field.
 * *sb-disabled* binds with a function that returns a boolean.
@@ -137,6 +138,48 @@ class A extends sb.Model
       houses: [new House(tv:false)]
   push: -> @age.cow.houses.push(new House(tv: true))
 ```
+
+Types
+-----
+You can use the next types: String, Date, Boolean, sb.Html, sb.Integer, sb.Float and other model types.
+
+Medium editor
+-------------
+It's not included out of the box in the package, but is very simple to code it. Here's an example:
+
+```html
+<template name="htmlMediumEditor">
+    <div sb {{this}} class="editable"></div>
+</template>
+```
+
+```css
+.editable {
+    height: 10em;
+}
+```
+
+```coffee
+Template.htmlMediumEditor.onRendered ->
+  el = this.$('.editable')
+  new MediumEditor(el, {placeholder: false})
+  
+class @Post extends sb.Model
+  @collection: posts
+  @schema:
+    ...
+    text:
+      type: sb.Html
+    ...
+```
+
+```html
+<template name="edit-post">
+        ...
+        Texto:
+        {{> htmlMediumEditor sb-bind="text"}}
+        ...
+```        
 
 Validations
 -----------
