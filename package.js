@@ -1,6 +1,6 @@
 Package.describe({
     name: 'miguelalarcos:simple-binding',
-    version: '0.7.10',
+    version: '0.7.11',
     summary: 'Simple two way bindings for Meteor, with nested models and validation.',
     git: 'https://github.com/miguelalarcos/simple-binding.git',
     documentation: 'README.md'
@@ -16,7 +16,6 @@ Package.onUse(function(api) {
     api.use('reactive-var');
     api.use('reactive-dict');
     api.use('momentjs:moment@2.9.0');
-    //api.use('aldeed:template-extension@3.4.3');
     api.addFiles('main-simple-binding.coffee', ['client', 'server']);
     api.addFiles('sb-datetime.css', 'client');
     api.addFiles('sb-datetime.html', 'client');

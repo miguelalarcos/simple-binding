@@ -21,7 +21,9 @@ API
 * *sb-disabled* binds with a function that returns a boolean.
 * *sb-click* binds the click action to the given function.
 * *sb-radio* binds the radio element with the field specified.
-* *sb-fade* binds the boolean result of a function.
+* *sb-fade* binds the boolean result of a function or boolean.
+  *sb-fade-speed* (milliseconds)
+  *sb-fade-easing*
 * *sb-select* to binds a select element with a list or an attribute depending if is multiple or not.
 * *sb-class* to bind the classes of the element to the result of a function.
 * *sb-focus* binds to a boolean.

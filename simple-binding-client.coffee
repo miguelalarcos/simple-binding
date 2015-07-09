@@ -351,11 +351,18 @@ fadeHelper = (el, self, fade)->
   ->
     [subdoc, name] = self.model.subDoc(fade)
     if subdoc is null then return
-    value = subdoc[name]()
-    if value
-      $(el).fadeIn()
+    if _.isFunction(subdoc[name])
+      value = subdoc[name]()
     else
-      $(el).fadeOut()
+      value = subdoc[name]
+
+    fade_speed = parseInt($(el).attr('sb-fade-speed')) or 400
+    fade_easing = $(el).attr('sb-fade-easing') or 'swing'
+
+    if value
+      $(el).fadeIn(fade_speed, fade_easing)
+    else
+      $(el).fadeOut(fade_speed, fade_easing)
 
 textHelper = (el, self, text)->
   ->
