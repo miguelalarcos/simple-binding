@@ -37,13 +37,15 @@ Template.sbAutocomplete.helpers
       Meteor.call call, query_, (error, result)->
         items.remove({})
         _isValidAutocomplete.set(atts.id, false)
+        result = _.sortBy(result, atts.fieldRef)
         for item, i in result
           rendered = renderFunction(item, query_)
           value = item[atts.fieldRef]
           if value == query_
             _isValidAutocomplete.set(atts.id, true)
           items.insert({value: value, content:rendered, index: i, remote_id: item._id, doc: item})
-      items.find({}, {sort: {value: 1}})
+      #items.find({}, {sort: {value: 1}})
+      items.find({})
     else
       null
 
@@ -121,4 +123,4 @@ Template.sbAutocomplete.rendered = ->
   input = $(el).find('.xautocomplete-input')
   popover = $(el).find('.xpopover')
   offset = input.offset()
-  popover.offset({top: offset.top + input.height()*2, left: offset.left})
+  popover.offset({top: offset.top + input.height(), left: offset.left})

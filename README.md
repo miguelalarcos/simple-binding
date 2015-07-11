@@ -45,7 +45,7 @@ Note that you have to give an *id*.
 
 ```coffee
 Meteor.methods
-  data: (query) -> surnamesCollection.find({surname: {$regex: '^.*'+query+'.*$'}})
+  data: (query) -> surnamesCollection.find({surname: {$regex: '^.*'+query+'.*$'}}).fetch()
 ```
 
 The validation should be a function like this (more on validations later):

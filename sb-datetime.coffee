@@ -50,7 +50,7 @@ Template.sbDateTime.events
     unless atts.time == true
       current = t.find('.xdatetime-popover')
       $(current).hide()
-    show_calendar.set false
+      show_calendar.set false
 
   'click .minus-month': (e,t)->
     date = getMomentFromTemplate(t)
@@ -199,4 +199,4 @@ Template.sbDateTime.rendered = ->
     #console.log offset
     popover = $(el).find('.xdatetime-popover')
     #popover.offset({top: offset.top + input.height()*2, left: offset.left})
-    popover.offset({top: input.height()*2, left: 0})
+    popover.offset({top: input.height(), left: 0})

@@ -1,17 +1,18 @@
 <template name="sbDateTime">
     <div sb class="xwidget xdatetime" {{this}}>
-        <div class="ui input">
-            <input type='text' class="xdatetime-input"><i class="calendar icon show-calendar"></i>
+        <!--<div class="ui input">-->
+            <input type='text' class="uinput xdatetime-input"><i class="ion-calendar show-calendar"></i>
         <!--</div>-->
             <div class="xdatetime-popover">
             {{#if show_calendar}}
                   <div class="xdatetime-header">
-                    <i class="minus icon minus-month"></i>
+                    <i class="ion-minus minus-month"></i>
                     {{month}}
-                    <i class="plus icon plus-month"></i>
-                    <i class="minus icon minus-year"></i>
+                    <i class="ion-plus plus-month"></i>
+                    <span>&nbsp;&nbsp;</span>
+                    <i class="ion-minus minus-year"></i>
                     {{year}}
-                    <i class="plus icon plus-year"></i>
+                    <i class="ion-plus plus-year"></i>
                   </div>
                   {{#each week}}
                     <div class="xdatetime-week">
@@ -23,16 +24,16 @@
                 {{#if show_time}}
                     <div class="ui input form">
                         <span class="inline field">
-                            <i class="minus icon minus-hour"></i>
-                            <i class="plus icon plus-hour"></i>
+                            <i class="ion-minus minus-hour"></i>
+                            <i class="ion-plus plus-hour"></i>
                             <span class="{{checkDST}}">{{time}}</span>
-                            <i class="minus icon minus-minute"></i>
-                            <i class="plus icon plus-minute"></i>
+                            <i class="ion-minus minus-minute"></i>
+                            <i class="ion-plus plus-minute"></i>
                         </span>
                     </div>
                 {{/if}}
             {{/if}}
             </div>
-        </div>
+        <!--</div>-->
     </div>
 </template>
