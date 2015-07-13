@@ -7,6 +7,9 @@ hljs.initHighlightingOnLoad()
 
 options = new sb.ReactiveArray(['miguel', 'veronica', 'bernardo'])
 
+#Template.hello.onRendered ->
+#  $('select').select2()
+
 Template.hello.helpers
   data: ->
     model:
@@ -14,7 +17,7 @@ Template.hello.helpers
         first: 'miguel'
         last: 'alarcos'
         date: moment().toDate()
-        lista: ['miguel']
+        lista: ['miguel', 'bernardo']
         numbers: []
         flag: false
         sex: 'male'

@@ -24,7 +24,7 @@ API
 * *sb-fade* binds the boolean result of a function or boolean.
   *sb-fade-speed* (milliseconds)
   *sb-fade-easing*
-* *sb-select* to binds a select element with a list or an attribute depending if is multiple or not.
+* *sb-select* to binds a select element with a list or an attribute depending if is multiple or not. The package uses *select2* internally.
 * *sb-class* to bind the classes of the element to the result of a function.
 * *sb-focus* binds to a boolean.
 * *sb-hover* binds to a boolean.

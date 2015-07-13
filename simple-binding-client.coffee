@@ -142,6 +142,7 @@ class Model
     return [subdoc, path[-1..][0]]
 
   destroy: ->
+    console.log 'destroy model'
     for c in @__computations
       c.stop()
 
@@ -313,7 +314,7 @@ clickRadioHelper = (self, el)->
 changeSelectHelper = (self, el)->
   (event) ->
     name = $(el).attr('sb-select')
-    value = $(el).val()
+    value = $(el).val() or []
     [subdoc, name] = self.model.subDoc(name)
     subdoc[name] = value
 
@@ -322,7 +323,7 @@ selectHelper = (el, self, select_) ->
     [subdoc, name] = self.model.subDoc(select_)
     if subdoc is null then return
     value = subdoc[name]
-    $(el).val(value)
+    $(el).select2('val', value)
 
 radioHelper = (el, self, radio) ->
   ->
@@ -384,6 +385,7 @@ htmlHelper = (el, self, html)->
 
 
 rebind = (t) ->
+  console.log 'rebind'
   self = t
   if self.model
     self.model.destroy()
@@ -407,6 +409,8 @@ Template.sbT.helpers
 #Template.sbT.hooks
 #  rendered: ->
 Template.sbT.onRendered ->
+    $('select').select2()
+    console.log 'template rendered'
     self = this
     self.model = self.data.model
 
@@ -419,6 +423,7 @@ Template.sbT.onRendered ->
 
 #  destroyed: ->
 Template.sbT.onDestroyed ->
+    console.log 'template destroy'
     if this.model
       this.model.destroy()
 
