@@ -274,10 +274,12 @@ class B extends sb.Model
   remove: -> @removeFromContainer()
 ```
 
-semantic-ui
------------
-
-You must install semantic-ui so the datetime widget would be shown correctly (semantic:ui-css).
+datetime widget
+---------------
+Example of use:
+```html
+{{> sbDateTime sb-datetime="dummyDate" format="DD-MM-YYYY HH:mm" id="unico" time=true}}
+```
 
 Issues
 ------

@@ -1,10 +1,12 @@
 <template name="sbDateTime">
-    <div sb class="xwidget xdatetime" {{this}}>
-        <!--<div class="ui input">-->
-            <input type='text' class="uinput xdatetime-input"><i class="ion-calendar show-calendar"></i>
-        <!--</div>-->
+    <span sb class="xwidget xdatetime" {{this}}>
+        {{#dropdownTrigger name=this.id }}
+            <input type='text' class="uinput xdatetime-input show-calendar">
+            <!--<i class="ion-calendar show-calendar"></i>-->
+        {{/dropdownTrigger}}
+        {{#dropdown name=this.id align='left'}}
             <div class="xdatetime-popover">
-            {{#if show_calendar}}
+            <!--{{#if show_calendar}}-->
                   <div class="xdatetime-header">
                     <i class="ion-minus minus-month"></i>
                     {{month}}
@@ -32,8 +34,8 @@
                         </span>
                     </div>
                 {{/if}}
-            {{/if}}
+            <!--{{/if}}-->
             </div>
-        <!--</div>-->
-    </div>
+        {{/dropdown}}
+    </span>
 </template>

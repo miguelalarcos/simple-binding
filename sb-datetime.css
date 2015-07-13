@@ -1,11 +1,13 @@
-.xdatetime {
+/*.xdatetime {
   position: relative;
   display: inline;
 }
+*/
 
 .xdatetime-popover {
-  position: absolute;
+  /*position: absolute;
   width: 150%;
+  */
   z-index: 2;
   cursor: pointer;
   background-color: #fff;

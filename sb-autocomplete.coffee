@@ -44,7 +44,7 @@ Template.sbAutocomplete.helpers
           if value == query_
             _isValidAutocomplete.set(atts.id, true)
           items.insert({value: value, content:rendered, index: i, remote_id: item._id, doc: item})
-      #items.find({}, {sort: {value: 1}})
+
       items.find({})
     else
       null
@@ -64,6 +64,7 @@ Template.sbAutocomplete.events
     index = -1
 
   'keyup .xautocomplete-input': (e,t)->
+    Dropdowns.show(t.data.id)
     if e.keyCode == 38
       items.update({index:index}, {$set:{selected: ''}}) # items.update({}, {$set:{selected: ''}})
       if index == -1 then index = -1 else index -= 1
@@ -119,8 +120,8 @@ $.fn.sbautocomplete = ->
 Template.sbAutocomplete.rendered = ->
   $(this.findAll('.xautocomplete')).sbautocomplete()
   #
-  el = this.find('.xautocomplete')
-  input = $(el).find('.xautocomplete-input')
-  popover = $(el).find('.xpopover')
-  offset = input.offset()
-  popover.offset({top: offset.top + input.height(), left: offset.left})
+  #el = this.find('.xautocomplete')
+  #input = $(el).find('.xautocomplete-input')
+  #popover = $(el).find('.xpopover')
+  #offset = input.offset()
+  #popover.offset({top: offset.top + input.height(), left: offset.left})

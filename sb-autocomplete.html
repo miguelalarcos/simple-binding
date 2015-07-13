@@ -1,12 +1,16 @@
 <template name='sbAutocomplete'>
     <span sb class="xwidget xautocomplete" tabindex=100 {{this}}>
-        <input type='text' class="uinput xautocomplete-input" required>
-        <div class="xpopover" tabindex=100>
-            <table class="xpopover-table">
-                {{#each items}}
-                    <tr index={{this.index}} class="xitem {{this.selected}}">{{{this.content}}}</tr>
-                {{/each}}
-            </table>
-        </div>
+        {{#dropdownTrigger name=this.id }}
+            <input type='text' class="uinput xautocomplete-input" required>
+        {{/dropdownTrigger}}
+        {{#dropdown name=this.id align='left'}}
+            <div class="xpopover" tabindex=100>
+                <table class="xpopover-table">
+                    {{#each items}}
+                        <tr index={{this.index}} class="xitem {{this.selected}}">{{{this.content}}}</tr>
+                    {{/each}}
+                </table>
+            </div>
+        {{/dropdown}}
     </span>
 </template>
