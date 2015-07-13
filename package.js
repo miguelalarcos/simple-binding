@@ -18,7 +18,7 @@ Package.onUse(function(api) {
     api.use('momentjs:moment@2.9.0');
     api.use('pagebakers:ionicons@2.0.1_1');
     api.use('natestrauser:select2@3.5.1');
-    api.addFiles('select2.css', 'client');
+    //api.addFiles('select2.css', 'client');
     api.addFiles('main-simple-binding.coffee', ['client', 'server']);
     api.addFiles('sb-datetime.css', 'client');
     api.addFiles('sb-datetime.html', 'client');
