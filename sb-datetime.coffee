@@ -112,19 +112,32 @@ dayRow = (week, date)->
   dt = ini_month.clone().add(1, 'month')
   if ini.isAfter(dt) or ini.isSame(dt)
     return []
-  end = ini.clone().add(7, 'days')
+  end = ini.clone().add(6, 'days')
 
-  while not ini.isSame(end)
-    if ini_month.format('MM') == ini.format('MM')
-      if ini.isSame(moment().startOf('day'))
+  range = moment.range(ini, end)
+  range.by 'day', (m) ->
+    if ini_month.format('MM') == m.format('MM')
+      if m.isSame(moment().startOf('day'))
         decoration = 'xbold xunderline xtoday'
       else
         decoration = 'xbold'
     else
       decoration = 'xcursive'
 
-    ret.push {value: ini.format('DD'), date: ini.format('YYYY-MM-DD'), decoration: decoration}
-    ini.add(1, 'days')
+    ret.push {value: m.format('DD'), date: m.format('YYYY-MM-DD'), decoration: decoration}
+    #ini.add(1, 'days')
+
+  #while not ini.isSame(end)
+  #  if ini_month.format('MM') == ini.format('MM')
+  #    if ini.isSame(moment().startOf('day'))
+  #      decoration = 'xbold xunderline xtoday'
+  #    else
+  #      decoration = 'xbold'
+  #  else
+  #    decoration = 'xcursive'
+
+  #  ret.push {value: ini.format('DD'), date: ini.format('YYYY-MM-DD'), decoration: decoration}
+  #  ini.add(1, 'days')
   ret
 
 Template.sbDateTime.helpers
