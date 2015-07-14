@@ -4,8 +4,8 @@
     cursor: pointer;
     background-color: white;
     border: none;
-    border-left: 2px lightblue solid;
-    border-right: 2px lightblue solid;
+    /*border-left: 2px lightblue solid;
+    border-right: 2px lightblue solid;*/
     border-bottom: 2px lightblue solid;
 }
 .xselected{

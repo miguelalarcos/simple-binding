@@ -231,7 +231,7 @@ bindHelper = (el, self, bind) ->
       if subdoc[name] != $(el).html()
         $(el).html subdoc[name]
     else
-      if subdoc[name] != $(el).val()
+      if subdoc[name].toString() != $(el).val()
         $(el).val subdoc[name]
 
 checkHelper = (el, self, check) ->
