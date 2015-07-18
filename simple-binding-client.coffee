@@ -68,6 +68,10 @@ getter_setter = (obj, attr) ->
 class Model
   @exclude = []
   constructor: (dct)->
+    if dct is null or dct is undefined then dct = {}
+    if _.isString(dct)
+      dct = @constructor.collection.findOne(dct) or {}
+
     @schema = @constructor.schema
     @__computations = []
     #@_canSave = new ReactiveVar(false)
