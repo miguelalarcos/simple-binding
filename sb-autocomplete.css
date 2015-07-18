@@ -1,3 +1,7 @@
+.xwidget.xautocomplete {
+    display: inline-block;
+}
+
 .xpopover {
     position: absolute;
     z-index: 2;

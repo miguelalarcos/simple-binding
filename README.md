@@ -216,7 +216,9 @@ class @A extends sb.Model
 
 As you can see there's a validation rule for every field, that is passed the attribute that is going to be validated and a second argument with the object.
 The *Model* has two util methods of validation: *isValid*, *isNotValid*.
-Also, it has a method *save* that will insert or update the object into the given collection.
+Also, it has a method *save* that will insert or update the object into the given collection, and a method *remove*.
+
+You can use the methods *canEdit* and *canRemove* that will return true or false depending if you can edit or remove the object.
 
 Forms
 -----
@@ -247,18 +249,19 @@ sb.allowIfValid(model)
 #sb.denyIfNotValid(model)
 ```
 
-But in production maybe you need to check for the owner of the doc to be updated, for example.
-I recommend to use *ongoworks:security*. The deny function would be something like:
+But I highly recommend to use *ongoworks:security*. The deny function would be something like:
 
-```coffee
-Security.defineMethod "checkUpdateA", 
+```coffee     
+Security.defineMethod "ifSbValidate",
   fetch: [],
   transform: null,
   deny: (type, arg, userId, doc, fields, modifier) ->
-    if userId !== doc._owner or not sb.validate(modifier['$set'], A.schema)
-      true
-    else
+    if type == 'update'
+      doc = modifier['$set']
+    if sb.validate(doc, arg.schema)
       false
+    else
+      true      
 ```
 
 removeFromContainer

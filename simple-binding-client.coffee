@@ -70,7 +70,8 @@ class Model
   constructor: (dct)->
     @schema = @constructor.schema
     @__computations = []
-    @_canSave = new ReactiveVar(false)
+    #@_canSave = new ReactiveVar(false)
+    @_canEdit = new ReactiveVar(false)
     @_canRemove = new ReactiveVar(false)
     @_id = dct._id
     for attr, value of @schema
@@ -130,16 +131,27 @@ class Model
   remove: ->
     @constructor.collection.remove @_id
 
-  canSave: ->
-    doc = @toBDD()
+  #canSave: ->
+  #  doc = @toBDD()
+  #  self = @
+  #  coll = @constructor.collection._name.toLowerCase()
+  #  Meteor.call 'canSave', doc, coll, (err, result) ->
+  #    if err
+  #      console.log err
+  #    else
+  #      self._canSave.set(result)
+  #  @_canSave.get()
+
+  canEdit: ->
     self = @
+    doc = @toBDD()
     coll = @constructor.collection._name.toLowerCase()
-    Meteor.call 'canSave', doc, coll, (err, result) ->
+    Meteor.call 'canEdit', doc, coll, (err, result) ->
       if err
         console.log err
       else
-        self._canSave.set(result)
-    @_canSave.get()
+        self._canEdit.set(result)
+    @_canEdit.get()
 
   canRemove: ->
     doc = @toBDD()

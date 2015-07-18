@@ -33,7 +33,7 @@ Template.sbAutocomplete.helpers
     else
       renderFunction = generalRenderFunction(atts.renderKey)
 
-    if atts.id == current_input and query_ != ''
+    if atts.id == current_input # and query_ != ''
       Meteor.call call, query_, (error, result)->
         items.remove({})
         _isValidAutocomplete.set(atts.id, false)
