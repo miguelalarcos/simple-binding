@@ -70,6 +70,17 @@ If you use the *renderFunction* instead of *renderKey*:
 </template>
 ```
 
+Till now you must reset manually the validation of an autocomplete widget when the model changes:
+
+```coffee
+Template.home.helpers
+  posts: -> (new Post(p) for p in posts.find({}).fetch())
+  myModel: ->
+    id = FlowRouter.getQueryParam('id')
+    sb.resetValidationAutocomplete('demoId', id)
+    new Post id
+```
+
 ---
 In the case of an attribute that is an array, it will be converted to a ReactiveArray (reactiveArray is deprecated), and you can use *push*, *pop*, *shift*, *unshift*, *splice*, *remove*, *extract* (returns the array) and a method *set* that is ```set=(pos, value)->```. You can use yourself the *ReactiveArray*, this way:
 

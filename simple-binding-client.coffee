@@ -149,8 +149,8 @@ class Model
   canEdit: ->
     self = @
     doc = @toBDD()
-    coll = @constructor.collection._name.toLowerCase()
-    Meteor.call 'canEdit', doc, coll, (err, result) ->
+    coll = @constructor.collection._name #.toLowerCase()
+    Meteor.call 'roleEcanEdit', doc, coll, (err, result) ->
       if err
         console.log err
       else
@@ -160,8 +160,8 @@ class Model
   canRemove: ->
     doc = @toBDD()
     self = @
-    coll = @constructor.collection._name.toLowerCase()
-    Meteor.call 'canRemove', doc, coll, (err, result) ->
+    coll = @constructor.collection._name #.toLowerCase()
+    Meteor.call 'roleEcanRemove', doc, coll, (err, result) ->
       if err
         console.log err
       else

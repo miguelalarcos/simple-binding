@@ -2,6 +2,14 @@ _isValidAutocomplete = new ReactiveDict()
 
 sb.isValidAutocomplete = (id) -> _isValidAutocomplete.get(id)
 
+_setValidAutocomplete = (id, value) -> _isValidAutocomplete.set(id, value)
+
+sb.resetValidationAutocomplete = (tagId, id) ->
+  if id
+    _setValidAutocomplete(tagId, true)
+  else
+    _setValidAutocomplete(tagId, false)
+
 # query is Reactive var where we are going to keep the text that the user is writing in the current autocomplete input
 query = new ReactiveVar('')
 
@@ -60,7 +68,7 @@ Template.sbAutocomplete.events
     _isValidAutocomplete.set($(widget).attr('id'), true)
     $(widget).trigger('textChange', [selected.value])
     items.remove({})
-    query.set('')
+    #query.set('')
     index = -1
 
   'keyup .xautocomplete-input': (e,t)->
@@ -78,14 +86,14 @@ Template.sbAutocomplete.events
       selected = items.findOne({selected: 'xselected'}) or items.findOne({index: 0})
       $(e.target).val(selected.value)
       items.remove({})
-      query.set('')
+      #query.set('')
       index = -1
       widget = t.find('.xwidget')
       _isValidAutocomplete.set($(widget).attr('id'), true)
       $(widget).trigger('textChange', [selected.value])
     else if e.keyCode == 27
       items.remove({})
-      query.set('')
+      #query.set('')
       index = -1
     else
       val = $(e.target).val()
@@ -102,7 +110,7 @@ Template.sbAutocomplete.events
   'focusout .xautocomplete': (e,t)->
     if not $(e.relatedTarget).is('.xpopover')
       items.remove({})
-      query.set('')
+      #query.set('')
       index = -1
 
 $.valHooks['sbautocomplete'] =
